@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="pt-BR"><head><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#141414"><link rel="apple-touch-icon" href="icon-192.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#141414"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Meu Planejamento Financeiro</title>
+<!DOCTYPE html><html lang="pt-BR"><head><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#141414"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Meu Planejamento Financeiro</title>
 <style>
 :root{--bg:#141414;--sb:#1C1C1E;--cd:#202022;--in:#181819;--bd:#303033;--tx:#F5F5F5;--t2:#A5ACB8;--ac:#FFCA50;--gr:#20C86A;--rd:#FF4848;--nt:#8B95A5;color-scheme:dark;padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.35 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
@@ -189,7 +189,7 @@ table.tbl td[data-l="TIPO"]:not(:has(select)){display:none}table.imtb tr{padding
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.mcard{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:14px;cursor:pointer;min-height:44px}.mcard.cur{border-color:var(--ac)}.mcard.vz{opacity:.6}.mcard>b{font-size:16px;display:block;margin-bottom:6px}.mrw{display:flex;justify-content:space-between;font-size:13px;color:var(--t2);padding:2px 0}.mrw.mt{border-top:1px solid var(--bd);margin-top:5px;padding-top:6px;color:var(--tx)}.mrw.mt b{font-size:15px}
 .cal2 .w.wk{color:#9DB0FF}.cal2 .d.we{background:rgba(120,140,255,.13)}.cal2 .d.we .n{color:#9DB0FF}.cal2 .d.ho{background:rgba(255,176,32,.16)}.cal2 .d.ho .n{color:#FFB020}.cal2 .d.ho .n::after{content:'•';margin-left:3px}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none}.dot.dash{background:transparent;border:2px dashed;width:12px;height:12px;box-sizing:border-box}
-.ldsum{display:flex;justify-content:space-between;align-items:center;background:#1b1b1d;border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin:2px 0 10px;font-size:14px}.ldsum b{font-size:20px;white-space:nowrap;flex:none}.ldsum span{min-width:0;flex:1;padding-right:10px}
+.ldsum{display:flex;justify-content:space-between;align-items:center;background:#1b1b1d;border:1px solid var(--bd);border-radius:14px;padding:9px 14px;margin:2px 0 8px;font-size:13px}.ldsum b{font-size:17px;white-space:nowrap;flex:none}.ldsum span{min-width:0;flex:1;padding-right:10px}
 .ldr{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--bd)}.ldn{flex:1;min-width:0;display:flex;flex-direction:column}.ldn b{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ldp{border-bottom:1px solid var(--bd);padding-bottom:10px}.ldp .ldr{border:0;padding-bottom:6px}.ldb{display:flex;gap:6px}.ldb .btn{flex:1;min-height:44px;padding:8px 4px;font-size:13px;white-space:nowrap}
 .ltog{display:flex;background:#1b1b1d;border:1px solid var(--bd);border-radius:14px;padding:4px;gap:4px;margin-bottom:10px}.ltog button{flex:1;background:none;border:0;color:var(--t2);font:700 14px Inter,system-ui,sans-serif;padding:12px 6px;border-radius:10px;min-height:44px;cursor:pointer}.ltog button.on{background:var(--ac);color:#1a1a1a}
@@ -246,7 +246,114 @@ body.lean .cal2 .d2 .sb{font-weight:700}
 body.lean .cal2 .d2 .sb small{opacity:.55}
 @media(max-width:760px){body.lean .cal2 .d2 .n{font-size:15px;width:24px;height:24px;line-height:24px}body.lean .cal2 .d2{padding-left:4px;padding-right:4px}}
 @media(min-width:761px){body.lean .cal2 .d2{padding-left:12px;padding-right:12px}body.lean .cal2 .d2 .n{grid-area:n}}
-body.lean .lh2{margin-left:0;margin-right:0;padding:0}.lean .cgrid,.lean .lcat{box-sizing:border-box}</style></head><body>
+body.lean .lh2{margin-left:0;margin-right:0;padding:0}.lean .cgrid,.lean .lcat{box-sizing:border-box}
+/* Dark mode estilo Apple (true black) */
+:root{--bg:#000;--sb:#1C1C1E;--cd:#1C1C1E;--in:#2C2C2E;--bd:#38383A;--tx:#fff;--t2:#8E8E93;--gr:#30D158;--rd:#FF453A;--nt:#8E8E93}
+html,body,button,input,select,textarea{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display',Inter,system-ui,Roboto,sans-serif!important}
+input.i,select.i,textarea.i{background:#2C2C2E;border-color:#38383A}
+.ltog,.ldsum{background:#1C1C1E}
+body.lean .cal2 .d.we .n,body.lean .cal2 .d.we{color:#0A84FF}body.lean .cal2 .d.we .n{color:#0A84FF}body.lean .cal2 .w.wk{color:#0A84FF}
+body.lean .cal2 .d2.td .n{background:#FF453A;color:#fff!important}
+body.lean .cal2 .d.ho .n{color:#FF453A}
+body.lean .cal2 .d,body.lean .cal2 .w{border-color:#38383A!important}
+body.lean .cal2 .d.om{cursor:default}body.lean .cal2 .d.om .n{color:#3A3A3C!important;background:none!important;font-weight:500}body.lean .cal2 .d.om:hover{border-color:#38383A}
+/* Calendário Samsung: blocos arredondados, dias vizinhos apagados, painel do dia embaixo */
+body.lean .lhd{display:flex;align-items:center;gap:2px;margin:2px 0 10px}
+body.lean .lhd b{order:0;flex:1;text-align:left;font-size:28px;font-weight:800;letter-spacing:-.5px;padding-left:2px}
+body.lean .lhd button{order:1;background:none!important;border:0!important;width:40px;height:40px;min-height:0;padding:0;font-size:30px;line-height:1;color:#fff;border-radius:50%}
+body.lean .cal.cal2{gap:6px;margin-top:6px}
+body.lean .cal2 .w{border:0!important;padding:6px 0 4px;font-size:14px;font-weight:700;color:#fff;margin:0}
+body.lean .cal2 .w.wk{color:#fff}body.lean .cal2>.w:nth-child(1){color:#FF6B6B}
+body.lean .cal2 .d,body.lean .cal2 .d.e{background:#141416!important;border:0!important;border-radius:10px;box-shadow:none;padding:6px 3px 5px;min-height:62px}
+body.lean .cal2 .d.om{background:#0b0b0c!important}
+body.lean .cal2 .d.om .n{color:#555!important;font-weight:600}
+body.lean .cal2 .d2 .n,body.lean .cal2 .d.we .n{color:#fff;font-weight:700}
+body.lean .cal2 .d.ho .n,body.lean .cal2 .d:not(.om):nth-child(7n+1) .n{color:#FF6B6B}
+body.lean .cal2 .d2.td .n{background:#FF453A;color:#fff!important}
+body.lean .cal2 .d.dg{background:rgba(48,209,88,.14)!important}
+body.lean .cal2 .d.dr{background:rgba(255,69,58,.17)!important}
+body.lean .cal2 .d.sl,body.lean .cal2 .d2.sl{box-shadow:inset 0 0 0 1.5px #8E8E93!important;background-color:#141416!important;background-image:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,.07))!important}
+body.lean .cal2 .d:hover{border:0!important}
+@media(max-width:760px){
+body.lean .d2{display:flex;flex-direction:column;align-items:stretch;gap:2px}
+body.lean .cal2 .d2 .n{margin:0 auto;font-size:16px;width:26px;height:26px;line-height:26px}
+body.lean .d2 .sb{order:2;text-align:center!important;font-size:11px;margin:1px 0 0}
+body.lean .d2 .cdw{order:3;margin:auto 0 0;gap:2px}
+.cst{height:3px;border-radius:2px}
+}
+@media(min-width:761px){body.lean .cal.cal2{gap:8px}body.lean .cal2 .d,body.lean .cal2 .d.e{border-radius:14px;min-height:96px}body.lean .cal2 .d2 .n{justify-self:center}}
+.dpanel{margin:16px 0 6px}
+.dph2{display:flex;align-items:baseline;gap:10px;margin:0 4px 12px}.dph2 b{font-size:34px;font-weight:800;letter-spacing:-1px}.dph2 span{font-size:14px;font-weight:700;letter-spacing:.4px}
+.dpanel .ldr{background:#141416;border:0;border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.dpanel .ldp{background:#141416;border:0;border-radius:14px;padding:4px 10px 10px;margin-bottom:8px}.dpanel .ldp .ldr{background:none;padding:8px 2px 6px;margin:0}
+.dpanel .empty{background:#141416;border-radius:14px;padding:16px}
+.addpill{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:54px;margin-top:14px;padding:0 22px;background:#1C1C1E;border:0;border-radius:999px;color:#C7C7CC;font-size:16px;box-shadow:0 0 18px rgba(255,69,58,.14);cursor:pointer}.addpill b{font-size:30px;font-weight:300;color:#fff;line-height:1}
+
+/* topo mais compacto, proporcional ao calendário */
+body.lean .lhd{margin:0 0 4px}body.lean .lhd b{font-size:22px;letter-spacing:-.3px}body.lean .lhd button{width:34px;height:34px;font-size:24px}
+body.lean .lhero.lh1{padding:7px 12px;margin-bottom:6px;border-radius:12px;background:#141416;border:1px solid transparent;gap:8px}
+body.lean .lhero.lh1.bad{border-color:rgba(255,69,58,.6)}
+body.lean .lh1 .lbig{font-size:20px;line-height:1.15;margin:0}body.lean .lh1 small{font-size:9px;letter-spacing:.3px}
+body.lean .lh1 .btn{min-height:32px;padding:0 12px;font-size:13px;border-radius:10px}
+body.lean .ltog{padding:3px;margin-bottom:6px;border:0;background:#141416;border-radius:12px;gap:3px}
+body.lean .ltog button{padding:7px 4px!important;font-size:13px!important;border-radius:9px;min-height:0!important}
+body.lean .lrow{gap:6px;margin-bottom:4px}
+body.lean .lrow>div{padding:7px 12px;min-height:0;border:0;background:#141416;border-radius:12px}
+body.lean .lrow small{font-size:9px;letter-spacing:.3px;white-space:nowrap}body.lean .lrow b{font-size:15px;margin-top:1px}
+body.lean .lh2{font-size:17px;margin:12px 2px 6px}
+body.lean .lcat{background:#141416;border:0;border-radius:12px;padding:9px 12px;margin-bottom:6px}
+body.lean .lcat .lrw .i{width:104px;min-height:0;height:32px;padding:0 10px;font-size:14px;border-radius:9px}
+body.lean .lcat .lrw b{font-size:15px}
+body.lean .lcat .lrw .lv{font-size:13px}
+body.lean .lbr{height:5px;margin:7px 0 5px}
+body.lean .lcat .sm{font-size:11px}
+body.lean .lhero:not(.lh1){background:#141416;border:1px solid transparent;border-radius:12px;padding:9px 13px;margin-bottom:6px}
+body.lean .lhero.cur{border-color:var(--ac)}
+body.lean .lhero:not(.lh1) .lbig{font-size:24px;line-height:1.15;margin:1px 0}
+body.lean .lhero:not(.lh1) small{font-size:9px;letter-spacing:.3px}
+body.lean .lhero:not(.lh1) .sm{font-size:11px}
+body.lean .cgrid{gap:6px;margin-bottom:6px}
+body.lean .mgrid{gap:6px;margin-bottom:8px}
+body.lean .mcard{background:#141416;border:1px solid transparent;border-radius:12px;padding:9px 12px}
+body.lean .mcard.cur{border-color:var(--ac)}
+body.lean .mcard>b{font-size:14px;margin-bottom:3px}
+body.lean .mrw{font-size:12px}
+body.lean .btn{min-height:40px!important;font-size:14px;border-radius:10px}
+body.lean .accb{padding:3px;margin-bottom:6px;border:0;background:#141416}
+body.lean .accb button{min-height:0;padding:7px 4px;font-size:13px}
+body.lean .dcard{background:#141416;border:0;border-radius:12px;padding:11px 12px 10px;margin-top:6px}
+body.lean .dch b{font-size:16px}
+body.lean .dfo{margin-top:8px;font-size:13px}
+body.lean .dpane svg{max-width:210px;display:block;margin-left:auto;margin-right:auto}
+body.lean .lean>.sm.mu{font-size:11px;line-height:1.35}
+/* popup do dia compacto */
+body.lean .mh h3{font-size:17px}
+body.lean .ldsum{background:#141416;border:0;border-radius:12px;padding:8px 12px;margin:0 0 5px;font-size:12px}
+body.lean .ldsum b{font-size:15px}
+body.lean .ldr{background:#141416;border:0;border-radius:12px;padding:8px 12px;margin-bottom:5px;gap:9px}
+body.lean .ldn b{font-size:14px}
+body.lean .ldn .sm{font-size:11px}
+body.lean .ldr>b{font-size:14px}
+body.lean .ldp{background:#141416;border:0;border-radius:12px;padding:2px 8px 8px;margin-bottom:5px}
+body.lean .ldp .ldr{background:none;padding:6px 4px 5px;margin:0}
+body.lean .ldb{gap:5px}
+body.lean .ldb .btn{min-height:34px!important;padding:0 4px;font-size:12px;border-radius:9px}
+body.lean .mf{margin-top:8px}
+body.lean .mf .btn{min-height:40px!important}
+body.lean .dot.dash{width:11px;height:11px}
+/* Por metas: linhas organizadas */
+body.lean .dm{background:none;border-radius:10px;padding:7px 4px 6px;border-top:1px solid rgba(255,255,255,.06)}
+body.lean .dm:first-child{border-top:0}
+body.lean .dm.sel{background:#1f1f23}
+body.lean .dm .dr2{display:grid;grid-template-columns:10px 1fr auto auto;grid-template-areas:"a n v p" "b b b b";gap:5px 8px;padding:0 2px;font-size:14px;align-items:center}
+body.lean .dm .dr2>.dot{grid-area:a}
+body.lean .dm .dr2 .dn{grid-area:n;font-weight:600;font-size:14px}
+body.lean .dm .dr2 b{grid-area:v;font-size:14px}
+body.lean .dm .dr2 .dp{grid-area:p;min-width:34px;font-size:11px}
+body.lean .dm .dr2 .db{grid-area:b;height:5px}
+body.lean .dm .dsub{padding:4px 2px 0 20px;font-size:11px}
+body.lean .ldwrap{margin:6px 0 10px}
+</style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
 <script>
@@ -513,9 +620,9 @@ const wd=['dom','seg','ter','qua','qui','sex','sáb'];
 M(`${mh('A conta até o próximo recebimento')}<div class="lr"><span>Dinheiro na conta hoje<br><span class="sm mu">já inclui o que você recebeu</span></span><b>${fmt(bal())}</b></div>${rec.length?`<div class="sm mu" style="margin:6px 0 2px">Entradas recentes já somadas:</div>${rec.map(t=>`<div class="lr"><span class="sm">${f(t.date)} · ${esc(t.desc)}</span><span class="gr">+${fmt(t.val)}</span></div>`).join('')}`:''}
 <div class="lr"><span>Entradas previstas até ${f(sv.H)}<br><span class="sm mu">${sv.pv.filter(x=>x.t==='in').map(x=>esc(x.d)+' '+f(x.date)).join(' · ')||'nenhuma'}</span></span><b class="gr">+${fmt(ent)}</b></div>
 <div class="lr"><span>Fixos previstos até lá<br><span class="sm mu">${sv.pv.filter(x=>x.t==='out').map(x=>esc(x.d)+' '+f(x.date)).join(' · ')||'nenhum'}</span></span><b class="rd">−${fmt(sai)}</b></div>
-<div class="sm mu" style="margin:8px 0 2px">Gastos previstos por dia (sem a reserva de janta):</div>${sv.dd.map(x=>`<div class="lr"><span class="sm">${f(x.ds)} · ${wd[new Date(x.ds+'T12:00:00').getDay()]}</span><span>${x.v?'−'+fmt(x.v):'—'}</span></div>`).join('')}
+<div class="sm mu" style="margin:8px 0 2px">Gastos previstos por dia:</div>${sv.dd.map(x=>{const pp=Object.entries(planParts(x.ds)).map(([k,v])=>esc(pnm(k))+' '+fmt(v).replace('R$ ','')).join(' + ');return`<div class="lr"><span class="sm">${f(x.ds)} · ${wd[new Date(x.ds+'T12:00:00').getDay()]}${pp?`<br><span class="mu" style="font-size:11px">${pp}</span>`:''}</span><span>${x.v?'−'+fmt(x.v):'—'}</span></div>`}).join('')}
 <div class="lr" style="margin-top:8px"><b>Total previsto</b><b class="rd">−${fmt(sv.need)}</b></div><div class="lr"><b>${sv.fim<0?'Falta':'Sobra'} até ${esc(sv.nm)}</b><b class="${sv.fim<0?'rd':'gr'}">${fmt(Math.abs(sv.fim))}</b></div><div class="mf"><button class="btn p" onclick="closeM()">Fechar</button></div>`)}
-const lvar=p=>p>=100?'#FF4848':p>=80?'#FFB020':'#20C86A',lv=n=>{cur=addM(cur,n);R()};
+const lvar=p=>p>=100?'#FF4848':p>=80?'#FFB020':'#20C86A',lv=n=>{cur=addM(cur,n);LSEL=null;R()};
 function leanBar(on){let b=$('#lbar');if(!on){if(b)b.remove();return}if(!b){b=document.createElement('div');b.id='lbar';document.body.appendChild(b)}
 b.innerHTML=`<button class="${pg==='simples'?'on':''}" onclick="location.hash='#simples'"><svg viewBox="0 0 24 24">${ICON.calendario}</svg>Calendário</button><button class="${pg==='limites'?'on':''}" onclick="location.hash='#limites'"><svg viewBox="0 0 24 24">${ICON.orcamento||ICON.metas}</svg>Limites</button><button class="${pg==='contas'?'on':''}" onclick="location.hash='#contas'"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Contas</button><button class="${pg==='meses'?'on':''}" onclick="MESM='';location.hash='#meses'"><svg viewBox="0 0 24 24">${ICON.transacoes||ICON.metas}</svg>Meses</button>`}
 const leanHead=t=>`<div class="lhd"><button onclick="lv(-1)" aria-label="Mês anterior">‹</button><b>${ml(cur)}</b><button onclick="lv(1)" aria-label="Próximo mês">›</button></div>`;
@@ -529,7 +636,7 @@ function leanView(v){S.lv=v;save()}
 const leanTog=()=>{const v=lview(),b=(k,l)=>`<button class="${v===k?'on':''}" onclick="leanView('${k}')">${l}</button>`;return`<div class="ltog">${b('s','Saldo')}${b('r','Receitas')}${b('g','Gastos')}</div>`};
 function leanCards(){const v=lview(),sr=leanSeries('g',cur),ri=leanSeries('r',cur),sv=survive(),f=d=>d.slice(8)+'/'+d.slice(5,7),mo=S.tx.filter(t=>cnt(t)&&t.type==='in'&&t.date.slice(0,7)===cur).reduce((a,t)=>a+t.val,0);
 const c=(l,x,cl)=>`<div><small>${l}</small><b class="${cl||''}">${x}</b></div>`;
-if(v==='s'){const e=bal()+(ri._in||0)-(sr._out||0);return`<div class="lrow">${c('SALDO ATUAL',fmt(bal()))}${c('FIM DO MÊS (PREVISTO)',(e<-0.004?'−':'')+fmt(Math.abs(e)),e<-0.004?'rd':'')}</div>`}
+if(v==='s'){const e=bal()+(ri._in||0)-(sr._out||0);return`<div class="lrow">${c('SALDO ATUAL',fmt(bal()))}${c('FIM DO MÊS PREVISTO',(e<-0.004?'−':'')+fmt(Math.abs(e)),e<-0.004?'rd':'')}</div>`}
 if(v==='r')return`<div class="lrow">${c('A RECEBER NO MÊS',fmt(Math.max(0,ri._in||0)),'gr')}${c('SALDO COM AS RECEITAS',fmt(bal()+(ri._in||0)))}</div>`;
 const end=bal()-(sr._out||0);return`<div class="lrow">${c('PREVISTO DE GASTO',fmt(sr._out||0),'rd')}${c(end<-0.004?'FICA NEGATIVO':'SALDO NO FIM DO MÊS',(end<-0.004?'−':'')+fmt(Math.abs(end)),end<-0.004?'rd':'')}</div>`}
 function toneC(c){c=(c||'#888888').replace('#','');if(c.length!==6)return'#'+c;const r=parseInt(c.slice(0,2),16)/255,g=parseInt(c.slice(2,4),16)/255,b=parseInt(c.slice(4,6),16)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,sat=0,l=(mx+mn)/2;const d=mx-mn;if(d){sat=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}
@@ -537,9 +644,10 @@ const S2=Math.min(.75,sat*.8),L2=Math.max(.6,Math.min(.72,.66+(l-.5)*.2)),C=(1-M
 const cdot=e=>{const c=toneC(tcl(e.tag));return `<i class="cst" style="background:${c}"></i>`};
 const mnyH=v=>{const t=v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}),i=t.lastIndexOf(',');return`<small>R$</small> ${t.slice(0,i)}<small>${t.slice(i)}</small>`};
 function leanCal(){const[y,m]=cur.split('-').map(Number),N=dim(cur),v=lview(),SR=v==='s'?leanSeries('s',cur):leanSeries(v,cur),by={};calGrid(cur,'all',null,null).forEach(e=>{if(v==='r'&&e.type!=='in')return;if(v==='g'&&e.type!=='out')return;if(v==='s'&&e.k!=='r')return;(by[e.date]=by[e.date]||[]).push(e)});
-let c=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i%6===0?'wk':''}">${w}</div>`).join('')+'<div class="d e"></div>'.repeat(new Date(y,m-1,1).getDay());
+let c=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i%6===0?'wk':''}">${w}</div>`).join('')+(()=>{const lead=new Date(y,m-1,1).getDay(),pm=new Date(y,m-1,0).getDate();return Array.from({length:lead},(_,i)=>`<div class="d d2 om"><span class="n">${pm-lead+1+i}</span></div>`).join('')})();
 for(let d=1;d<=N;d++){const ds=cur+'-'+pad(d),dw=new Date(y,m-1,d).getDay(),dk=dw===0||dw===6?'we':isOff(new Date(y,m-1,d))?'ho':'',l=(by[ds]||[]).concat(v==='g'&&ds>=today?Object.entries(planParts(ds)).map(([k,x])=>({k:'p',type:'out',val:x,tag:ptag(k),desc:'Previsto de '+pnm(k)})):[]),p=SR[ds],has=p&&ds>=today,neg=p&&p.v<-0.004;
-c+=`<div class="d d2 ${dk} ${ds===today?'td':''} ${v==='s'?dayVerdict(ds):''}" onclick="leanDay('${ds}')"><span class="n">${d}${(g=>g.meta>0&&g.got>=g.meta-0.004?'<i class="gck">✓</i>':'')(dayGoalInfo(ds))}</span>${l.length?`<span class="cdw">${l.slice(0,6).map(cdot).join('')}${l.length>6?`<b class="cdm">+${l.length-6}</b>`:''}</span>`:''}${has?`<span class="sb ${neg?'neg':''} ${v==='s'?'':'pj'}"><span class="sbf">${mnyH(Math.abs(p.v))}</span><span class="sbs">${neg&&Math.abs(p.v)>=1000?(Math.abs(p.v)/1000).toFixed(1).replace('.',',')+'k':Math.round(Math.abs(p.v)).toLocaleString('pt-BR')}</span></span>`:''}</div>`}
+c+=`<div class="d d2 ${dk} ${ds===today?'td':''}  ${v==='s'?dayVerdict(ds):''}" onclick="leanDay('${ds}')"><span class="n">${d}${(g=>g.meta>0&&g.got>=g.meta-0.004?'<i class="gck">✓</i>':'')(dayGoalInfo(ds))}</span>${l.length?`<span class="cdw">${l.slice(0,6).map(cdot).join('')}${l.length>6?`<b class="cdm">+${l.length-6}</b>`:''}</span>`:''}${has?`<span class="sb ${neg?'neg':''} ${v==='s'?'':'pj'}"><span class="sbf">${mnyH(Math.abs(p.v))}</span><span class="sbs">${neg&&Math.abs(p.v)>=1000?(Math.abs(p.v)/1000).toFixed(1).replace('.',',')+'k':Math.round(Math.abs(p.v)).toLocaleString('pt-BR')}</span></span>`:''}</div>`}
+{const tail=(7-((new Date(y,m-1,1).getDay()+N)%7))%7;for(let i=1;i<=tail;i++)c+=`<div class="d d2 om"><span class="n">${i}</span></div>`}
 return`<div class="cal cal2">${c}</div>`}
 function leanCats(edit){const D=leanData();return D.rows.map(x=>{const p=x.l>0?x.g/x.l*100:(x.g>0?100:0),r=x.l-x.g;return`<div class="lcat" style="border-left:4px solid ${x.c}" ${edit?'':`onclick="leanAdd('out','${esc(x.id)}')"`}><div class="lrw"><span ${edit?`onclick="leanCatEdit('${esc(x.id)}')" style="cursor:pointer"`:''}><i class="dot" style="background:${x.c}"></i> <b>${esc(x.n)}</b>${edit?' <span class="mu">✎</span>':''}</span>${edit&&glFor(x.id).length?`<span class="gll" onclick="leanCatEdit('${esc(x.id)}')">${esc(glLbl(x.id))} ✎</span>`:edit?`<input class="i" value="${fvx(x.l)}" inputmode="numeric" oninput="mk(this)" onchange="leanSetLim('${esc(x.id)}',this.value)" aria-label="Limite de ${esc(x.n)}">`:`<span class="lv" style="color:${x.l>0?lvar(p):'var(--t2)'}">${x.l>0?(r>=0?fmt(r)+' restam':fmt(-r)+' acima'):'sem limite'}</span>`}</div><div class="lbr"><i style="width:${Math.min(100,p)}%;background:${p>=100?'#FF4848':x.c}"></i></div><div class="sm mu">${fmt(x.g)} gastos${x.l>0?' de '+fmt(x.l):''}</div></div>`}).join('')||'<div class="empty">Nenhum limite definido ainda.</div>'}
 
@@ -633,14 +741,17 @@ ${ct.length?`<div class="lsec">Para onde foi</div>${ct.map(([k,v])=>`<div class=
 <div class="lsec">Recebido <span class="gr">${fmt(S0.i)}</span></div>${ins.map(row).join('')||'<div class="empty">Nada recebido neste mês.</div>'}
 <div class="lsec">Gasto <span class="rd">${fmt(S0.o)}</span></div>${outs.map(row).join('')||'<div class="empty">Nada gasto neste mês.</div>'}<button class="fab" onclick="leanAdd(ACC==='2'?'in':'out')" aria-label="Lançar">＋</button></div>`}
 /* folha do dia (modo simples): cru, colorido por categoria */
-function leanDay(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),sg=ds>=today?leanSeries('g',ds.slice(0,7))[ds]:null,sj=ds>=today?leanSeries('s',ds.slice(0,7))[ds]:null,sr=ds>=today?leanSeries('r',ds.slice(0,7))[ds]:null,V=lview(),tp=V==='r'?'in':V==='g'?'out':'',tx=S.tx.filter(t=>t.date===ds&&cnt(t)&&(!tp||t.type===tp)),ps=occD(ds.slice(0,7)).filter(o=>o.date===ds&&!o.tx&&!o.sk&&o.r.vis!==0&&(!tp||o.r.type===tp)),pl=ds>=today&&V!=='r'?Object.entries(planParts(ds)):[];
+let LSEL=null;
+const leanSelD=()=>LSEL&&LSEL.slice(0,7)===cur?LSEL:(cur===ym0?today:null);
+function leanDay(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),V=lview(),tp=V==='r'?'in':V==='g'?'out':'';M(`${mh(wd+', '+f)}${leanDayHtml(ds)}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="closeM();leanAdd('${tp==='in'||(ACC==='2'&&!tp)?'in':'out'}','','${ds}')">${tp==='in'||(ACC==='2'&&!tp)?'+ Receita':'+ Gasto'}</button></div>`)}
+function leanDayHtml(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),sg=ds>=today?leanSeries('g',ds.slice(0,7))[ds]:null,sj=ds>=today?leanSeries('s',ds.slice(0,7))[ds]:null,sr=ds>=today?leanSeries('r',ds.slice(0,7))[ds]:null,V=lview(),tp=V==='r'?'in':V==='g'?'out':'',tx=S.tx.filter(t=>t.date===ds&&cnt(t)&&(!tp||t.type===tp)),ps=occD(ds.slice(0,7)).filter(o=>o.date===ds&&!o.tx&&!o.sk&&o.r.vis!==0&&(!tp||o.r.type===tp)),pl=ds>=today&&V!=='r'?Object.entries(planParts(ds)):[];
 const row=(c,n,sub,v,t,dash)=>`<div class="ldr"><i class="dot${dash?' dash':''}" style="${dash?'border-color:'+c+';color:'+c:'background:'+c}"></i><span class="ldn"><b>${esc(n)}</b>${sub?`<span class="sm mu">${esc(sub)}</span>`:''}</span><b class="${t==='in'?'gr':'rd'}">${t==='in'?'+':'−'}${fmt(v)}</b></div>`;
-M(`${mh(wd+', '+f)}${dayGoal(ds)}${sg?(sv=>`<div class="ldsum"><span>${sv[0]}</span><b class="${sv[1]<-0.004?'rd':'gr'}">${sv[1]<-0.004?'−':''}${fmt(Math.abs(sv[1]))}</b></div>${sv[2]?`<div class="ldsum"><span>${sv[2]}</span><b class="${sv[3]<-0.004?'rd':'gr'}">${sv[3]<-0.004?'−':''}${fmt(Math.abs(sv[3]))}</b></div>`:''}`)(V==='r'?['A receber até este dia',(sr?sr.v:0)-bal(),'Saldo com as receitas',sr?sr.v:0]:V==='g'?['Gasto até este dia',-(sg.out||0),'Saldo com os gastos',sg.v]:['Saldo no fim do dia',sj.v]):''}
+return`${dayGoal(ds)}${sg?(sv=>`<div class="ldsum"><span>${sv[0]}</span><b class="${sv[1]<-0.004?'rd':'gr'}">${sv[1]<-0.004?'−':''}${fmt(Math.abs(sv[1]))}</b></div>${sv[2]?`<div class="ldsum"><span>${sv[2]}</span><b class="${sv[3]<-0.004?'rd':'gr'}">${sv[3]<-0.004?'−':''}${fmt(Math.abs(sv[3]))}</b></div>`:''}`)(V==='r'?['A receber até este dia',(sr?sr.v:0)-bal(),'Saldo com as receitas',sr?sr.v:0]:V==='g'?['Gasto até este dia',-(sg.out||0),'Saldo com os gastos',sg.v]:['Saldo no fim do dia',sj.v]):''}
 ${tx.map(t=>`<div onclick="closeM();openTx('${t.id}')" style="cursor:pointer">${row(tcl(t.tag),t.desc,t.tag?tnm(t.tag):'',t.val,t.type)}</div>`).join('')}
 ${ps.map(o=>`<div class="ldp">${row(tcl(o.r.tag),o.r.d,'previsto'+(o.r.tag?' · '+tnm(o.r.tag):''),o.r.v,o.r.type,1)}<div class="ldb"><button class="btn p" onclick="conf('${o.key}')">${o.r.type==='in'?'Recebi':'Paguei'}</button><button class="btn" onclick="occEdit('${o.key}','${o.r.id}','${ds}')">Editar</button><button class="btn" onclick="skipOcc('${o.key}')">Não ocorreu</button></div></div>`).join('')}
-${pl.map(([k,v])=>`<div class="ldp">${row(pcl(k),pnm(k),'previsto do dia',v,'out',1)}<div class="ldb"><button class="btn p" onclick="leanPlanConf('${ds}','${k}',${planVal(ds,k)})">${ds>today?'Já gastei ':'Gastei '}${fmt(planVal(ds,k))}</button><button class="btn" onclick="leanPlanEdit('${ds}','${k}')">Editar</button></div><div class="ldb" style="margin-top:6px"><button class="btn" onclick="leanPlanSkip('${ds}','${k}')">Não vou gastar</button></div></div>`).join('')}
+${pl.map(([k,v])=>`<div class="ldp">${row(pcl(k),pnm(k),'previsto do dia',v,'out',1)}<div class="ldb"><button class="btn p" onclick="leanPlanConf('${ds}','${k}',${planVal(ds,k)})">${ds>today?'Já gastei':'Gastei'}</button><button class="btn" onclick="leanPlanEdit('${ds}','${k}')">Editar</button><button class="btn" onclick="leanPlanSkip('${ds}','${k}')">Não vou</button></div></div>`).join('')}
 ${(ds>=today?Object.keys(planBase(ds)).filter(k=>S.plov&&S.plov[ds+'|'+k]===0&&!(S.plc&&S.plc[ds+'|'+k])):[]).map(k=>`<div class="ldp" style="opacity:.7"><div class="ldr" style="border:0"><i class="dot dash" style="border-color:#777"></i><span class="ldn"><b>${esc(pnm(k))}</b><span class="sm mu">anulado · você não vai gastar</span></span><button class="btn" style="min-height:40px" onclick="leanPlanUndo('${ds}','${k}')">Desfazer</button></div></div>`).join('')}${!tx.length&&!ps.length&&!pl.length&&!Object.keys(S.plov||{}).some(x=>x.startsWith(ds+'|'))?'<div class="empty">Nada neste dia.</div>':''}
-<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="closeM();leanAdd('${tp==='in'?'in':'out'}','','${ds}')">${tp==='in'?'+ Receita':'+ Gasto'}</button></div>`)}
+`}
 
 let LCE={c:'#3B82F6'};
 /* metas por dia útil / semana / mês: o valor do mês é calculado */
@@ -780,7 +891,7 @@ function openLim(id,tag){const l=S.lim.find(x=>x.id===id)||{tag:tag||'',v:0,ym:'
 M(`${mh(id?'Editar limite':'Novo limite mensal')}<label class="l">TAG <i>*</i></label><select class="i" id="lt" ${id?'disabled':''}><option value="">Selecione a tag…</option>${S.tags.filter(t=>!t.arch||t.id===l.tag).map(t=>`<option value="${esc(t.id)}" ${l.tag===t.id?'selected':''}>${esc(t.n)}</option>`).join('')}</select><label class="l">LIMITE MENSAL <i>*</i></label><input class="i" id="lv" value="${fvx(l.v)}" placeholder="R$ 0,00" inputmode="numeric" oninput="mk(this)"><label class="l">VALE PARA</label><select class="i" id="ls" ${id?'disabled':''}><option value="*" ${l.ym==='*'?'selected':''}>Todos os meses</option><option value="${cur}" ${l.ym!=='*'?'selected':''}>Somente ${ml(l.ym==='*'?cur:l.ym)}</option></select><div class="sub sm" style="margin-top:8px">Um limite só de um mês substitui o limite de todos os meses naquele mês.</div><div id="ferr" class="rd sm" style="margin-top:10px"></div><div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="saveLim()">${id?'Salvar':'Criar limite'}</button></div>`)}
 function saveLim(){const er=m=>{$('#ferr').textContent=m},tag=$('#lt').value,v=num($('#lv').value),sc=$('#ls').value;if(!tag)return er('Selecione a tag.');if(!(v>0))return er('Informe um limite maior que zero.');
 const e=LE.id?S.lim.find(x=>x.id===LE.id):S.lim.find(x=>x.tag===tag&&x.ym===sc);if(e)e.v=v;else S.lim.push({id:uid(),tag,ym:sc,v});save();closeM();toast('Limite salvo.')}
-const BUD6=['Alimentação','Transporte','Lazer','Higiene pessoal','Fixos','Outros'],BUDN=[...BUD6,'Internet','Jantar','Emergência','Energia elétrica','Manutenção da bicicleta','Moradia'],INC=['Investimentos','Salário CLT','Recebimento em Espécie','Recebimento Pix','Renda iFood','Outras Rendas','Salário','Renda extra','MEI','Extra','Adiantamento','Recebimento 1','Recebimento 2','iFood','MEI/DAS'];
+const BUD6=['Alimentação','Transporte','Lazer','Higiene pessoal','Assinaturas','Outros'],BUDN=[...BUD6,'Internet','Jantar','Emergência','Energia elétrica','Manutenção da bicicleta','Moradia'],INC=['Investimentos','Salário CLT','Recebimento em Espécie','Recebimento Pix','Renda iFood','Outras Rendas','Salário','Renda extra','MEI','Extra','Adiantamento','Recebimento 1','Recebimento 2','iFood','MEI/DAS'];
 const orcTags=()=>[...BUDN.map(n=>S.tags.find(t=>t.n===n&&!t.arch)).filter(Boolean).map(t=>t.id),...S.tags.filter(t=>!t.arch&&!BUDN.includes(t.n)&&!INC.includes(t.id)).map(t=>t.id)];
 const budIds=ym=>orcTags().filter(id=>BUD6.includes(tnm(id))||effLim(id,ym)||glMonth(id,ym)!=null);
 const goTab=t=>{location.hash=t==='metas'?'#metas':'#orcamento'};
@@ -1161,11 +1272,11 @@ T('B1 · Limites: Alimentação 400/gasto 300 → restam 100; Jantar 400/gasto 4
 T('B2 · Limite por competência: padrão 400 e novembro 500; remover o de novembro volta ao padrão',()=>{fresh();S.lim.push({id:'a',tag:'Alimentação',ym:'*',v:400},{id:'b',tag:'Alimentação',ym:'2026-11',v:500});const o=effLim('Alimentação','2026-10').v,n=effLim('Alimentação','2026-11').v;S.lim=S.lim.filter(x=>x.id!=='b');return o===400&&n===500&&effLim('Alimentação','2026-11').v===400||'falhou'});
 T('B3 · Gasto do limite só conta saídas reais da competência; ocultas e transferências ficam de fora',()=>{fresh();add({type:'out',val:50,date:'2026-10-30',tag:'Lazer'});add({type:'out',val:70,date:'2026-10-30',tag:'Lazer',hidden:true});add({type:'out',val:20,date:'2026-10-30',tag:'Lazer',ref:'2026-11'});return near(gastoTag('2026-10','Lazer'),50)&&near(gastoTag('2026-11','Lazer'),20)||'falhou'});
 T('B4 · Sobra prevista inclui a economia nos limites, sem depositar na caixinha automaticamente',()=>{fresh();S.lim.push({id:'a',tag:'Alimentação',ym:'*',v:400});add({type:'in',val:100,date:'2026-10-30'});add({type:'out',val:300,date:'2026-10-30',tag:'Alimentação'});const n=S.tx.length,p=sobraPrev(ym);return near(p.sobra,-200)&&near(p.economia,100)&&near(p.semEconomia,-300)&&near(cb(),0)&&S.tx.length===n||JSON.stringify(p)});
-T('D1 · Categorias reais do orçamento usam as Tags existentes (sem duplicar) e os limites iniciais de referência',()=>{const d=def(),kk=S;S=d;try{migFixos()}catch(e){}S=kk;const n=d.tags.map(t=>t.n),lim=t=>(d.lim.find(l=>d.tags.find(x=>x.id===l.tag).n===t)||{}).v;return BUD6.every(x=>n.filter(y=>y===x).length===1)&&lim('Alimentação')===400&&lim('Jantar')===undefined&&lim('Transporte')===150&&lim('Lazer')===300&&lim('Higiene pessoal')===100&&lim('Fixos')===45&&!d.lim.some(l=>/Jantar|Emerg|Energia|Manuten|Moradia/.test(l.tag))||'falhou'});
+T('D1 · Categorias reais do orçamento usam as Tags existentes (sem duplicar) e os limites iniciais de referência',()=>{const d=def(),kk=S;S=d;try{migFixos();migAssin()}catch(e){}S=kk;const n=d.tags.map(t=>t.n),lim=t=>(d.lim.find(l=>d.tags.find(x=>x.id===l.tag).n===t)||{}).v;return BUD6.every(x=>n.filter(y=>y===x).length===1)&&lim('Alimentação')===400&&lim('Jantar')===undefined&&lim('Transporte')===150&&lim('Lazer')===300&&lim('Higiene pessoal')===100&&lim('Assinaturas')===45&&!d.lim.some(l=>/Jantar|Emerg|Energia|Manuten|Moradia/.test(l.tag))||'falhou'});
 T('D2 · Alimentação limite 400: gasto 250 → restam 150; 450 → excedeu 50; cada transação conta uma vez',()=>{fresh();S.lim.push({id:'a',tag:'Alimentação',ym:'*',v:400});add({type:'out',val:250,date:'2026-10-30',tag:'Alimentação'});const a=limRows(ym)[0];const ok1=near(a.gasto,250)&&near(a.rest,150)&&ntx(ym,'Alimentação')===1;add({type:'out',val:200,date:'2026-10-30',tag:'Alimentação'});const b=limRows(ym)[0];return ok1&&near(b.gasto,450)&&near(b.rest,-50)&&ntx(ym,'Alimentação')===2&&near(sum(ym,'out'),450)||'falhou'});
 T('D3 · Ajustar metas: salvar em R$ cria/atualiza limites; zero remove; competência só vale no mês',()=>{fresh();OM.cfg=false;cur='2026-10';CF.scope='*';CF.extra=['Outros'];cfLoad();CF.draft['Alimentação']=400;CF.draft['Outros']=300;const sv=window.save;window.save=()=>{};cfSave();const a1=effLim('Alimentação','2026-11').v===400&&effLim('Outros','2026-10').v===300;CF.draft['Outros']=0;cfSave();const a2=!effLim('Outros','2026-10');CF.scope='2026-10';CF.extra=[];cfLoad();CF.draft['Alimentação']=500;cfSave();window.save=sv;return a1&&a2&&effLim('Alimentação','2026-10').v===500&&effLim('Alimentação','2026-11').v===400||'falhou'});
 T('D4 · Limites planejados não são despesas: saldo e gastos do mês não mudam; renda de referência não cria lançamentos',()=>{fresh();S.lim.push({id:'a',tag:'Alimentação',ym:'*',v:400});S.ref=2000;return near(bal(),304.51)&&sum(ym,'out')===0&&sum(ym,'in')===0&&S.tx.length===0||'falhou'});
-T('E1 · Orçamento mostra só as 6 metas configuradas; outras tags só aparecem depois de ganharem limite',()=>{const d=def();const keep=S;S=d;migFixos();let n=budIds('2026-10').map(tnm).join('|');const a=n==='Alimentação|Transporte|Lazer|Higiene pessoal|Fixos|Outros';tagUpsert('','Viagem','#123456');S.lim.push({id:'m',tag:S.tags.find(t=>t.n==='Viagem').id,ym:'*',v:800});const b=budIds('2026-10').map(tnm).includes('Viagem')&&budIds('2026-10').length===7;S=keep;return a&&b||n});
+T('E1 · Orçamento mostra só as 6 metas configuradas; outras tags só aparecem depois de ganharem limite',()=>{const d=def();const keep=S;S=d;migFixos();migAssin();let n=budIds('2026-10').map(tnm).join('|');const a=n==='Alimentação|Transporte|Lazer|Higiene pessoal|Assinaturas|Outros';tagUpsert('','Viagem','#123456');S.lim.push({id:'m',tag:S.tags.find(t=>t.n==='Viagem').id,ym:'*',v:800});const b=budIds('2026-10').map(tnm).includes('Viagem')&&budIds('2026-10').length===7;S=keep;return a&&b||n});
 T('TG1 · 9 tags iniciais sem duplicar; nomes e cores editáveis refletem nas transações antigas',()=>{fresh();const d=S.tags,u=new Set(d.map(t=>t.n.toLowerCase()));add({type:'out',val:10,date:'2026-10-30',tag:'Lazer'});const e=tagUpsert('Lazer','Diversão','#112233');return d.length===10&&u.size===10&&e===''&&tnm(S.tx[0].tag)==='Diversão'&&tcol('Lazer')==='#112233'&&tagUpsert('Lazer','alimentação','#112233')!==''&&tagUpsert('Lazer','x','azul')!==''&&tagUpsert('','','#fff000')!==''||'falhou'});
 T('TG2 · Excluir tag em uso: reclassificar mantém valores e saldo; arquivar mantém tudo; sem uso exclui direto',()=>{fresh();add({type:'out',val:40,date:'2026-10-30',tag:'Lazer'});add({type:'in',val:100,date:'2026-10-30',tag:'Lazer'});const b=bal(),o=sum(ym,'out');tagRemove('Lazer','reclass','Transporte');const a=S.tx.every(t=>t.tag==='Transporte')&&!tg('Lazer')&&near(bal(),b)&&near(sum(ym,'out'),o)&&!S.lim.some(l=>l.tag==='Lazer');tagRemove('Transporte','arch');const c=tg('Transporte').arch===1&&S.tx.length===2&&near(bal(),b);return a&&c&&tagUse('Moradia').tx===0||'falhou'});
 T('TG3 · Migração: nomes finais das tags, Adiantamento e MEI/DAS, sem perder vínculos',()=>{const keep=S;S=def();S.tags=S.tags.filter(t=>!['Adiantamento','MEI/DAS'].includes(t.n));S.tags.find(t=>t.id==='Salário CLT').n='Salário CLT';S.tx=[{id:'1',type:'in',val:5,date:'2026-10-30',tag:'Salário CLT',desc:'x'}];const ren=(oid,on,nn)=>{const t=S.tags.find(x=>x.id===oid&&x.n===on);if(t&&!S.tags.some(x=>x.n===nn))t.n=nn};ren('Salário CLT','Salário CLT','Salário');const ok=tnm(S.tx[0].tag)==='Salário'&&S.tags.some(t=>t.n==='Higiene pessoal');S=keep;return ok||'falhou'});
@@ -1250,7 +1361,7 @@ T('LN4 · Gastos previstos: dia útil 16+21+16=53 (feriado, sáb e dom 75); hoje
 T('LN5 · Previstos: gasto real de hoje abate o previsto de hoje; tela renderiza ligada e desligada',()=>{fresh();S.plan={on:1,tr:0,alm:0,jan:0,laz:0};const p0=planDay(today);add({type:'out',val:10,date:today,tag:'Alimentação',meta:'Alimentação'});const p1=planDay(today);let ok=true;try{V_lean();V_lim();S.plan.on=0;V_lean()}catch(e){ok=e.message}const w=new Date(today+'T12:00:00').getDay();const exp=(w===0||w===6||isOff(new Date(today+'T12:00:00')))?0:10;return near(p0-p1,exp)&&ok===true||JSON.stringify([p0,p1,ok])});
 T('LN6 · "Hoje ainda pode gastar" nunca passa do dinheiro que existe na conta (menor saldo projetado até o fim do mês)',()=>{fresh();S.open=10;S.lim=[{id:'a',tag:'Alimentação',ym:'*',v:800}];cur=ym0;const D=leanData();return D.left<=10.01&&D.cap===10||JSON.stringify([D.left,D.capped,D.cap])});
 T('LN7 · Sobrevivência até o salário: conta 278,36 até o 5º dia útil; previsto por dia; falta quando não chega; hoje pode gastar nunca passa disso',()=>{fresh();S.open=278.36;S.plan={on:0,tr:0,alm:0,jan:0,laz:0};S.rec=S.rec.filter(r=>r.d!=='Salário principal'||true);cur=ym0;const sv=survive();let ok=!!sv&&sv.H>today&&near(sv.need,[...Array(40)].reduce((a,_,i)=>a,0)+sv.need);const D=leanData();const free=sv?sv.free:0;const okL=free<0?D.left===0:D.left<=free+0.01;return ok&&okL&&sv.nd>=1||JSON.stringify([sv,D.left])});
-T('LN8 · Folha do dia colorida e Lançamento do dia com Meta e Tag',()=>{fresh();S.plan={on:1,tr:0,alm:0,jan:0,laz:0,res:60};cur=ym0;let ok=true;try{leanDay(today);closeM();leanDay('2026-11-13');const h=document.querySelector('.mod').innerHTML;closeM();leanAdd('out','','2026-11-05');ok=$('#ld').value==='2026-11-05'&&/META/.test(document.querySelector('.mod').innerHTML);closeM()}catch(e){ok=e.message}return ok===true||ok});
+T('LN8 · Folha do dia colorida e Lançamento do dia com Meta e Tag',()=>{fresh();S.plan={on:1,tr:0,alm:0,jan:0,laz:0,res:60};cur=ym0;let ok=true;try{leanDay(today);leanDay('2026-11-13');leanAdd('out','','2026-11-05');ok=$('#ld').value==='2026-11-05'&&/META/.test(document.querySelector('.mod').innerHTML);closeM()}catch(e){ok=e.message}return ok===true||ok});
 T('LN9 · Confirmar previsto: vira gasto real (Meta=Tag), limite da categoria cai, previsto do dia some e a sobra volta ao saldo; extra depois não é descontado do previsto',()=>{fresh();S.plan={on:1,tr:0,alm:0,jan:0,laz:0,res:0};S.plc={};cur=ym0;const sv=window.save;window.save=()=>{};const dow=new Date(today+'T12:00:00').getDay(),util=!(dow===0||dow===6||isOff(new Date(today+'T12:00:00')));const k=util?'Transporte':'Lazer',base=planBase(today)[k];const g0=gastoTag(ym0,k);leanPlanConf(today,k,base-2);const a=near(gastoTag(ym0,k)-g0,base-2)&&!planParts(today)[k]&&S.tx.length===1&&S.tx[0].meta===k&&S.tx[0].tag===k;add({type:'out',val:20,date:today,tag:k,meta:k});const b=!planParts(today)[k]&&near(gastoTag(ym0,k)-g0,base+18);window.save=sv;return a&&b||JSON.stringify([a,b,planParts(today)])});
 T('LN10 · Anular previsto: “não vou gastar” zera o previsto do dia (saldo sobe), e desfazer restaura',()=>{fresh();S.plan={on:1,tr:0,alm:0,jan:0,laz:0,res:0};S.plov={};const sv=window.save;window.save=()=>{};let d=new Date(today+'T12:00:00');while(![0,6].includes(d.getDay()))d.setDate(d.getDate()+1);const ds=isoD(d);const a=planParts(ds).Lazer===75;const b0=leanProj(ym0)[ds]?leanProj(ym0)[ds].v:0;leanPlanSkip(ds,'Lazer');const b=!planParts(ds).Lazer;let ok=true;try{leanDay(ds);closeM()}catch(e){ok=e.message}leanPlanUndo(ds,'Lazer');const c=planParts(ds).Lazer===75;window.save=sv;return a&&b&&c&&ok===true||JSON.stringify([a,b,c,ok])});
 T('LN11 · Categoria nova no modo simples: cria Tag + limite, aparece nos limites e na lista de gasto; editar muda nome/cor/limite; arquivar remove',()=>{fresh();cur=ym0;const sv=window.save;window.save=()=>{};leanCatEdit();$('#cen').value='Imprevistos';$('#cel').value='R$ 150,00';LCE.c='#FFD60A';leanCatSave();const t=S.tags.find(x=>x.n==='Imprevistos');const a=!!t&&t.c==='#FFD60A'&&effLim(t.id,ym0)&&effLim(t.id,ym0).v===150&&leanRows(ym0).some(x=>x.n==='Imprevistos'&&x.l===150);leanCatEdit(t.id);$('#cen').value='Imprevistos gerais';$('#cel').value='R$ 200,00';leanCatSave();const b=t.n==='Imprevistos gerais'&&effLim(t.id,ym0).v===200;leanCatDel(t.id);const c=!leanRows(ym0).some(x=>x.id===t.id);window.save=sv;return a&&b&&c||JSON.stringify([a,b,c])});
@@ -1325,6 +1436,18 @@ S.ver=28}
 if(S.ver<29){/* recebimento/pagamento editado para uma data que já passou (ex.: recebi 190 em 30/10) ficava só como previsto no passado e não entrava no saldo: vira lançamento confirmado */
 try{const lim=isoD(new Date(Date.now()-7*864e5));Object.keys(S.ovr||{}).forEach(k=>{const ov=S.ovr[k],[id,ym]=k.split('|'),r=S.rec.find(x=>x.id===id);if(!r||!ov||!(ov.v>0)||!ov.date||ov.date>today||ov.date<lim||S.skip[k]||S.tx.some(t=>t.recKey===k))return;S.tx.push({id:uid(),type:r.type,val:ov.v,date:ov.date,desc:r.d,meta:r.meta,tag:r.tag,ref:ov.date.slice(0,7)!==ym?ym:'',obs:r.obs||'',recKey:k});delete S.ovr[k]})}catch(e){}
 S.ver=29}
+function migAssin(){/* a meta "Fixos" some: Internet, Streaming e IA passam para "Assinaturas" (histórico, recorrências, gastos previstos e limites vão junto) */
+try{let f=S.tags.find(t=>t.n==='Fixos'&&!t.arch&&!t.m),a=S.tags.find(t=>t.n==='Assinaturas'&&!t.arch);
+if(!a&&f){f.n='Assinaturas';f.c='#A855F7';a=f}else if(!a){a={id:uid(),n:'Assinaturas',c:'#A855F7',vis:1,arch:0};S.tags.push(a)}
+if(a.m)delete a.m;
+if(f&&f!==a){S.tags.forEach(t=>{if(t.m===f.id)t.m=a.id});
+let it=S.tags.find(t=>t.n==='Internet'&&!t.arch&&t.m===a.id);if(!it){it={id:uid(),n:'Internet',c:'#06B6D4',vis:1,arch:0,m:a.id};S.tags.push(it)}
+const mp=(o,k,to)=>{if(o&&o[k]===f.id)o[k]=to};
+[S.tx,S.rec,S.pit||[]].forEach(L=>L.forEach(x=>{mp(x,'tag',it.id);mp(x,'meta',a.id)}));(S.gl||[]).forEach(g=>mp(g,'tag',a.id));
+S.lim.filter(l=>l.tag===f.id).forEach(l=>{const o=S.lim.find(x=>x!==l&&x.tag===a.id&&x.ym===l.ym);if(o){o.v=Math.round((o.v+l.v)*100)/100;S.lim=S.lim.filter(x=>x!==l)}else l.tag=a.id});
+if(S.ig&&S.ig[f.id]!=null){S.ig[a.id]=(S.ig[a.id]||0)+S.ig[f.id];delete S.ig[f.id]}
+f.arch=1}
+subRecolor(a.id)}catch(e){}}
 function migFixos(){/* Internet vira a meta "Fixos" (internet, streaming, IA…) e entra a meta "Outros"; mesma tag/id, então histórico e limite continuam */
 try{let f=S.tags.find(t=>t.n==='Fixos'&&!t.arch);const it=S.tags.find(t=>t.n==='Internet'&&!t.arch&&!t.m);if(!f&&it){it.n='Fixos';it.c='#06B6D4';f=it}else if(!f){f={id:uid(),n:'Fixos',c:'#06B6D4',vis:1,arch:0};S.tags.push(f)}
 let ou=S.tags.find(t=>t.n==='Outros'&&!t.arch);if(!ou){ou={id:uid(),n:'Outros',c:'#94A3B8',vis:1,arch:0};S.tags.push(ou)}else if(ou.m)delete ou.m;
@@ -1341,6 +1464,7 @@ S.ver=VER;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
 try{if(ACC==='2'&&!S.nm2){const nm={'Recarga da bike':'Recarga','Emergência da bike':'Emergência'};S.tags.forEach(t=>{if(nm[t.n])t.n=nm[t.n]});const ex=S.tags.find(t=>t.id==='Extra'&&t.arch);if(ex&&!S.tx.some(x=>x.tag==='Extra'||x.meta==='Extra'))S.tags=S.tags.filter(t=>t!==ex);const re=S.tags.find(t=>t.n==='Renda extra'&&!S.tags.some(x=>x.n==='Extra'));if(re)re.n='Extra';S.nm2=1;save()}}catch(e){}
 try{if(ACC==='2'&&!S.fx2){['Internet','Outros'].forEach(n=>{const t=S.tags.find(x=>x.n===n&&!x.m);if(t)t.arch=0});S.fxd=0;S.fx2=1}}catch(e){}
 try{if(!S.fxd){migFixos();S.fxd=1;save()}}catch(e){}
+try{if(!S.asn){migAssin();S.asn=1;save()}}catch(e){}
 try{if(!S.subSeeded){seedSubs();if(!S.pit&&S.tags.some(t=>t.n==='Almoço')){const p=S.plan||{tr:0,alm:0,jan:0,laz:0},id=n=>(S.tags.find(x=>x.n===n&&!x.arch)||{id:n}).id;S.pit=[{id:'p1',k:'Transporte',n:'Corrida',meta:id('Transporte'),tag:id('Corrida'),v:p.tr||0,days:'wd',legacy:1},{id:'p2',k:'Alimentação',n:'Almoço',meta:id('Alimentação'),tag:id('Almoço'),v:(p.alm||0)+(p.jan||0),days:'wd',legacy:1},{id:'p3',k:'Lazer',n:'Lazer',meta:id('Lazer'),tag:id('Lazer'),v:p.laz||0,days:'we',legacy:1}]}save()}}catch(e){}
 addEventListener('hashchange',()=>{pg=location.hash.slice(1)||'inicio';closeM();closeM2();R()});R();
 </script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script></body></html>
