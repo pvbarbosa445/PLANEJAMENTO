@@ -353,6 +353,32 @@ body.lean .dm .dr2 .dp{grid-area:p;min-width:34px;font-size:11px}
 body.lean .dm .dr2 .db{grid-area:b;height:5px}
 body.lean .dm .dsub{padding:4px 2px 0 20px;font-size:11px}
 body.lean .ldwrap{margin:6px 0 10px}
+body.lean .lhd .lmn{order:-1;font-size:24px;width:36px;height:40px;margin-right:6px}
+body.lean .yr{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 10px;margin-top:6px}
+body.lean .ym b{display:table;margin:0 auto 6px;font-size:15px;font-weight:600;padding:1px 8px;border-radius:7px}
+body.lean .ym.cur b{background:#fff;color:#000}
+body.lean .yg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+body.lean .yg i{font-style:normal;font-size:9px;font-weight:600;text-align:center;border-radius:4px;background:#1c1c1e;padding:2px 0;line-height:1.25;min-height:15px}
+body.lean .yg i:empty{background:none}
+body.lean .yg i.w{background:none;color:#8e8e93;font-weight:600}
+body.lean .yg i.hr{color:#FF6B6B}
+body.lean .yg i.ug{background:rgba(48,209,88,.28)}
+body.lean .yg i.ur{background:rgba(255,69,58,.32)}
+body.lean .yg i.ut{background:#FF453A;color:#fff}
+body.lean .wk7{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:2px 0 10px}
+body.lean .wk7 button{background:#141416;border:1.5px solid transparent;border-radius:10px;color:#fff;padding:6px 0 8px;cursor:pointer;font-family:inherit}
+body.lean .wk7 button small{display:block;font-size:10px;font-weight:700;color:#8e8e93;margin-bottom:3px}
+body.lean .wk7 button b{font-size:17px}
+body.lean .wk7 button.hr small,body.lean .wk7 button.hr b{color:#FF6B6B}
+body.lean .wk7 button.sl{border-color:#8E8E93}
+body.lean .wk7 button.td b{background:#FF453A;color:#fff;border-radius:50%;display:inline-block;width:26px;line-height:26px}
+body.lean .dph2{margin:4px 2px 8px;gap:8px}
+body.lean .dph2 b{font-size:26px}
+body.lean .dph2 span{font-size:13px;text-transform:none;color:var(--t2)}
+body.lean .agd{display:flex;align-items:center;gap:8px;margin:14px 2px 6px;font-size:14px}
+body.lean .agd .hj{background:#fff;color:#000;border-radius:6px;padding:1px 8px;font-weight:700;font-size:13px}
+body.lean .apill{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom));width:min(300px,72vw);height:48px;border-radius:24px;background:#1c1c1e;border:1px solid rgba(255,255,255,.08);box-shadow:0 6px 20px rgba(0,0,0,.6);color:#d8d8dc;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 22px;font:400 16px Inter,system-ui,sans-serif;cursor:pointer;z-index:40}
+body.lean .apill b{font-size:26px;font-weight:300;color:#fff;line-height:1}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -625,7 +651,7 @@ M(`${mh('A conta até o próximo recebimento')}<div class="lr"><span>Dinheiro na
 const lvar=p=>p>=100?'#FF4848':p>=80?'#FFB020':'#20C86A',lv=n=>{cur=addM(cur,n);LSEL=null;R()};
 function leanBar(on){let b=$('#lbar');if(!on){if(b)b.remove();return}if(!b){b=document.createElement('div');b.id='lbar';document.body.appendChild(b)}
 b.innerHTML=`<button class="${pg==='simples'?'on':''}" onclick="location.hash='#simples'"><svg viewBox="0 0 24 24">${ICON.calendario}</svg>Calendário</button><button class="${pg==='limites'?'on':''}" onclick="location.hash='#limites'"><svg viewBox="0 0 24 24">${ICON.orcamento||ICON.metas}</svg>Limites</button><button class="${pg==='contas'?'on':''}" onclick="location.hash='#contas'"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Contas</button><button class="${pg==='meses'?'on':''}" onclick="MESM='';location.hash='#meses'"><svg viewBox="0 0 24 24">${ICON.transacoes||ICON.metas}</svg>Meses</button>`}
-const leanHead=t=>`<div class="lhd"><button onclick="lv(-1)" aria-label="Mês anterior">‹</button><b>${ml(cur)}</b><button onclick="lv(1)" aria-label="Próximo mês">›</button></div>`;
+const leanHead=t=>`<div class="lhd">${t==='cal'?'<button class="lmn" onclick="cvMenu()" aria-label="Visualização">☰</button>':''}<button onclick="lv(-1)" aria-label="Mês anterior">‹</button><b>${ml(cur)}</b><button onclick="lv(1)" aria-label="Próximo mês">›</button></div>`;
 
 /* três calendários: s = saldo previsto (real + receitas − gastos previstos); r = saldo real + receitas a receber; g = saldo real − gastos previstos */
 const lview=()=>(S.lv==='r'||S.lv==='g')?S.lv:'s';
@@ -708,12 +734,31 @@ function leanDonTab(k){LD.k=k;LD.s={t:-1,r:-1};document.querySelectorAll('#ldt b
 const leanUntagN=()=>mtx(cur).filter(t=>cnt(t)&&t.type==='out'&&!t.meta&&!t.xfer).length;
 function leanUntag(){const l=mtx(cur).filter(t=>cnt(t)&&t.type==='out'&&!t.meta&&!t.xfer).sort((a,b)=>b.date.localeCompare(a.date));if(!l.length)return toast('Todos os gastos têm meta.');M(`${mh('Dar meta aos gastos')}<div class="sm mu" style="margin:-2px 0 8px">Toque numa transação para escolher a meta.</div>${l.map(t=>`<div class="ldr" style="cursor:pointer" onclick="closeM();openTx('${t.id}')"><i class="dot" style="background:#8B95A5"></i><span class="ldn"><b>${esc(t.desc)}</b><span class="sm mu">${t.date.slice(8)}/${t.date.slice(5,7)}</span></span><b class="${t.type==='in'?'gr':'rd'}">${t.type==='in'?'+':'−'}${fmt(t.val)}</b></div>`).join('')}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button></div>`)}
 function leanDonCard(){const tb=(k,l)=>`<button class="${LD.k===k?'on':''}" data-k="${k}" onclick="leanDonTab('${k}')">${l}</button>`,n=leanUntagN();return`<div class="dcard"><div class="dch"><b id="dct">Por metas</b><div class="dtg" id="ldt">${tb('t','Despesas')}${tb('r','Receitas')}</div></div><div id="ldn">${leanDonBoth()}</div>${n?`<a class="dfo" onclick="leanUntag()">Dar meta aos gastos sem meta <span class="bd">${n}</span></a>`:''}</div>`}
-function V_lean(){const D=leanData(),over=D.L>0&&D.rest<-0.004;
+
+/* visões do calendário: Ano, Mês, Semana, Dia, Agenda (menu ☰ como no Samsung Calendar) */
+let CVW='m',CD='';
+const CVN={a:'Ano',m:'Mês',w:'Semana',d:'Dia',g:'Agenda'};
+const cdd=()=>CD&&CD.slice(0,7)===cur?CD:(cur===ym0?today:cur+'-01');
+const addD=(ds,n)=>isoD(new Date(new Date(ds+'T12:00:00').getTime()+n*864e5));
+const cvPill=(ds,tp)=>`<button class="apill" onclick="leanAdd(ACC==='2'?'in':'${tp}','','${ds}')" aria-label="Lançar"><span>Adic. em ${+ds.slice(8)} de ${MS[+ds.slice(5,7)-1]}.</span><b>＋</b></button>`;
+function cvMenu(){M(`${mh('Visualização')}${Object.keys(CVN).map(k=>`<div class="ldr" style="cursor:pointer;${CVW===k?'outline:1.5px solid var(--ac)':''}" onclick="cvSet('${k}')"><span class="ldn"><b>${CVN[k]}</b></span>${CVW===k?'<b style="color:var(--ac)">✓</b>':''}</div>`).join('')}`)}
+function cvSet(v){CVW=v;if(v==='w'||v==='d'||v==='g')CD=cdd();closeM();R();window.scrollTo(0,0)}
+function cvStep(n){if(CVW==='a'){cur=(+cur.slice(0,4)+n)+'-'+cur.slice(5)}else if(CVW==='w'||CVW==='d'){CD=addD(cdd(),CVW==='w'?7*n:n);cur=CD.slice(0,7)}else cur=addM(cur,n);R()}
+function cvSel(ds){CD=ds;cur=ds.slice(0,7);R()}
+function cvGo(ym){cur=ym;CVW='m';R();window.scrollTo(0,0)}
+function cvMini(ym){const[y,m]=ym.split('-').map(Number),N=dim(ym),lead=new Date(y,m-1,1).getDay();let c=['D','S','T','Q','Q','S','S'].map(w=>`<i class="w">${w}</i>`).join('')+'<i></i>'.repeat(lead);for(let d=1;d<=N;d++){const ds=ym+'-'+pad(d),dt=new Date(y,m-1,d),dw=dt.getDay(),vd=dayVerdict(ds);c+=`<i class="${dw===0||(dw!==6&&isOff(dt))?'hr':''} ${ds===today?'ut':''} ${vd==='dg'?'ug':vd==='dr'?'ur':''}">${d}</i>`}return`<div class="ym ${ym===ym0?'cur':''}" onclick="cvGo('${ym}')"><b>${MS[m-1]}.</b><div class="yg">${c}</div></div>`}
+function leanAlt(){const v=CVW,d=cdd(),dt=new Date(d+'T12:00:00'),wdn=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'],wda=['DOM.','SEG.','TER.','QUA.','QUI.','SEX.','SÁB.'],tp=lview()==='r'?'in':'out';let title=MN[+cur.slice(5)-1],body='';
+if(v==='a'){title=cur.slice(0,4);body=`<div class="yr">${Array.from({length:12},(_,i)=>cvMini(cur.slice(0,4)+'-'+pad(i+1))).join('')}</div>`}
+else if(v==='w'){const sun=addD(d,-dt.getDay());body=`${leanTog()}<div class="wk7">${Array.from({length:7},(_,i)=>{const ds=addD(sun,i),dd=new Date(ds+'T12:00:00').getDay();return`<button class="${ds===d?'sl':''} ${ds===today?'td':''} ${dd===0?'hr':''}" onclick="cvSel('${ds}')"><small>${wda[i]}</small><b>${+ds.slice(8)}</b></button>`}).join('')}</div><div class="dph2"><b>${+d.slice(8)}</b><span>${wdn[dt.getDay()]}</span></div>${leanDayHtml(d)}`}
+else if(v==='d'){body=`${leanTog()}<div class="dph2"><b>${+d.slice(8)}</b><span>${wdn[dt.getDay()]}</span></div>${leanDayHtml(d)}`}
+else{const N=dim(cur);let h='';for(let i=1;i<=N;i++){const ds=cur+'-'+pad(i),x=leanDayHtml(ds,1);if(x.includes('Nada neste dia'))continue;const w=new Date(ds+'T12:00:00');h+=`<div class="agd">${ds===today?'<span class="hj">Hoje</span>':''}<b>${wda[w.getDay()].toLowerCase()} ${i} ${MS[+cur.slice(5)-1]}.</b></div>${x}`}body=`${leanTog()}${h||'<div class="empty">Nenhum lançamento neste mês.</div>'}`}
+return`<div class="lean"><div class="lhd"><button class="lmn" onclick="cvMenu()" aria-label="Visualização">☰</button><b>${title}</b><button onclick="cvStep(-1)" aria-label="Anterior">‹</button><button onclick="cvStep(1)" aria-label="Próximo">›</button></div>${body}${cvPill(d,tp)}</div>`}
+function V_lean(){if(CVW!=='m')return leanAlt();const D=leanData(),over=D.L>0&&D.rest<-0.004;
 let hero;if(!D.L)hero=`<div class="lhero"><small>LIMITES</small><div class="lbig">Defina seus limites</div><button class="btn p" onclick="location.hash='#limites'">Definir limites</button></div>`;
 else if(!D.isCur)hero=`<div class="lhero lh1"><div><small>${cur>ym0?'ORÇAMENTO DO MÊS':'RESULTADO DO MÊS'}</small><div class="lbig ${over?'rd':''}">${over?fmt(-D.rest)+' acima':fmt(D.rest)+' sobram'}</div></div></div>`;
 else if(over)hero=`<div class="lhero bad"><small>ORÇAMENTO ESTOURADO</small><div class="lbig rd">${fmt(-D.rest)} acima</div><div class="sm mu">${fmt(D.G)} gastos de ${fmt(D.L)} previstos no mês</div></div>`;
 else{const sv=D.sv,short=sv&&sv.fim<-0.004;hero=`<div class="lhero lh1 ${short?'bad':D.left<=0.004?'warn':''}"><div><small>${short?'FALTAM ATÉ RECEBER':sv?'SOBRA ATÉ RECEBER':'HOJE AINDA PODE GASTAR'}</small><div class="lbig ${short?'rd':(sv?sv.fim:D.left)<=0.004?'am':'gr'}">${short?fmt(-sv.fim):fmt(Math.max(0,sv?sv.fim:D.left))}</div></div>${sv?`<button class="btn p" onclick="leanConta()">Ver a conta</button>`:''}</div>`}
-if(ACC==='2')hero=acc2Hero();return`<div class="lean">${leanHead()}<div class="ltop">${hero}${leanTog()}${leanCards()}</div>${leanCal()}${leanLeg()}${leanDonCard()}<button class="fab" onclick="leanAdd(ACC==='2'?'in':'out')" aria-label="Lançar">＋</button></div>`}
+if(ACC==='2')hero=acc2Hero();return`<div class="lean">${leanHead('cal')}<div class="ltop">${hero}${leanTog()}${leanCards()}</div>${leanCal()}${leanLeg()}${leanDonCard()}${cvPill(cur===ym0?today:cur+'-01','out')}</div>`}
 function V_lim(){const D=leanData(),oc=occs(cur).filter(o=>!o.sk).sort((a,b)=>a.date.localeCompare(b.date));
 return`<div class="lean">${leanHead()}<h2 class="lh2">Limites do mês</h2><div class="sm mu" style="margin:-4px 0 10px">Vale para todos os meses. Toque no <b>valor</b> para mudar (digite com os centavos: 60000 = R$ 600,00) e depois toque fora para salvar. Toque no <b>nome</b> ✎ para mudar nome, cor ou arquivar.</div>${leanCats(1)}<button class="btn p" style="width:100%;min-height:48px;margin:2px 0 10px" onclick="leanCatEdit()">+ Nova meta (ex.: Imprevistos)</button><div class="lcat"><div class="lrw"><b>Total previsto</b><b>${fmt(D.L)}</b></div><div class="sm mu">${fmt(D.G)} gastos · ${D.rest>=0?fmt(D.rest)+' restam':fmt(-D.rest)+' acima'}</div></div>
 <h2 class="lh2">Fixos e recebimentos</h2><div class="sm mu" style="margin:-4px 0 10px">Toque para mudar nome, valor, dia ou cor. Vale para todos os meses.</div>${S.rec.filter(r=>r.on!==0).sort((a,b)=>(a.type===b.type?0:a.type==='in'?-1:1)||a.d.localeCompare(b.d)).map(r=>`<div class="lcat" style="border-left:4px solid ${tcl(r.tag)}" onclick="openRec('${r.id}')"><div class="lrw"><span><b>${esc(r.d)}</b><br><span class="sm mu">${ruleLbl(r)}${r.pd>0?' · '+fmt(r.pd)+'/dia útil':''}${r.tag?' · '+esc(tnm(r.tag)):''}</span></span><b class="${r.type==='in'?'gr':'rd'}">${r.type==='in'?'+':'−'}${fmt(r.v)}</b></div></div>`).join('')}<button class="btn p" style="width:100%;min-height:48px;margin:4px 0 8px" onclick="openRec()">+ Novo fixo ou recebimento</button>
@@ -744,9 +789,9 @@ ${ct.length?`<div class="lsec">Para onde foi</div>${ct.map(([k,v])=>`<div class=
 let LSEL=null;
 const leanSelD=()=>LSEL&&LSEL.slice(0,7)===cur?LSEL:(cur===ym0?today:null);
 function leanDay(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),V=lview(),tp=V==='r'?'in':V==='g'?'out':'';M(`${mh(wd+', '+f)}${leanDayHtml(ds)}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="closeM();leanAdd('${tp==='in'||(ACC==='2'&&!tp)?'in':'out'}','','${ds}')">${tp==='in'||(ACC==='2'&&!tp)?'+ Receita':'+ Gasto'}</button></div>`)}
-function leanDayHtml(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),sg=ds>=today?leanSeries('g',ds.slice(0,7))[ds]:null,sj=ds>=today?leanSeries('s',ds.slice(0,7))[ds]:null,sr=ds>=today?leanSeries('r',ds.slice(0,7))[ds]:null,V=lview(),tp=V==='r'?'in':V==='g'?'out':'',tx=S.tx.filter(t=>t.date===ds&&cnt(t)&&(!tp||t.type===tp)),ps=occD(ds.slice(0,7)).filter(o=>o.date===ds&&!o.tx&&!o.sk&&o.r.vis!==0&&(!tp||o.r.type===tp)),pl=ds>=today&&V!=='r'?Object.entries(planParts(ds)):[];
+function leanDayHtml(ds,lite){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),sg=ds>=today?leanSeries('g',ds.slice(0,7))[ds]:null,sj=ds>=today?leanSeries('s',ds.slice(0,7))[ds]:null,sr=ds>=today?leanSeries('r',ds.slice(0,7))[ds]:null,V=lview(),tp=V==='r'?'in':V==='g'?'out':'',tx=S.tx.filter(t=>t.date===ds&&cnt(t)&&(!tp||t.type===tp)),ps=occD(ds.slice(0,7)).filter(o=>o.date===ds&&!o.tx&&!o.sk&&o.r.vis!==0&&(!tp||o.r.type===tp)),pl=ds>=today&&V!=='r'?Object.entries(planParts(ds)):[];
 const row=(c,n,sub,v,t,dash)=>`<div class="ldr"><i class="dot${dash?' dash':''}" style="${dash?'border-color:'+c+';color:'+c:'background:'+c}"></i><span class="ldn"><b>${esc(n)}</b>${sub?`<span class="sm mu">${esc(sub)}</span>`:''}</span><b class="${t==='in'?'gr':'rd'}">${t==='in'?'+':'−'}${fmt(v)}</b></div>`;
-return`${dayGoal(ds)}${sg?(sv=>`<div class="ldsum"><span>${sv[0]}</span><b class="${sv[1]<-0.004?'rd':'gr'}">${sv[1]<-0.004?'−':''}${fmt(Math.abs(sv[1]))}</b></div>${sv[2]?`<div class="ldsum"><span>${sv[2]}</span><b class="${sv[3]<-0.004?'rd':'gr'}">${sv[3]<-0.004?'−':''}${fmt(Math.abs(sv[3]))}</b></div>`:''}`)(V==='r'?['A receber até este dia',(sr?sr.v:0)-bal(),'Saldo com as receitas',sr?sr.v:0]:V==='g'?['Gasto até este dia',-(sg.out||0),'Saldo com os gastos',sg.v]:['Saldo no fim do dia',sj.v]):''}
+return`${lite?'':dayGoal(ds)}${sg&&!lite?(sv=>`<div class="ldsum"><span>${sv[0]}</span><b class="${sv[1]<-0.004?'rd':'gr'}">${sv[1]<-0.004?'−':''}${fmt(Math.abs(sv[1]))}</b></div>${sv[2]?`<div class="ldsum"><span>${sv[2]}</span><b class="${sv[3]<-0.004?'rd':'gr'}">${sv[3]<-0.004?'−':''}${fmt(Math.abs(sv[3]))}</b></div>`:''}`)(V==='r'?['A receber até este dia',(sr?sr.v:0)-bal(),'Saldo com as receitas',sr?sr.v:0]:V==='g'?['Gasto até este dia',-(sg.out||0),'Saldo com os gastos',sg.v]:['Saldo no fim do dia',sj.v]):''}
 ${tx.map(t=>`<div onclick="closeM();openTx('${t.id}')" style="cursor:pointer">${row(tcl(t.tag),t.desc,t.tag?tnm(t.tag):'',t.val,t.type)}</div>`).join('')}
 ${ps.map(o=>`<div class="ldp">${row(tcl(o.r.tag),o.r.d,'previsto'+(o.r.tag?' · '+tnm(o.r.tag):''),o.r.v,o.r.type,1)}<div class="ldb"><button class="btn p" onclick="conf('${o.key}')">${o.r.type==='in'?'Recebi':'Paguei'}</button><button class="btn" onclick="occEdit('${o.key}','${o.r.id}','${ds}')">Editar</button><button class="btn" onclick="skipOcc('${o.key}')">Não ocorreu</button></div></div>`).join('')}
 ${pl.map(([k,v])=>`<div class="ldp">${row(pcl(k),pnm(k),'previsto do dia',v,'out',1)}<div class="ldb"><button class="btn p" onclick="leanPlanConf('${ds}','${k}',${planVal(ds,k)})">${ds>today?'Já gastei':'Gastei'}</button><button class="btn" onclick="leanPlanEdit('${ds}','${k}')">Editar</button><button class="btn" onclick="leanPlanSkip('${ds}','${k}')">Não vou</button></div></div>`).join('')}
