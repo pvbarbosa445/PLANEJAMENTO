@@ -507,6 +507,11 @@ body.lean #main{touch-action:pan-y}
 .dhide:active{background:#2a2a2e}
 .dcard .dtg4{order:2}
 @media(min-width:700px){.dcard .dch b{flex:none}.dcard .dtg4{margin-left:auto;order:1}.dhide{order:2}}
+
+#drw .dinst{display:flex;align-items:center;gap:12px;width:100%;background:var(--ac);color:#1a1a1a;border:0;border-radius:12px;padding:12px 14px;margin:0 0 12px;font:700 15px Inter,system-ui,sans-serif;cursor:pointer;text-align:left}
+#drw .dinst span{flex:1}#drw .dinst small{font:600 11px Inter,system-ui,sans-serif;opacity:.7}
+#drw .dinst svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body.acc2 #drw .dinst{background:var(--gr)}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -1682,6 +1687,14 @@ function incMetaArch(id){const t=tg(id);if(!t)return;ask('Arquivar a meta de rec
 function accNames(){let o={};try{o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{}}catch(e){}ACCN['1']=o['1']||'Conta 1';ACCN['2']=o['2']||'Conta 2'}
 function accRename(){M(`${mh('Nomes das contas')}${['1','2'].map(a=>`<label class="l">CONTA ${a}</label><input class="i" id="acn${a}" maxlength="24" value="${esc(ACCN[a])}">`).join('')}<div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="accRenameSave()">Salvar</button></div>`)}
 function accRenameSave(){const o={};['1','2'].forEach(a=>{const v=$('#acn'+a).value.trim();if(v)o[a]=v});try{localStorage.setItem('mpf_accn',JSON.stringify(o))}catch(e){}accNames();closeM();R();toast('Nomes salvos.')}
+
+/* instalar como app (tela inicial do celular ou atalho no PC) */
+let DIP=null;const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();DIP=e;try{if(DRW)$('#drw').innerHTML=drwHTML()}catch(x){}});
+addEventListener('appinstalled',()=>{DIP=null;try{closeM()}catch(x){}toast('App instalado. Procure o ícone na tela inicial.');try{if(DRW)$('#drw').innerHTML=drwHTML()}catch(x){}});
+async function instApp(){if(DIP){const p=DIP;DIP=null;try{await p.prompt();const r=await p.userChoice;if(r&&r.outcome!=='accepted')DIP=p}catch(e){}return}
+const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),pc=!/android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+M(`${mh('Instalar o app')}<div class="sm" style="line-height:1.5">${ios?'<b>No iPhone (Safari):</b><br>1. Toque em <b>Compartilhar</b> (quadrado com seta).<br>2. Escolha <b>Adicionar à Tela de Início</b>.<br>3. Toque em <b>Adicionar</b>.':pc?'<b>No computador (Chrome ou Edge):</b><br>1. Clique no ícone de instalar no fim da barra de endereço (⊕ ou monitor com seta).<br>2. Clique em <b>Instalar</b>.<br><br>Se não aparecer: menu <b>⋮</b> › <b>Transmitir, salvar e compartilhar</b> › <b>Instalar página como app</b>.':'<b>No celular (Chrome):</b><br>1. Toque no menu <b>⋮</b> no canto de cima.<br>2. Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.<br>3. Confirme em <b>Instalar</b>.<br><br>No navegador da Samsung: menu <b>☰</b> › <b>Adicionar página a</b> › <b>Tela inicial</b>.'}</div><div class="sm mu" style="margin-top:10px">Seus dados continuam os mesmos: o app instalado usa os dados deste navegador.</div><div class="mf"><button class="btn p" onclick="closeM()">Entendi</button></div>`)}
 /* ===================== ABA LATERAL (como no Calendário Financeiro) =====================
    Abre pelo ☰, tocando no nome da conta ou arrastando a alça fina da borda direita para a esquerda.
    No topo, a troca de conta (Conta 1 | Conta 2); embaixo, as páginas e a visualização do calendário. */
@@ -1692,7 +1705,7 @@ return`<div class="dhd"><b>Planejamento</b><button class="dx" onclick="closeDrw(
 <div class="dseg" role="tablist" aria-label="Conta">${['1','2'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${ACCN[a]}</span><small>${bv(a)}</small></button>`).join('')}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
 <div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label></div>
-<div class="dgt">Visualização do calendário</div><div class="dgr">${Object.keys(CVN).map(k=>`<button class="drow ${pg==='simples'&&CVW===k?'on':''}" onclick="drwView('${k}')"><span class="dv">${k==='g'?'≡':CVN[k].slice(0,1)}</span><span>${CVN[k]}</span>${pg==='simples'&&CVW===k?'<b>✓</b>':''}</button>`).join('')}</div>`}
+${isApp()?'':`<button class="dinst" onclick="closeDrw(()=>instApp())"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span>Instalar app</span>${DIP?'':'<small>como instalar</small>'}</button>`}<div class="dgt">Visualização do calendário</div><div class="dgr">${Object.keys(CVN).map(k=>`<button class="drow ${pg==='simples'&&CVW===k?'on':''}" onclick="drwView('${k}')"><span class="dv">${k==='g'?'≡':CVN[k].slice(0,1)}</span><span>${CVN[k]}</span>${pg==='simples'&&CVW===k?'<b>✓</b>':''}</button>`).join('')}</div>`}
 function drwEls(){let d=$('#drw');if(!d){const sc=document.createElement('div');sc.id='dscrim';sc.onclick=()=>closeDrw();document.body.appendChild(sc);d=document.createElement('aside');d.id='drw';d.setAttribute('aria-hidden','true');document.body.appendChild(d);const e=document.createElement('div');e.id='edge';e.innerHTML='<i></i>';document.body.appendChild(e);edgeBind(e)}return d}
 function drwSync(){requestAnimationFrame(carInit);const d=drwEls();if(DRW)d.innerHTML=drwHTML();$('#edge').hidden=!document.body.classList.contains('lean')}
 function openDrw(){const d=drwEls();d.innerHTML=drwHTML();d.style.transform='';d.style.transition='';if(!DRW){DRW=true;try{history.pushState({drw:1},'',location.href)}catch(e){}}document.body.classList.add('drwon');d.setAttribute('aria-hidden','false')}
