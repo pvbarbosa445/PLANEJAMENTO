@@ -544,6 +544,10 @@ body.acc2 #drw .dinst{background:var(--gr)}
 
 /* previstos aparecem nos dias (mais clarinhos); confirmados com a cor cheia */
 .cal2 .cst.pv{opacity:.55}
+
+#drw .dhd{gap:4px}#drw .dhd b{flex:1}
+#drw .drl svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#drw .drl:active svg{transform:rotate(180deg);transition:transform .3s}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -921,11 +925,11 @@ function leanDonBoth(){return leanDon(LD.k)}
 function leanDonSel(k,i){LD.s[k]=LD.s[k]===i?-1:i;const e=$('#ldn');if(e)e.innerHTML=leanDon(k)}
 const donV=()=>donMode()||'t';
 const donMode=()=>{const X=dsp();return X.in&&X.out?'m':X.in?'r':X.out?'t':''};
-function donHide(on){S.donHide=on?1:0;save();if(on)toast('Bolacha escondida. Para mostrar de novo: aba lateral › Exibição.')}
+function donHide(on){S.donHide=on?1:0;save();}
 function leanDonTab(k){LD.k=k;LD.s={t:-1,r:-1};S.donv=k;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}document.querySelectorAll('#ldt button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));const c=document.querySelector('.dcard');if(c)c.classList.toggle('dnone',k==='n');$('#ldn').innerHTML=k==='n'?'':leanDonBoth()}
 const leanUntagN=()=>mtx(cur).filter(t=>cnt(t)&&t.type==='out'&&!t.meta&&!t.xfer).length;
 function leanUntag(){const l=mtx(cur).filter(t=>cnt(t)&&t.type==='out'&&!t.meta&&!t.xfer).sort((a,b)=>b.date.localeCompare(a.date));if(!l.length)return toast('Todos os gastos têm meta.');M(`${mh('Dar meta aos gastos')}<div class="sm mu" style="margin:-2px 0 8px">Toque numa transação para escolher a meta.</div>${l.map(t=>`<div class="ldr" style="cursor:pointer" onclick="closeM();openTx('${t.id}')"><i class="dot" style="background:#8B95A5"></i><span class="ldn"><b>${esc(t.desc)}</b><span class="sm mu">${t.date.slice(8)}/${t.date.slice(5,7)}</span></span><b class="${t.type==='in'?'gr':'rd'}">${t.type==='in'?'+':'−'}${fmt(t.val)}</b></div>`).join('')}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button></div>`)}
-function leanDonCard(){if(S.donv==='n'){S.donv='t';S.donHide=1}const k=donMode();if(S.donHide||!k)return'';LD.k=k;const n=leanUntagN();return`<div class="dcard"><div class="dch"><b id="dct">${k==='m'?'Por metas · receita e gastos':k==='r'?'Por metas · receitas':'Por metas · despesas'}</b><button class="dhide" onclick="donHide(1)" aria-label="Esconder a bolacha" title="Esconder (volta pela aba lateral, em Exibição)"><svg viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a17 17 0 0 1-3.2 4.1M6.1 6.2C3.7 7.9 2.5 12 2.5 12S6 19 12 19c1.8 0 3.4-.5 4.7-1.3M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button></div><div id="ldn">${leanDon(k)}</div>${n&&k!=='r'?`<a class="dfo" onclick="leanUntag()">Dar meta aos gastos sem meta <span class="bd">${n}</span></a>`:''}</div>`}
+function leanDonCard(){if(S.donv==='n'){S.donv='t';S.donHide=1}const k=donMode();if(S.donHide||!k)return'';LD.k=k;const n=leanUntagN();return`<div class="dcard"><div class="dch"><b id="dct">${k==='m'?'Por metas · receita e gastos':k==='r'?'Por metas · receitas':'Por metas · despesas'}</b></div><div id="ldn">${leanDon(k)}</div>${n&&k!=='r'?`<a class="dfo" onclick="leanUntag()">Dar meta aos gastos sem meta <span class="bd">${n}</span></a>`:''}</div>`}
 
 /* visões do calendário: Ano, Mês, Semana, Dia, Agenda (menu ☰ como no Samsung Calendar) */
 let CVW='m',CD='';
@@ -1779,13 +1783,16 @@ function planMove(ds,k,dir){const v=planVal(ds,k);movePick(pnm(k),ds,dir,v,to=>{
 function planMoveUndo(ds,k){const m=S.plmv&&S.plmv[ds+'|'+k];if(m&&S.plex&&S.plex[m.to]){S.plex[m.to][k]=Math.max(0,Math.round(((S.plex[m.to][k]||0)-m.v)*100)/100);if(!S.plex[m.to][k])delete S.plex[m.to][k]}if(S.plmv)delete S.plmv[ds+'|'+k];if(S.plov)delete S.plov[ds+'|'+k];save();closeM();toast('Voltou para o dia original.')}
 /* lançamento feito: adiantar/adiar muda a data dele */
 function txMove(id,dir){const t=S.tx.find(x=>x.id===id);if(!t)return;movePick(t.desc,t.date,dir,t.val,to=>{if(t.pool&&t.pool!=='Livre'){const old=t.date;t.date=to;if(negCof()){t.date=old;return'O cofrinho ficaria negativo nessa data.'}}t.date=to;save()})}
+
+/* recarregar (já que puxar a tela para baixo não recarrega mais): busca a versão nova e reabre no mesmo lugar */
+async function appReload(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}try{const r=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();if(r)await Promise.race([r.update(),new Promise(z=>setTimeout(z,1500))])}catch(e){}document.body.classList.remove('drwon');location.reload()}
 /* ===================== ABA LATERAL (como no Calendário Financeiro) =====================
    Abre pelo ☰, tocando no nome da conta ou arrastando a alça fina da borda direita para a esquerda.
    No topo, a troca de conta (Conta 1 | Conta 2); embaixo, as páginas e a visualização do calendário. */
 let DRW=false,DRWP=null;
 function drwHTML(){const pgs=[['simples','Calendário',ICON.calendario],['limites','Limites',ICON.orcamento||ICON.metas],['contas','Contas','<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/>'],['meses','Meses',ICON.transacoes||ICON.metas],['cofrinho','Cofrinhos','<path d="M5 11a7 6 0 0 1 13-2h2v4l-2 1v3h-3v-2H9v2H6v-3a6 6 0 0 1-1-3z"/><circle cx="15" cy="10" r=".6"/>']];
 const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
-return`<div class="dhd"><b>Planejamento</b><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
+return`<div class="dhd"><b>Planejamento</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
 <div class="dseg" role="tablist" aria-label="Conta">${['1','2'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${ACCN[a]}</span><small>${bv(a)}</small></button>`).join('')}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
 <div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label></div>
