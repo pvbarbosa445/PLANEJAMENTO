@@ -548,6 +548,12 @@ body.acc2 #drw .dinst{background:var(--gr)}
 #drw .dhd{gap:4px}#drw .dhd b{flex:1}
 #drw .drl svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #drw .drl:active svg{transform:rotate(180deg);transition:transform .3s}
+
+/* linhas da bolacha nunca passam da largura: o texto de baixo quebra linha */
+body.lean .dm{min-width:0;overflow:hidden}
+body.lean .dm .dsub{white-space:normal;flex-wrap:wrap;row-gap:2px}
+body.lean .dm .dr2 .dn{min-width:0}
+body.lean .dm.sel,.dm.sel{display:block;border:0;margin:0;padding:7px 4px 6px;border-radius:10px;background:#1f1f23}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -904,11 +910,11 @@ function leanDonMix(){const sel=LD.s.m,E=leanDonItems('t'),I=donIncome(),base=I.
 if(saveLeft>0.004)L.push({id:'',n:'Economia',c:'#20C86A',g:saveNow,l:saveLeft,eco:1});
 if(!L.length&&!base)return`<div class="empty" style="margin:30px 0">Nenhuma receita nem meta neste mês.</div>`;
 const it=L.map(x=>({n:x.n,c:x.c,size:Math.max(x.l,x.g),fill:x.g})),T=Math.max(base,it.reduce((a,x)=>a+x.size,0))||1,o=L[sel];
-const cn=o?fmt(o.g):fmt(base),cs=o?(o.eco?'sobra de '+fmt(o.l):o.n+(o.l?' de '+fmt(o.l):'')):'receita do mês';
+const cn=o?fmt(o.g):fmt(base),cs=o?(o.eco?'já sobrou de '+fmt(o.l):o.n+(o.l?' de '+fmt(o.l):'')):'receita do mês';
 const pc=v=>base?(Math.round(v/base*1000)/10).toString().replace('.',',')+'%':'—';
-const rows=L.map((x,i)=>{const p=x.l>0?x.g/x.l*100:100,r=x.l-x.g,ov=!x.eco&&x.l>0&&r<-0.004;return`<div class="dm ${sel===i?'sel':''} ${x.eco?'deco':''}" onclick="leanDonSel('m',${i})"><div class="dr2"><i class="dot" style="background:${x.c}"></i><span class="dn">${esc(x.n)}</span><span class="db"><i style="width:${Math.min(100,p)}%;background:${ov?'#FF4848':x.c}"></i></span><b class="${x.eco?'gr':''}">${fmt(x.g)}</b><span class="dp">${x.l>0?pc(x.l):'—'}</span></div><div class="dsub">${x.eco?`<span>de ${fmt(x.l)} que sobram da receita</span><span>já sobrou <b>${fmt(x.g)}</b></span>`:x.l>0?`<span>meta ${fmt(x.l)}</span>`+(ov?`<span class="rd">${fmt(-r)} acima</span>`:`<span>resta <b>${fmt(r)}</b></span>`):'<span>sem meta definida</span>'}${x.id?`<a class="ded" onclick="event.stopPropagation();donEdit('t','${esc(x.id)}')">✎ ${x.l>0?'editar':'definir meta'}</a>`:''}</div></div>`}).join('');
+const rows=L.map((x,i)=>{const p=x.l>0?x.g/x.l*100:100,r=x.l-x.g,ov=!x.eco&&x.l>0&&r<-0.004;return`<div class="dm ${sel===i?'sel':''} ${x.eco?'deco':''}" onclick="leanDonSel('m',${i})"><div class="dr2"><i class="dot" style="background:${x.c}"></i><span class="dn">${esc(x.n)}</span><span class="db"><i style="width:${Math.min(100,p)}%;background:${ov?'#FF4848':x.c}"></i></span><b class="${x.eco?'gr':''}">${fmt(x.g)}</b><span class="dp">${x.l>0?Math.round(Math.min(999,x.g/x.l*100))+'%':'—'}</span></div><div class="dsub">${x.eco?`<span>previsto para sobrar ${fmt(x.l)}</span>`:x.l>0?`<span>meta ${fmt(x.l)}</span>`+(ov?`<span class="rd">${fmt(-r)} acima</span>`:`<span>resta <b>${fmt(r)}</b></span>`):'<span>sem meta definida</span>'}${x.id?`<a class="ded" onclick="event.stopPropagation();donEdit('t','${esc(x.id)}')">✎ ${x.l>0?'editar':'definir meta'}</a>`:''}</div></div>`}).join('');
 const warn=used>base+0.004&&base>0?`<div class="sm rd" style="margin:4px 2px 8px">As metas de gasto passam da receita em ${fmt(used-base)}.</div>`:'';
-return`<div class="ldbox lmix"><div class="ldwrap">${leanDonSvg(it,T,sel,cn,cs,'m')}<div class="dmix"><span>recebido <b>${fmt(I.rec)}</b></span><span class="gr">sobra <b>${fmt(saveNow)}</b> de ${fmt(saveLeft)}</span></div></div><div class="ldlist">${warn}${rows}<div class="sm mu" style="margin:6px 2px 0"><a onclick="leanCatEdit()" style="color:var(--ac);font-weight:700;cursor:pointer">+ nova meta de despesa</a></div></div></div>`}
+return`<div class="ldbox lmix"><div class="ldwrap">${leanDonSvg(it,T,sel,cn,cs,'m')}</div><div class="ldlist">${warn}${rows}<div class="sm mu" style="margin:6px 2px 0"><a onclick="leanCatEdit()" style="color:var(--ac);font-weight:700;cursor:pointer">+ nova meta de despesa</a></div></div></div>`}
 function leanDonSvg(it,T,sel,cn,cs,k){const r=78,C=2*Math.PI*r,n=it.length;let off=0,segs='';
 it.forEach((x,i)=>{const len=x.size/T*C,L=Math.max(0,len-(n>1?1.6:0)),f=Math.min(L,L*(x.fill/x.size)),dim=sel>=0&&sel!==i?.3:1,sw=sel===i?32:26;
 segs+=`<circle cx="110" cy="110" r="${r}" fill="none" stroke="${x.c}" stroke-width="${sw}" stroke-dasharray="${Math.max(0,L-f)} ${C-Math.max(0,L-f)}" stroke-dashoffset="${-(off+f)}" transform="rotate(-90 110 110)" opacity="${.28*dim}" style="cursor:pointer" onclick="leanDonSel('${k}',${i})"/>`;
