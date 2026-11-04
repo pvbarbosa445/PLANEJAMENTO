@@ -471,6 +471,13 @@ body.lean .lhd{margin:2px 0 8px;min-height:52px}
 #drw .dsw i::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#f2f2f4;transition:transform .18s}
 #drw .dsw input:checked+i{background:#9cc8f5}#drw .dsw input:checked+i::after{transform:translateX(18px)}
 #edge{top:50%}
+
+/* topo fixo: saldo atual, gasto previsto e receita prevista */
+.ltri{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:4px}
+.ltri>div{background:#141416;border-radius:12px;padding:8px 10px;min-width:0}
+.ltri small{display:block;font:700 9.5px Inter,system-ui,sans-serif;letter-spacing:.3px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ltri b{display:block;font-size:15px;font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:700px){.ltri small{font-size:11px}.ltri b{font-size:20px}.ltri>div{padding:10px 14px}}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -746,7 +753,8 @@ b.innerHTML=`<button class="${pg==='simples'?'on':''}" onclick="location.hash='#
 const leanHead=t=>`<div class="lhd">${accTitle(ml(cur))}</div>`;
 
 /* três calendários: s = saldo previsto (real + receitas − gastos previstos); r = saldo real + receitas a receber; g = saldo real − gastos previstos */
-const lview=()=>(S.lv==='r'||S.lv==='g')?S.lv:'s';
+/* como no Calendário Financeiro: Receitas e Despesas ligadas = saldo do dia; só Receitas = receitas; só Despesas = gastos */
+const lview=()=>{const X=dsp();return X.in&&!X.out?'r':X.out&&!X.in?'g':'s'};
 function leanSeries(view,ym){const out={};if(ym<ym0)return out;const real=bal();let cIn=0,cOut=0;const mon=[];for(let m=ym0;m<=ym;m=addM(m,1))mon.push(m);
 mon.forEach(m=>{const oc=occD(m).filter(o=>!o.tx&&!o.sk&&o.r.vis!==0&&o.date>=today),N=dim(m);for(let d=1;d<=N;d++){const ds=m+'-'+pad(d);if(ds<today)continue;oc.filter(o=>o.date===ds).forEach(o=>{if(o.r.type==='in')cIn+=o.r.v;else cOut+=o.r.v});cOut+=planDay(ds);if(m===ym)out[ds]=view==='s'?{v:Math.round((real+cIn-cOut)*100)/100}:view==='r'?{v:Math.round((real+cIn)*100)/100}:{v:Math.round((real-cOut)*100)/100,out:Math.round(cOut*100)/100}}});
 out._in=cIn;out._out=cOut;return out}
@@ -756,10 +764,8 @@ const LVO=['s','g','r'],LVN={s:'Saldo',r:'Receitas',g:'Gastos'},
 lvDots=()=>{const v=lview();return`<div class="ldots" role="tablist" aria-label="Exibição">${LVO.map(k=>`<button class="${v===k?'on':''}" onclick="leanView('${k}')" role="tab" aria-selected="${v===k}" aria-label="${LVN[k]}"><i></i></button>`).join('')}</div>`},
 lvAnim=()=>{const c=LVD?'lsw'+(LVD>0?'n':'p'):'';LVD=0;return c},
 /* arrastar o widget para o lado troca a exibição: Saldo ⇄ Receitas ⇄ Gastos (as bolinhas mostram onde está) */
-leanTog=()=>`<div class="lsw mini ${lvAnim()}"><span class="lsn">${LVN[lview()]}</span>${lvDots()}</div>`,
-leanSw=()=>{lvAnim();const sr=leanSeries('g',cur),ri=leanSeries('r',cur),P={s:['SALDO ATUAL',fmt(bal()),bal()<-0.004?'rd':''],g:['GASTO PREVISTO',fmt(sr._out||0),'rd'],r:['RECEITA PREVISTA',fmt(ri._in||0),'gr']};
-return`<div class="lcar" id="lcar">${LVO.map(k=>`<div class="lpg"><small>${P[k][0]}</small><b class="${P[k][2]}">${P[k][1]}</b></div>`).join('')}</div>${lvDots()}`};
-/* carrossel: arrastar move o cartão junto com o dedo; ao soltar, para no cartão e troca a exibição do calendário */
+leanTog=()=>'',
+leanSw=()=>{const sr=leanSeries('g',cur),ri=leanSeries('r',cur),c=(l,v,cl)=>`<div><small>${l}</small><b class="${cl}">${v}</b></div>`;return`<div class="ltri">${c('SALDO ATUAL',fmt(bal()),bal()<-0.004?'rd':'')}${c('GASTO PREVISTO',fmt(sr._out||0),'rd')}${c('RECEITA PREVISTA',fmt(ri._in||0),'gr')}</div>`};
 let CARX=null;
 function carInit(){const el=document.getElementById('lcar');if(!el)return;const i=LVO.indexOf(lview());el.style.scrollBehavior='auto';el.scrollLeft=i*el.clientWidth;el.style.scrollBehavior='';
 if(el.dataset.b)return;el.dataset.b=1;el.addEventListener('scroll',()=>{clearTimeout(CARX);const dots=document.querySelectorAll('.ldots button'),k=Math.round(el.scrollLeft/el.clientWidth);dots.forEach((b,j)=>b.classList.toggle('on',j===k));CARX=setTimeout(()=>{const j=Math.max(0,Math.min(LVO.length-1,Math.round(el.scrollLeft/el.clientWidth)));if(LVO[j]!==lview()){S.lv=LVO[j];save()}},140)},{passive:true})}
@@ -772,7 +778,7 @@ function toneC(c){c=(c||'#888888').replace('#','');if(c.length!==6)return'#'+c;c
 const S2=Math.min(.75,sat*.8),L2=Math.max(.6,Math.min(.72,.66+(l-.5)*.2)),C=(1-Math.abs(2*L2-1))*S2,X=C*(1-Math.abs((h/60)%2-1)),m=L2-C/2,[r1,g1,b1]=h<60?[C,X,0]:h<120?[X,C,0]:h<180?[0,C,X]:h<240?[0,X,C]:h<300?[X,0,C]:[C,0,X];return'#'+[r1,g1,b1].map(v=>Math.round((v+m)*255).toString(16).padStart(2,'0')).join('')}
 const cdot=e=>{const c=e.trc?'#8E8E93':toneC(tcl(e.tag));return `<i class="cst" style="background:${c}"></i>`};
 const mnyH=v=>{const t=v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}),i=t.lastIndexOf(',');return`<small>R$</small> ${t.slice(0,i)}<small>${t.slice(i)}</small>`};
-function leanCal(){const[y,m]=cur.split('-').map(Number),N=dim(cur),v=lview(),SR=v==='s'?leanSeries('s',cur):leanSeries(v,cur),by={},X=dsp();calGrid(cur,'all',null,null).forEach(e=>{if(v==='r'&&e.type!=='in')return;if(v==='g'&&e.type!=='out')return;if(v==='s'&&e.k!=='r')return;if(!dspOk(e,X))return;(by[e.date]=by[e.date]||[]).push(e)});if(X.tr&&X.tags)S.tx.filter(t=>t.internal&&!t.hidden&&t.date.slice(0,7)===cur).forEach(t=>(by[t.date]=by[t.date]||[]).push({k:'r',type:'tr',val:t.val,tag:'',desc:t.desc||'Transferência',date:t.date,trc:1}));
+function leanCal(){const[y,m]=cur.split('-').map(Number),N=dim(cur),v=lview(),SR=v==='s'?leanSeries('s',cur):leanSeries(v,cur),by={},X=dsp();if(!X.in&&!X.out){for(const k in SR)delete SR[k]}calGrid(cur,'all',null,null).forEach(e=>{if(v==='r'&&e.type!=='in')return;if(v==='g'&&e.type!=='out')return;if(v==='s'&&e.k!=='r')return;if(!dspOk(e,X))return;(by[e.date]=by[e.date]||[]).push(e)});if(X.tr&&X.tags)S.tx.filter(t=>t.internal&&!t.hidden&&t.date.slice(0,7)===cur).forEach(t=>(by[t.date]=by[t.date]||[]).push({k:'r',type:'tr',val:t.val,tag:'',desc:t.desc||'Transferência',date:t.date,trc:1}));
 let c=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i%6===0?'wk':''}">${w}</div>`).join('')+(()=>{const lead=new Date(y,m-1,1).getDay(),pm=new Date(y,m-1,0).getDate();return Array.from({length:lead},(_,i)=>`<div class="d d2 om"><span class="n">${pm-lead+1+i}</span></div>`).join('')})();
 for(let d=1;d<=N;d++){const ds=cur+'-'+pad(d),dw=new Date(y,m-1,d).getDay(),dk=dw===0||dw===6?'we':isOff(new Date(y,m-1,d))?'ho':'',l=(by[ds]||[]).concat(v==='g'&&ds>=today&&X.out&&X.tags?Object.entries(planParts(ds)).map(([k,x])=>({k:'p',type:'out',val:x,tag:ptag(k),desc:'Previsto de '+pnm(k)})):[]),p=SR[ds],has=p&&ds>=today,neg=p&&p.v<-0.004;
 c+=`<div class="d d2 ${dk} ${ds===today?'td':''}  ${v==='s'?dayVerdict(ds):''}" onclick="leanDay('${ds}')"><span class="n">${d}${(g=>g.meta>0&&g.got>=g.meta-0.004?'<i class="gck">✓</i>':'')(dayGoalInfo(ds))}</span>${l.length?(CALH>=100?(k=>`<span class="cdw cbw">${l.slice(0,k).map(e=>`<i class="cb ${e.k==='p'||e.k==='r'?'pv':''}" style="background:${e.trc?'#5a5a60':toneC(tcl(e.tag))}">${esc((e.desc||tnm(e.tag)||'').replace(/^Previsto de /,''))}</i>`).join('')}${l.length>k?`<b class="cdm">+${l.length-k}</b>`:''}</span>`)(Math.max(1,Math.floor((CALH-58)/17))):`<span class="cdw">${l.slice(0,6).map(cdot).join('')}${l.length>6?`<b class="cdm">+${l.length-6}</b>`:''}</span>`):''}${has?`<span class="sb ${neg?'neg':''} ${v==='s'?'':'pj'}"><span class="sbf">${mnyH(Math.abs(p.v))}</span><span class="sbs">${neg&&Math.abs(p.v)>=1000?(Math.abs(p.v)/1000).toFixed(1).replace('.',',')+'k':Math.round(Math.abs(p.v)).toLocaleString('pt-BR')}</span></span>`:''}</div>`}
