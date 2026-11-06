@@ -1,0 +1,32 @@
+CALENDARIO FINANCEIRO - SINCRONIZACAO AUTOMATICA BIDIRECIONAL
+
+Este pacote substitui a versao web completa atual. O layout exclusivo de PC esta preservado; o layout celular continua vindo do index responsivo.
+
+SINCRONIZACAO
+- Login com o mesmo e-mail nos dois aparelhos.
+- Primeira conexao em um banco ainda vazio: o primeiro aparelho conectado envia automaticamente seus dados locais para a nuvem.
+- Nos aparelhos seguintes, os dados existentes na nuvem sao aplicados automaticamente; uma copia local anterior diferente e preservada no armazenamento daquele navegador antes da substituicao.
+- Depois, cada gravacao local de mpf1/mpf2 e enviada automaticamente.
+- Alteracoes remotas chegam por Supabase Realtime; ha verificacao periodica de contingencia a cada 12 segundos.
+- Nao existem botoes manuais de enviar/baixar. O controle na aba apenas abre o painel de conta/status.
+
+IMPORTANTE: antes de atualizar, abra primeiro o site no aparelho que contem os dados mais completos. Esse primeiro aparelho estabelecera a copia inicial da nuvem. Depois abra o site no segundo aparelho e entre com a mesma conta.
+
+SUPABASE - ATIVAR EVENTOS INSTANTANEOS (UMA VEZ)
+1. Abra Supabase > projeto calendario > SQL Editor > New.
+2. Abra supabase/realtime.sql, copie todo o conteudo e cole no editor.
+3. Clique Run. O SQL so inclui a tabela finance_state na publicacao realtime; nao apaga dados nem recria a tabela.
+A sincronizacao automatica tem polling de contingencia mesmo antes dessa etapa, mas o Realtime reduz o atraso.
+
+GITHUB
+1. Faca backup do repositorio atual.
+2. Extraia este ZIP.
+3. Substitua os arquivos do repositorio pelos arquivos extraidos, mantendo index.html, sync.js, sw.js e manifest.webmanifest na raiz.
+4. Mantenha a pasta supabase com schema.sql e realtime.sql.
+5. Commit na branch main.
+6. Aguarde GitHub Pages concluir a publicacao.
+
+NAO EXCLUA O PROJETO SUPABASE. NAO EXECUTE NOVAMENTE schema.sql.
+
+CONFLITOS
+A sincronizacao e automatica, mas duas edicoes simultaneas/offline no mesmo perfil podem conflitar. A versao mais recente prevalece; antes de substituir uma copia divergente, o app guarda uma copia local de seguranca (mpf_pre_sync_backup_<usuario>_<perfil>) naquele navegador.
