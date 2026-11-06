@@ -1,0 +1,13 @@
+ATUALIZAÇÃO EXCLUSIVA PARA PC — CALENDÁRIO FINANCEIRO
+
+CONTÉM APENAS:
+- index.html: corrige o breakpoint do desktop para reconhecer o PC a partir de 761px quando há mouse/hover; mostra novamente os nomes das tags no calendário; ativa setas de mês e painel lateral fixo à direita também em janelas de PC menores.
+- sw.js: altera o nome do cache para forçar a atualização do index.html no navegador.
+
+INSTALAÇÃO:
+1. No repositório pvbarbosa445/PLANEJAMENTO, envie/substitua estes dois arquivos na raiz.
+2. Faça Commit changes.
+3. Aguarde Actions/Pages terminar com sucesso.
+4. No PC, abra o site e pressione Ctrl+Shift+R.
+
+A versão móvel não é visada: os estilos e a apresentação desktop só são aplicados quando a tela tem pelo menos 761px e o dispositivo informa hover/pointer fino (típico de PC com mouse). Não execute SQL nem altere dados do Supabase.
