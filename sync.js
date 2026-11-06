@@ -14,6 +14,7 @@ let busy = false;
 let initialized = false;
 let activated = false;
 let recoveryMode = false;
+let syncRoot = null;
 const profiles = ['1', '2'];
 const key = p => p === '2' ? 'mpf2' : 'mpf1';
 const readLocal = p => { try { return JSON.parse(localStorage.getItem(key(p)) || 'null'); } catch { return null; } };
@@ -25,19 +26,24 @@ function appRedirect() {
 }
 
 function placeSyncInDrawer() {
+  // Keep a direct reference: the app rebuilds the drawer with innerHTML,
+  // which temporarily detaches this element from the document.
+  const root = syncRoot || $('cloud-sync-root');
+  if (!root) return;
   const drawer = $('drw');
-  const root = $('cloud-sync-root');
-  if (!drawer || !root) return;
-
+  if (!drawer) {
+    if (root.parentElement !== document.body) document.body.appendChild(root);
+    root.hidden = true;
+    return;
+  }
+  root.hidden = false;
   if (root.parentElement !== drawer) {
-    // Posiciona a sincronização logo abaixo dos controles da seção Exibição.
     const headings = Array.from(drawer.querySelectorAll('.dgt'));
     const displayHeading = headings.find(el => el.textContent.trim() === 'Exibição');
     const controls = displayHeading && displayHeading.nextElementSibling;
     if (controls && controls.classList.contains('dgr')) controls.after(root);
     else drawer.append(root);
   }
-  // Um link de recuperação pode chegar antes de o usuário abrir a aba lateral.
   if (recoveryMode) {
     const panel = $('cloud-sync-panel');
     if (panel) panel.classList.add('open');
@@ -46,11 +52,11 @@ function placeSyncInDrawer() {
   }
   paint();
 }
-
 function ensureUI() {
-  if ($('cloud-sync-root')) return;
+  if (syncRoot && syncRoot.isConnected) return;
   const root = document.createElement('section');
   root.id = 'cloud-sync-root';
+  syncRoot = root;
   root.innerHTML = `<style>
     #cloud-sync-root{position:relative;display:block;width:100%;margin:10px 0 12px;font:14px system-ui;color:#f5f5f5}
     #cloud-sync-open{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:10px 12px;border:1px solid #3b4650;border-radius:10px;background:#202328;color:#A9D4F5;font:600 14px system-ui;text-align:left;cursor:pointer}
@@ -92,6 +98,9 @@ function ensureUI() {
       <button class="action alt" id="cloud-logout">Sair</button>
     </div>
   </section>`;
+  // Attach before using document.getElementById for the controls above.
+  // It stays hidden until the Planning drawer is present.
+  document.body.appendChild(root);
   $('cloud-sync-panel');
   $('cloud-sync-open');
   root.querySelector('#cloud-sync-open').onclick = () => {
@@ -111,6 +120,17 @@ function ensureUI() {
   const observer = new MutationObserver(() => placeSyncInDrawer());
   observer.observe(document.body, { childList: true, subtree: true });
   placeSyncInDrawer();
+}
+
+function revealRecoveryPanel() {
+  if (typeof window.openDrw === 'function') window.openDrw();
+  setTimeout(() => {
+    placeSyncInDrawer();
+    const panel = $('cloud-sync-panel');
+    if (panel) panel.classList.add('open');
+    const trigger = $('cloud-sync-open');
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+  }, 0);
 }
 
 function status(message) {
@@ -288,7 +308,7 @@ sb.auth.onAuthStateChange((event, authSession) => {
   if (event === 'PASSWORD_RECOVERY') {
     recoveryMode = true;
     session = authSession;
-    if ($('cloud-sync-panel')) $('cloud-sync-panel').classList.add('open');
+    revealRecoveryPanel();
     paint();
     status('Link reconhecido. Defina sua nova senha abaixo.');
     return;
@@ -311,7 +331,7 @@ sb.auth.getSession().then(({ data, error }) => {
   // Este teste é uma proteção adicional para links que chegam com type=recovery no hash.
   if (window.location.hash.includes('type=recovery')) {
     recoveryMode = true;
-    if ($('cloud-sync-panel')) $('cloud-sync-panel').classList.add('open');
+    revealRecoveryPanel();
     paint();
     status('Link de recuperação recebido. Defina sua nova senha abaixo.');
   }

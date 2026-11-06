@@ -1,48 +1,40 @@
-# Calendário Financeiro — versão 1.0
+# Calendário Financeiro — pacote completo
 
-PWA em HTML, CSS e JavaScript puro (sem bibliotecas nem fontes externas), feita para o Galaxy Z Flip6 no Chrome.
-Funciona offline, guarda tudo no aparelho (IndexedDB) e pode ser instalada como app.
+Este pacote é a versão web/PWA do Calendário Financeiro preparada para GitHub Pages e sincronização com Supabase.
 
-## Onde fica cada coisa
-- **Tela inicial**: só o calendário e a linha de saldo do mês. Toque no saldo para ver o resumo.
-- **Tocar num dia**: detalhes, conferência do dia e adição rápida.
-- **Tocar num lançamento**: Pagar/Receber, Parte (pagamento parcial), Editar, Adiar, Não paguei, Cancelar.
-- **Toque longo num dia**: seleção de vários dias para editar em grupo (pagar, valor, adiar, cancelar, restaurar, conferir).
-- **Sino** (só aparece quando há algo): alertas.
-- **Menu ⋮**: Contas, Cofrinhos, Metas e orçamentos, Relatórios, Histórico, filtros, painéis da tela inicial, alertas, feriados e backup.
+## Arquivos ativos
 
-## Funcionalidades
-- Recorrências inteligentes com edição por alcance (lançamento, dia, semana, mês, ano, daqui em diante, recorrência inteira), sem apagar o histórico.
-- Previsto x realizado, conferência de dias, registro retroativo, desfazer.
-- **Contas**: várias contas, saldo inicial, saldo atual, disponível, reservado, comprometido; despesas permitidas por conta (avisa e deixa liberar); aviso de saldo insuficiente com opção de transferir.
-- **Transferências** entre contas próprias: não contam como receita nem despesa; podem ser agendadas, concluídas ou canceladas.
-- **Origem das receitas** (ex.: Salário CLT, iFood) separada da conta e da tag.
-- **Distribuição automática**: regras por conta e origem (valor fixo, percentual, restante, máximo, parar ao atingir a meta do cofrinho), automática ou com confirmação. Desfazer o recebimento desfaz a distribuição.
-- **Cofrinhos** virtuais (reserva dentro da conta) e reais (conta separada), com meta, prazo e quanto guardar por mês.
-- **Metas e orçamentos** por dia, dia útil, fim de semana, semana, mês, ano ou período personalizado, agrupando tags, contas ou origens. Sobras podem acumular na semana, no mês ou ir para um cofrinho; o excedente pode descontar dos próximos dias. Um orçamento diário pode colorir os dias do calendário (barra sob o número, separada do saldo).
-- **Divisão de compras** entre tags (ex.: R$ 120 = 80 alimentação + 40 higiene), sem duplicar o total.
-- **Relatórios**: mês/ano, previsto x realizado, comparação com o período anterior, metas cumpridas e gastos por tag.
-- **Alertas** configuráveis (nunca bloqueiam): orçamento ultrapassado, meta perto do limite, despesas vencidas, receitas não recebidas, saldo futuro negativo, dias não conferidos, backup antigo.
-- **Backup**: exporta um arquivo .json (no celular abre o compartilhamento para salvar no Drive, por exemplo) e restaura em outro aparelho.
+- `index.html`: aplicativo principal (HTML, CSS e lógica do calendário).
+- `sync.js`: login, recuperação de senha e sincronização Supabase.
+- `sw.js`: service worker e cache offline.
+- `manifest.webmanifest` e os três PNGs: instalação e ícones azul/preto.
+- `supabase/schema.sql`: estrutura e políticas de segurança do armazenamento remoto.
+
+Os módulos separados `app.js`, `pages.js`, `engine.js`, `finance.js` e similares da arquitetura anterior não são carregados pelo `index.html` atual; por isso não fazem parte deste pacote limpo.
 
 ## Publicar no GitHub Pages
-1. Envie **todo o conteúdo desta pasta** para a raiz de um repositório público.
-2. Settings → Pages → *Deploy from a branch* → `main` / `(root)` → Save.
-3. Abra `https://SEU-USUARIO.github.io/NOME-DO-REPO/` no Chrome do Flip6 → ⋮ → **Instalar app**.
 
-## Atualizar sem perder dados
-Os dados ficam no IndexedDB do aparelho; o Service Worker só guarda os arquivos do app.
-A cada versão, aumente `VERSION` em `sw.js` e envie ao GitHub. O app avisa "Nova versão instalada · Recarregar".
-O banco é migrado automaticamente entre versões sem apagar nada. Faça um backup de vez em quando (Menu › Dados).
+1. Faça backup baixando um ZIP do repositório atual.
+2. Extraia este pacote. Os arquivos ficam diretamente na raiz: `index.html` deve aparecer no primeiro nível, não dentro de uma pasta adicional.
+3. Substitua o conteúdo publicado da raiz do repositório pelos arquivos deste pacote.
+4. Em **Settings → Pages**, mantenha **Deploy from a branch**, branch `main`, pasta `/(root)`.
+5. Aguarde a execução de `pages build and deployment` terminar com sucesso.
 
-## Testes
-```
-node tests/engine.test.mjs    # saldo acumulado e recorrências
-node tests/ops.test.mjs       # edição por alcance, adiamento, grupo, conferência
-node tests/finance.test.mjs   # contas, transferências, cofrinhos, metas, orçamento diário, distribuição, alertas
-```
+## Supabase
 
-## Arquivos
-- `js/engine.js` recorrências e saldos · `js/ops.js` operações · `js/finance.js` contas, metas, distribuição, alertas, relatórios
-- `js/app.js` calendário e lançamentos · `js/pages.js` telas de gestão, painéis e backup
-- `js/db.js` IndexedDB · `js/holidays.js` feriados · `js/icons.js` ícones · `sw.js` offline
+O `sync.js` usa o Project URL e a Publishable key do projeto configurado. A chave `sb_publishable_` pode ser usada no navegador; nunca coloque `sb_secret_` ou `service_role` no site.
+
+O SQL em `supabase/schema.sql` cria `public.finance_state` e habilita RLS para que cada usuário leia e altere somente os próprios dados. Se já executou esse SQL e recebeu `Success. No rows returned`, não precisa executá-lo novamente.
+
+Em **Authentication → URL Configuration**, configure `Site URL` e `Redirect URLs` para o endereço publicado, por exemplo `https://SEU-USUARIO.github.io/SEU-REPOSITORIO/`. Não use `localhost`.
+
+## Primeira sincronização — cuidado com os dados
+
+O app mantém os dados locais em `localStorage` (`mpf1` e `mpf2`) e sincroniza os dois perfis com a tabela remota após o usuário escolher uma direção inicial.
+
+- No aparelho que tem a cópia correta e mais completa, faça backup e escolha **Enviar dados deste aparelho para a nuvem**.
+- No outro aparelho, entre com a mesma conta e escolha **Baixar dados da nuvem para este aparelho**.
+
+Enviar substitui o estado remoto do perfil correspondente; baixar substitui o estado local daquele perfil. Este pacote não faz fusão automática de lançamentos divergentes. Não envie dados do segundo aparelho por cima da cópia escolhida como principal.
+
+A sincronização automática funciona após a ativação inicial e quando há internet. Para testar, use o mesmo login nos dois aparelhos e confira uma alteração simples antes de inserir muitos dados.
