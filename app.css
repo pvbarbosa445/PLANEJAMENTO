@@ -1,0 +1,1349 @@
+/* Calendário Financeiro — visual minimalista escuro */
+:root {
+  /* Identidade v1.7 (referência: Samsung Calendar): fundo preto, dias em cinza-escuro NEUTRO,
+     azul-claro só em pequenos detalhes de identidade/seleção. Verde/vermelho = dinheiro. */
+  --bg: #000000;          /* fundo */
+  --s1: #141414;          /* superfícies (painéis, menus, folhas) */
+  --s2: #1E1E1E;          /* grupos e cartões dentro das folhas */
+  --s3: #2B2B2B;          /* realce / controles */
+  --line: #2C2C2C;        /* divisórias */
+  --cell: #151515;        /* quadrados dos dias (celular) */
+  --cell-out: #0D0D0D;    /* dias de outro mês */
+  --text: #F0F0F0;
+  --text-2: #AFAFAF;
+  --text-3: #7A7A7A;
+  --green: #55C98B;       /* receitas, economia, positivo */
+  --red: #E47777;         /* despesas, negativo */
+  --accent: #A9D4F5;      /* azul-claro da marca */
+  --accent-ink: #0E1B26;
+  --accent-soft: rgba(169, 212, 245, .16);
+  --orange: #E9B872;      /* só pendências/avisos */
+  --r: 14px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --top: env(safe-area-inset-top, 0px);
+  --bottom: env(safe-area-inset-bottom, 0px);
+  font-family: system-ui, -apple-system, "SamsungOne", "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text); }
+body { overscroll-behavior: none; font-size: 15px; line-height: 1.3; -webkit-user-select: none; user-select: none; }
+input { -webkit-user-select: text; user-select: text; }
+button, input, select { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+[hidden] { display: none !important; }
+.grow { flex: 1; min-width: 0; }
+.pos { color: var(--green); } .neg { color: var(--red); } .muted { color: var(--text-2); }
+
+/* ---------- Topo ---------- */
+.topbar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: calc(4px + var(--top)) 6px 0; }
+.bar-normal, .bar-select { display: flex; align-items: center; height: 52px; gap: 2px; }
+.bar-select, body.selecting .bar-normal { display: none; }
+body.selecting .bar-select { display: flex; }
+.icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; color: var(--text); flex: none; transition: background .15s; }
+.icon-btn:active { background: var(--s3); }
+.icon-btn.soft { color: var(--text-2); }
+.month-title { flex: 1; text-align: left; padding: 6px 6px; font-size: 22px; font-weight: 700; letter-spacing: -.4px; }
+.month-title #yearName { color: var(--text-3); font-weight: 600; margin-left: 7px; }
+.sel-title { flex: 1; font-weight: 600; padding-left: 4px; }
+.text-btn { color: var(--accent); font-size: 15px; font-weight: 500; padding: 10px 8px; }
+.text-btn.strong { font-weight: 700; }
+
+/* ---------- Calendário ---------- */
+main { padding: 0 4px calc(100px + var(--bottom)); }
+.weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.weekdays div { text-align: center; font-size: 11px; color: var(--text-3); font-weight: 600; padding: 2px 0 8px; letter-spacing: .3px; }
+.grid-wrap { overflow: hidden; touch-action: pan-y; }
+body.selecting .grid-wrap { touch-action: none; }
+.grid { will-change: transform; }
+.grid.anim-l { animation: slideL .2s var(--ease); }
+.grid.anim-r { animation: slideR .2s var(--ease); }
+@keyframes slideL { from { transform: translateX(24px); opacity: .4; } }
+@keyframes slideR { from { transform: translateX(-24px); opacity: .4; } }
+
+.cell {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  height: clamp(62px, calc((100dvh - 240px) / 6), 92px);
+  padding: 5px 1px 6px; border-top: 1px solid var(--line); border-radius: 0;
+  transition: background .15s;
+}
+.cell:active { background: var(--s1); }
+.cell.sel { background: var(--s1); border-radius: 12px; border-top-color: transparent; }
+.cell.sel + .cell, .cell.picked + .cell { border-top-color: var(--line); }
+.cell .num { font-size: 15px; font-weight: 500; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; }
+.cell.out .num { color: #4F4F4F; }
+.cell.wkend .num { color: var(--text-2); }
+.cell.hol .num { color: var(--orange); }
+.cell.today .num { background: var(--accent); color: #fff; font-weight: 700; }
+.cell .tags { display: flex; gap: 3px; height: 5px; margin-top: 3px; }
+.cell .tags i { width: 5px; height: 5px; border-radius: 50%; }
+.cell .mv { font-size: 9.5px; color: var(--text-3); margin-top: auto; font-variant-numeric: tabular-nums; }
+.cell .val { margin-top: auto; font-size: 11.5px; font-weight: 600; letter-spacing: -.3px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cell .mv + .val { margin-top: 0; }
+.cell .val.zero { color: var(--text-3); }
+.cell .val.still { opacity: .4; font-weight: 500; }
+.cell .flag { position: absolute; top: 7px; right: calc(50% - 22px); width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+.cell.picked { background: #262626; border-radius: 12px; border-top-color: transparent; }
+.cell.picked .num { color: #fff; }
+
+/* Resumo */
+.summary { display: block; width: 100%; margin-top: 10px; padding: 0 10px; text-align: left; }
+.summary-line { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 4px; border-top: 1px solid var(--line); color: var(--text-2); font-size: 14px; }
+.summary-line b { font-size: 17px; font-variant-numeric: tabular-nums; }
+.summary-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .22s var(--ease); }
+.summary-body > span { overflow: hidden; }
+.summary[aria-expanded="true"] .summary-body { grid-template-rows: 1fr; }
+.kv { display: flex; justify-content: space-between; padding: 7px 4px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.kv span:first-child { color: var(--text-2); }
+
+/* Botão flutuante e barra de seleção */
+.fab { position: fixed; right: 18px; bottom: calc(20px + var(--bottom)); z-index: 6; width: 54px; height: 54px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; transition: transform .15s var(--ease), opacity .2s; }
+.fab:active { transform: scale(.92); }
+.fab svg { width: 26px; height: 26px; stroke-width: 2.2; }
+body.selecting .fab { opacity: 0; pointer-events: none; }
+.sel-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; padding: 10px 16px calc(14px + var(--bottom)); background: linear-gradient(transparent, var(--bg) 30%); transform: translateY(110%); transition: transform .22s var(--ease); }
+body.selecting .sel-bar { transform: none; }
+.primary-btn { width: 100%; padding: 14px; border-radius: var(--r); background: var(--accent); color: #fff; font-weight: 600; font-size: 16px; transition: opacity .15s; }
+.primary-btn:disabled { opacity: .35; }
+.primary-btn.ghost { background: var(--s2); color: var(--text); }
+
+/* ---------- Camadas ---------- */
+.scrim { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, .5); opacity: 0; pointer-events: none; transition: opacity .2s var(--ease); }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; z-index: 30; top: 0; bottom: 0; left: 0; width: min(84vw, 330px); background: var(--s1); border-radius: 0 20px 20px 0; transform: translateX(-102%); transition: transform .24s var(--ease); display: flex; flex-direction: column; padding-top: var(--top); }
+.drawer.on { transform: none; }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 6px 4px 18px; font-size: 20px; font-weight: 700; }
+.drawer-body { overflow-y: auto; padding: 4px 12px calc(24px + var(--bottom)); }
+
+.group { background: var(--s2); border-radius: var(--r); overflow: hidden; margin: 6px 0; }
+.group:empty { display: none; }
+.group-title { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--text-2); font-weight: 600; padding: 16px 6px 2px; }
+details.more > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 500; padding: 14px 6px; border-top: 1px solid var(--line); cursor: pointer; margin-top: 8px; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::after { content: ''; width: 7px; height: 7px; border-right: 2px solid var(--text-3); border-bottom: 2px solid var(--text-3); transform: rotate(-45deg); transition: transform .2s; margin-right: 4px; }
+details.more[open] > summary::after { transform: rotate(45deg); }
+.row { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 6px 14px; width: 100%; text-align: left; }
+.row + .row, .rule-opt .row, .row + .rule-opt .row, .rule-opt + .rule-opt .row { border-top: 1px solid var(--line); }
+.group > .row:first-child, .group > .rule-opt:first-child > .row:first-child { border-top: 0; }
+.row > span:not(.dot) { flex: 1; min-width: 0; }
+.row.col { flex-direction: column; align-items: stretch; padding: 10px 14px; gap: 8px; }
+.row.action { color: var(--accent); }
+.row.action.danger { color: var(--red); }
+.row.action:active { background: var(--s3); }
+.field input, .field select { background: transparent; border: 0; text-align: right; color: var(--text-2); outline: none; max-width: 60%; min-width: 0; padding: 6px 0; }
+.field select { direction: rtl; appearance: none; -webkit-appearance: none; }
+.field select option { direction: ltr; background: var(--s2); }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(.6); }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 9px; }
+.dot.inc { background: var(--green); } .dot.exp { background: var(--red); }
+.dot.tag { background: conic-gradient(#ff9f0a, #bf5af2, #0a84ff, #32d74b, #ff9f0a); }
+.hint { font-size: 12px; color: var(--text-3); padding: 2px 6px; margin: 6px 0; }
+.hint.center { text-align: center; margin-top: 20px; }
+.link-btn { color: var(--accent); font-size: 14px; font-weight: 500; padding: 4px; }
+.link-btn.pad { padding: 8px 6px; }
+.tag-name { flex: 1; text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tag-row.off .tag-name { color: var(--text-3); }
+
+.switch { appearance: none; -webkit-appearance: none; flex: none; width: 46px; height: 28px; border-radius: 14px; background: var(--s3); position: relative; transition: background .2s var(--ease); margin: 0; cursor: pointer; }
+.switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform .2s var(--ease); }
+.switch:checked { background: var(--green); }
+.switch:checked::after { transform: translateX(18px); }
+.switch:disabled { opacity: .4; }
+
+.segmented { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--s2); border-radius: 11px; padding: 3px; margin: 10px 0 4px; }
+.segmented button { padding: 8px; border-radius: 9px; font-weight: 600; font-size: 14px; color: var(--text-2); transition: background .15s, color .15s; }
+.segmented button.on { background: var(--s3); color: var(--text); }
+.segmented button:disabled { opacity: .5; }
+.segmented.kind button.on[data-kind="expense"] { color: var(--red); }
+.segmented.kind button.on[data-kind="income"] { color: var(--green); }
+
+/* ---------- Folhas inferiores ---------- */
+.sheet { position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; max-height: 85dvh; background: var(--s1); border-radius: 20px 20px 0 0; transform: translateY(105%); transition: transform .26s var(--ease); display: flex; flex-direction: column; padding-bottom: var(--bottom); }
+.sheet.tall { height: 94dvh; max-height: 94dvh; }
+.sheet.on { transform: none; }
+.sheet form { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.grabber { width: 36px; height: 5px; border-radius: 3px; background: var(--s3); margin: 8px auto 0; flex: none; }
+.sheet-head { display: flex; align-items: center; gap: 4px; padding: 8px 10px 8px 18px; flex: none; }
+.sheet.tall .sheet-head { padding: 12px 10px 8px; }
+.sheet-title { font-size: 19px; font-weight: 700; letter-spacing: -.2px; }
+.sheet-title.sm { font-size: 17px; }
+.sheet-title.center { text-align: center; }
+.sheet-sub { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+.sheet-body { overflow-y: auto; padding: 0 14px 16px; flex: 1; min-height: 0; }
+.sheet-foot { flex: none; padding: 6px 14px 12px; display: flex; gap: 8px; }
+.sheet-foot:empty { display: none; }
+.sheet-foot > button { flex: 1; }
+
+.balance { display: flex; gap: 22px; padding: 2px 4px 8px; }
+.balance small { display: block; font-size: 12px; color: var(--text-2); }
+.balance b { font-size: 17px; font-variant-numeric: tabular-nums; font-weight: 600; }
+.section-label { font-size: 12px; color: var(--text-3); font-weight: 600; padding: 12px 4px 4px; letter-spacing: .3px; display: flex; justify-content: space-between; }
+.item { display: flex; align-items: center; gap: 12px; padding: 10px 4px; min-height: 54px; width: 100%; text-align: left; border-radius: 10px; }
+.item + .item { border-top: 1px solid var(--line); border-radius: 0; }
+.item:active { background: var(--s2); }
+.item .bar { width: 3px; height: 30px; border-radius: 2px; flex: none; }
+.item .main { flex: 1; min-width: 0; }
+.item .t, .item .s { display: block; }
+.item .t { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .s { font-size: 12px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .amt { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.item .amt small { display: block; font-size: 11px; color: var(--text-3); text-decoration: line-through; font-weight: 500; }
+.item.dim .t, .item.dim .amt { color: var(--text-3); text-decoration: line-through; }
+.item.dim .bar { opacity: .3; }
+.st { font-size: 12px; }
+.st-paid { color: var(--green); } .st-pending { color: var(--orange); } .st-moved { color: var(--accent); } .st-cancelled { color: var(--red); }
+.quick { display: flex; gap: 6px; }
+.quick button { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--s2); color: var(--text-2); }
+.quick button svg { width: 18px; height: 18px; }
+.quick button.ok { background: rgba(50, 215, 75, .15); color: var(--green); }
+.empty { text-align: center; color: var(--text-3); padding: 28px 10px; }
+.checked-note { display: inline-flex; align-items: center; gap: 4px; color: var(--green); }
+.checked-note svg { width: 14px; height: 14px; stroke-width: 2.4; }
+
+/* Ações do lançamento */
+.act-head { display: flex; align-items: center; gap: 12px; padding: 10px 4px 14px; }
+.act-head .bar { width: 4px; height: 40px; border-radius: 2px; }
+.act-head .t { font-size: 18px; font-weight: 600; }
+.act-head .s { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+.act-head .amt { margin-left: auto; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.actions-row { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding-bottom: 6px; }
+.act { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 2px; border-radius: var(--r); font-size: 12px; color: var(--text-2); transition: background .15s; }
+.act span.ic { width: 48px; height: 48px; border-radius: 50%; background: var(--s2); display: grid; place-items: center; color: var(--text); }
+.act.primary span.ic { background: var(--accent); color: #fff; }
+.act.danger span.ic { color: var(--red); }
+.act:active span.ic { filter: brightness(1.3); }
+.act:disabled { opacity: .3; }
+
+/* Alcance */
+.scope { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 12px 6px; border-top: 1px solid var(--line); }
+.scope:first-child { border-top: 0; }
+.scope:active { background: var(--s2); border-radius: 10px; }
+.scope .t { font-weight: 500; }
+.scope .s { font-size: 12px; color: var(--text-2); margin-top: 1px; }
+.scope.danger .t { color: var(--red); }
+
+/* Grupo */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 7px 12px; border-radius: 16px; background: var(--s2); font-size: 13px; font-weight: 500; color: var(--text-2); }
+.chip.on { background: var(--text); color: #000; }
+.pick { display: flex; align-items: center; gap: 12px; padding: 10px 4px; width: 100%; text-align: left; border-top: 1px solid var(--line); }
+.pick .box { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--text-3); display: grid; place-items: center; flex: none; }
+.pick.on .box { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pick .box svg { width: 14px; height: 14px; stroke-width: 3; opacity: 0; }
+.pick.on .box svg { opacity: 1; }
+.pick .t { font-weight: 500; }
+.pick .s { font-size: 12px; color: var(--text-2); }
+
+/* Formulário */
+.amount-wrap { display: flex; align-items: baseline; justify-content: center; gap: 6px; padding: 18px 0 12px; }
+.amount-wrap span { font-size: 20px; color: var(--text-3); font-weight: 600; }
+.amount-wrap input { width: 62%; background: transparent; border: 0; outline: none; font-size: 40px; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+.row-link { display: flex; align-items: center; gap: 8px; width: 100%; padding: 16px 6px 6px; font-size: 13px; color: var(--text-2); font-weight: 600; text-align: left; }
+.row-link > span:first-child { flex: 1; }
+.row-link .muted { font-weight: 500; text-transform: none; }
+.row-link .chev svg { width: 16px; height: 16px; transition: transform .2s; }
+.row-link.open .chev svg { transform: rotate(90deg); }
+.rule-box { display: none; }
+.rule-box.open { display: block; }
+.rule-opt { display: none; }
+.rule-opt.on { display: block; }
+.row.col input[type="date"] { background: var(--s3); border: 0; border-radius: 10px; padding: 8px 10px; color: var(--text); }
+.danger-btn { width: 100%; margin-top: 20px; padding: 14px; border-radius: var(--r); background: var(--s2); color: var(--red); font-weight: 500; }
+
+/* Diálogo */
+.dialog { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 24px; background: rgba(0, 0, 0, .55); opacity: 0; pointer-events: none; transition: opacity .16s; }
+.dialog.on { opacity: 1; pointer-events: auto; }
+.dialog-card { width: 100%; max-width: 340px; background: var(--s2); border-radius: 20px; padding: 18px 16px 12px; transform: scale(.97); transition: transform .16s var(--ease); }
+.dialog.on .dialog-card { transform: none; }
+.dialog-title { font-size: 17px; font-weight: 600; text-align: center; margin-bottom: 6px; }
+.dialog-body { color: var(--text-2); font-size: 14px; text-align: center; }
+.dialog-body p { margin: 6px 0; }
+.dialog-body input, .dialog-body select { width: 100%; background: var(--s3); border: 0; border-radius: 10px; padding: 11px 12px; margin: 5px 0; outline: none; color: var(--text); text-align: left; }
+.dialog-body .chips { justify-content: center; margin: 8px 0; }
+.dialog-body .chip { background: var(--s3); }
+.dialog-body label.inline { display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 6px 2px; color: var(--text); }
+.dialog-actions { display: flex; gap: 8px; margin-top: 12px; }
+.dialog-actions button { flex: 1; padding: 12px; border-radius: 12px; font-weight: 600; background: var(--s3); }
+.dialog-actions button.primary { background: var(--accent); color: #fff; }
+.dialog-actions button.danger { background: var(--red); color: #fff; }
+.swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin: 10px 0 4px; }
+.swatches button { aspect-ratio: 1; border-radius: 50%; }
+.swatches button.on { box-shadow: 0 0 0 3px var(--s2), 0 0 0 5px #fff; }
+
+.toast { position: fixed; left: 12px; right: 12px; top: calc(8px + var(--top)); z-index: 70; display: flex; align-items: center; gap: 12px; max-width: 420px; margin: 0 auto; background: var(--s3); padding: 12px 14px; border-radius: 14px; font-size: 14px; opacity: 0; transform: translateY(-12px); pointer-events: none; transition: opacity .2s, transform .2s var(--ease); }
+.toast.on { opacity: 1; transform: none; pointer-events: auto; }
+.toast span { flex: 1; }
+.toast button { color: var(--accent); font-weight: 600; }
+
+@media (max-height: 520px) { .cell { height: 46px; } .cell .tags, .cell .mv { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---------- Versão completa ---------- */
+.sheet.stack.on { box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .45); }
+.bell { position: relative; color: var(--text-2); }
+.bell i { position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+.bell.bad i { background: var(--red); }
+.nav .row { gap: 14px; }
+.nav .ic svg { width: 20px; height: 20px; color: var(--text-2); display: block; }
+.nav .row b { font-weight: 500; font-size: 13px; font-variant-numeric: tabular-nums; }
+.nav .row:active { background: var(--s3); }
+.cell .bud { width: 16px; height: 3px; border-radius: 2px; margin-top: 3px; }
+.cell .bud.s-pending { background: transparent !important; box-shadow: inset 0 0 0 1px var(--text-3); }
+.cell .bud.s-open, .cell .bud.s-future { background: transparent !important; }
+.cell .bud.s-zero { background: transparent !important; box-shadow: inset 0 0 0 1px var(--good, var(--green)); }
+.budget-line { display: flex; align-items: center; gap: 10px; padding: 8px 4px 2px; font-size: 13px; color: var(--text-2); }
+.budget-line .pill { width: 18px; height: 4px; border-radius: 2px; flex: none; }
+.progress { height: 6px; border-radius: 3px; background: var(--s3); overflow: hidden; margin: 6px 0 2px; position: relative; }
+.progress > i { display: block; height: 100%; border-radius: 3px; transition: width .3s var(--ease); }
+.progress.over > i { background: var(--red) !important; }
+.card-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 12px 4px; border-top: 1px solid var(--line); }
+.card-row:first-child { border-top: 0; }
+.card-row:active { background: var(--s2); border-radius: 10px; }
+.card-row .t { font-weight: 500; }
+.card-row .s { font-size: 12px; color: var(--text-2); margin-top: 1px; }
+.card-row .v { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.card-row .v small { display: block; font-size: 11px; font-weight: 500; color: var(--text-3); }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; padding: 4px 4px 14px; }
+.stats small { display: block; font-size: 12px; color: var(--text-2); }
+.stats b { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stats .big { grid-column: 1 / -1; }
+.stats .big b { font-size: 28px; letter-spacing: -.5px; }
+.btn-row { display: flex; gap: 8px; margin: 12px 0 4px; }
+.btn-row > button { flex: 1; }
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 120px; padding: 8px 4px 0; }
+.bars .col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.bars .pair { display: flex; gap: 2px; align-items: flex-end; height: 100%; width: 100%; justify-content: center; }
+.bars .pair i { width: 40%; max-width: 12px; border-radius: 3px 3px 0 0; min-height: 2px; }
+.bars span { font-size: 10px; color: var(--text-3); }
+.bars .col.cur span { color: var(--text); }
+.legend-mini { display: flex; gap: 14px; font-size: 11px; color: var(--text-2); padding: 6px 4px; }
+.legend-mini i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; }
+.panel { display: block; width: 100%; padding: 0 10px; text-align: left; }
+.panel .summary-line { color: var(--text-2); }
+.panel-body { padding: 0 4px 8px; }
+.split-row { display: flex; gap: 8px; align-items: center; padding: 6px 10px; border-top: 1px solid var(--line); }
+.split-row:first-child { border-top: 0; }
+.split-row select, .split-row input { background: var(--s3); border: 0; border-radius: 9px; padding: 8px; color: var(--text); outline: none; min-width: 0; }
+.split-row select { flex: 1.3; }
+.split-row input { flex: 1; text-align: right; }
+.split-foot { display: flex; justify-content: space-between; padding: 8px 12px; font-size: 13px; color: var(--text-2); }
+.row-link .switch { margin-left: auto; }
+.seg-sm { margin: 4px 0 10px; }
+.alert-row { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 12px 4px; border-top: 1px solid var(--line); }
+.alert-row:first-child { border-top: 0; }
+.alert-row .lv { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--text-3); }
+.alert-row .lv.warn { background: var(--orange); } .alert-row .lv.bad { background: var(--red); }
+.hist-day { font-size: 12px; color: var(--text-3); font-weight: 600; padding: 14px 4px 4px; }
+.hist { display: flex; justify-content: space-between; gap: 10px; padding: 8px 4px; border-top: 1px solid var(--line); font-size: 14px; }
+.hist span:last-child { color: var(--text-3); font-size: 12px; font-variant-numeric: tabular-nums; }
+.dialog-body .chip.on { background: var(--text); color: #000; }
+.field input[type="color"] { width: 36px; height: 28px; padding: 0; border: 0; background: none; }
+
+/* ---------- Páginas de gestão ---------- */
+#pageSheet { z-index: 42; }
+#pageSheet .sheet-head { padding: 12px 10px 6px 4px; }
+.card-row.col { flex-direction: column; align-items: stretch; gap: 2px; }
+.card-row .line { display: flex; align-items: center; gap: 12px; }
+.card-row.col .progress { margin: 8px 0 4px; }
+.swatches.sm { gap: 8px; margin: 2px 0; }
+.chip .cdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.period-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 0 6px; font-weight: 600; }
+.period-nav .icon-btn { color: var(--text-2); }
+.daygrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 4px 2px 8px; }
+.dg { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; color: var(--text-2); padding: 4px 0; }
+.dg i { width: 22px; height: 5px; border-radius: 3px; }
+.tagbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; padding: 8px 4px; border-top: 1px solid var(--line); font-size: 14px; font-variant-numeric: tabular-nums; }
+.tagbar .progress { flex-basis: 100%; height: 4px; margin: 6px 0 0; }
+.step { background: var(--s2); border-radius: var(--r); padding: 10px 12px; margin: 8px 0; display: flex; flex-direction: column; gap: 8px; }
+.step select, .step input[type="text"] { background: var(--s3); border: 0; border-radius: 9px; padding: 9px 10px; color: var(--text); outline: none; min-width: 0; width: 100%; }
+.step-top { display: flex; gap: 8px; align-items: center; }
+.step-top b { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; display: grid; place-items: center; flex: none; }
+.step-top select { flex: 1.2; } .step-top input { flex: 1; text-align: right; }
+.step-opts { display: flex; gap: 12px; align-items: center; font-size: 13px; color: var(--text-2); flex-wrap: wrap; }
+.step-opts label { display: flex; align-items: center; gap: 6px; }
+.step-opts input[type="text"] { width: 110px; text-align: right; }
+.step-tools { display: flex; gap: 14px; justify-content: flex-end; }
+.step-tools .link-btn:disabled { opacity: .3; }
+.link-btn.danger { color: var(--red); }
+.panel-body[hidden] { display: none; }
+b.warn { color: var(--orange); }
+.btn-row .primary-btn:disabled { opacity: .35; }
+.stats .big b.pos, .stats .big b.neg { font-variant-numeric: tabular-nums; }
+.panel .summary-line { width: 100%; text-align: left; }
+.panel .summary-line b { font-size: 15px; font-weight: 600; }
+.panel .summary-line b.warn { color: var(--orange); }
+
+/* =========================================================
+   Tela larga (PC, notebook, tablet deitado) — a partir de 900px
+   Calendário à esquerda, detalhes do dia fixos à direita,
+   janelas abrindo centralizadas em vez de subir de baixo.
+   ========================================================= */
+@media (min-width: 1100px) {
+  :root { --dock: clamp(360px, 30vw, 440px); }
+  body { font-size: 15px; }
+  .topbar, main { margin-right: var(--dock); }
+  .topbar { padding: 14px 28px 4px; }
+  .bar-normal, .bar-select { height: 60px; max-width: 1100px; margin: 0 auto; }
+  .month-title { font-size: 30px; }
+  main { padding: 0 28px 120px; }
+  .weekdays, .grid-wrap, .summary, #panels { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  .weekdays div { font-size: 12px; padding-bottom: 10px; }
+  .cell { height: clamp(84px, calc((100vh - 230px) / 6), 132px); padding: 8px 6px 10px; cursor: pointer; }
+  .cell:hover { background: var(--s1); border-radius: 12px; }
+  .cell .num { font-size: 16px; width: 32px; height: 32px; }
+  .cell .tags { gap: 4px; height: 6px; margin-top: 5px; }
+  .cell .tags i { width: 6px; height: 6px; }
+  .cell .val { font-size: 14px; }
+  .cell .mv { font-size: 11px; }
+  .summary-line { font-size: 15px; }
+  .fab { right: calc(var(--dock) + 32px); bottom: 32px; width: 60px; height: 60px; }
+  .sel-bar { right: var(--dock); padding: 16px 28px 24px; }
+  .sel-bar .primary-btn { max-width: 420px; display: block; margin: 0 auto; }
+  .toast { right: calc(var(--dock) + 12px); }
+
+  /* detalhes do dia: painel fixo */
+  #daySheet.docked {
+    top: 0; bottom: 0; left: auto; right: 0; width: var(--dock); max-height: none; height: 100vh;
+    border-radius: 0; border-left: 1px solid var(--line); transform: none; transition: none; z-index: 4;
+    padding-top: 12px;
+  }
+  #daySheet.docked .grabber { display: none; }
+  #daySheet.docked .sheet-title { font-size: 22px; }
+  .item, .card-row, .scope, .alert-row, .pick { cursor: pointer; }
+  .item:hover, .card-row:hover, .scope:hover, .pick:hover, .alert-row:hover { background: var(--s2); border-radius: 10px; }
+  .icon-btn:hover, .text-btn:hover, .link-btn:hover { filter: brightness(1.25); }
+  .act:hover span.ic { filter: brightness(1.3); }
+
+  /* demais folhas viram janelas centralizadas */
+  .sheet:not(.docked) {
+    left: 50%; right: auto; top: 50%; bottom: auto; width: min(520px, 92vw); max-height: 86vh;
+    border-radius: 20px; padding-bottom: 8px;
+    transform: translate(-50%, -46%) scale(.98); opacity: 0; pointer-events: none;
+    transition: transform .2s var(--ease), opacity .18s;
+  }
+  .sheet:not(.docked).on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+  .sheet.tall:not(.docked) { height: 86vh; }
+  #pageSheet { width: min(640px, 92vw) !important; }
+  .sheet:not(.docked) .grabber { display: none; }
+  .sheet:not(.docked) .sheet-head { padding-top: 16px; }
+  .drawer { width: 340px; }
+  .dialog-card { max-width: 380px; }
+}
+
+@media (min-width: 1400px) {
+  :root { --dock: 460px; }
+  .cell .val { font-size: 15px; }
+}
+@media (min-width: 1100px) { .toast { top: auto; bottom: 28px; left: 28px; right: calc(var(--dock) + 110px); transform: translateY(12px); } .toast.on { transform: none; } }
+
+
+/* =================== Identidade v1.2 =================== */
+/* elementos preenchidos com o azul usam texto escuro (contraste) */
+.cell.today .num, .fab, .primary-btn, .act.primary span.ic, .pick.on .box, .dialog-actions button.primary, .step-top b { color: var(--accent-ink); }
+.primary-btn.ghost { color: var(--text); }
+.switch:checked { background: var(--accent); }
+.switch::after { background: #F2F2F2; }
+.chip.on, .dialog-body .chip.on { background: var(--accent-soft); color: var(--accent); }
+.segmented button.on { color: var(--text); }
+.quick button.ok { background: var(--accent-soft); color: var(--accent); }
+.checked-note { color: var(--accent); }
+.st-paid { color: var(--accent); }
+.cell.hol .num { color: var(--accent); }
+.cell.out .num { color: #4F4F4F; }
+.cell.picked { background: var(--accent-soft); }
+.cell.picked .num { color: var(--text); }
+.cell.sel { background: var(--s2); }
+.cell .val.still { opacity: .55; }
+.month-title #yearName { color: var(--text-2); font-weight: 500; }
+.weekdays div { color: var(--text-2); }
+.text-btn, .link-btn, .row.action, .toast button { color: var(--accent); }
+.icon-btn.soft { color: var(--text-2); }
+.drawer .dot { display: none; }                 /* sem bolinhas decorativas no menu */
+.drawer { width: min(80vw, 300px); background: var(--s1); }
+.nav .ic svg { color: var(--accent); }
+.hint { color: var(--text-3); }
+.fab { box-shadow: none; }
+.progress { background: var(--s3); }
+.budget-line { color: var(--text-2); }
+.sheet, .drawer { background: var(--s1); }
+.group, .segmented, .step { background: var(--s2); }
+.danger-btn { background: var(--s2); }
+.hol-row { align-items: center; }
+.hol-row .hol-name { display: block; }
+.hol-row .hol-sub { display: block; font-size: 12px; color: var(--text-3); text-transform: capitalize; }
+.dialog-body label.inline { display: flex; align-items: center; justify-content: space-between; }
+.cell .num { flex: none; }
+details.more[open] > summary::after { transform: rotate(45deg) translate(-2px, -2px); }
+@media (max-height: 520px) { .cell .num { width: 26px; height: 26px; font-size: 14px; } }
+
+/* =================== v1.3 — calendário expansível e grade com linhas =================== */
+/* linhas finas entre os dias, como um calendário de papel */
+.grid { border-top: 1px solid var(--line); gap: 0; }
+.cell {
+  height: var(--cell-h, 64px); border-top: 0; border-radius: 0 !important;
+  border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+  padding: 4px 2px 5px; transition: height .26s var(--ease), background .15s;
+}
+.cell:nth-child(7n) { border-right: 0; }
+.cell.sel, .cell.sel + .cell, .cell.picked + .cell { border-top-color: transparent; }
+.cell.sel { background: var(--s2); }
+.cell.picked { background: var(--accent-soft); }
+.cell:active { background: var(--s1); }
+body.cal-dragging .cell { transition: none; }
+.weekdays div { padding-bottom: 6px; }
+
+/* lançamentos escritos dentro do dia (aparecem ao expandir; no PC sempre) */
+.cell .lns { display: none; flex-direction: column; gap: 1px; width: 100%; margin-top: 3px; overflow: hidden; min-height: 0; }
+body.cal-exp .cell .lns { display: flex; }
+.cell .ln { display: flex; align-items: center; gap: 3px; height: 14px; font-size: 9.5px; line-height: 14px; color: var(--text-2); min-width: 0; padding: 0 1px; }
+.cell .ln i { width: 2px; height: 10px; border-radius: 1px; flex: none; }
+.cell .ln b { font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.cell .ln em { font-style: normal; font-weight: 600; font-variant-numeric: tabular-nums; flex: none; display: none; }
+.cell .ln.done b { color: var(--text-3); }
+.cell .ln.more { color: var(--text-3); font-weight: 600; padding-left: 5px; }
+.cell .val { margin-top: auto; }
+
+/* alça de expansão */
+.cal-handle { display: flex; justify-content: center; align-items: center; height: 22px; cursor: pointer; touch-action: none; }
+.cal-handle i { width: 36px; height: 4px; border-radius: 2px; background: var(--s3); transition: background .2s, width .2s; }
+.cal-handle:active i, .cal-handle:hover i { background: var(--text-3); width: 44px; }
+.summary { margin-top: 0; }
+
+/* telas um pouco mais largas: mostra o valor de cada lançamento na linha */
+@media (min-width: 600px) { .cell .ln em { display: block; } .cell .ln { font-size: 10.5px; } }
+
+@media (max-height: 520px) { .cell { height: var(--cell-h, 46px); } }
+
+/* ----- PC: calendário ocupa toda a área útil; painel do dia só quando aberto ----- */
+@media (min-width: 1100px) {
+  .topbar, main { margin-right: 0; transition: margin-right .22s var(--ease); }
+  body.day-open .topbar, body.day-open main { margin-right: var(--dock); }
+  .bar-normal, .bar-select { max-width: none; }
+  .weekdays, .grid-wrap, .summary, #panels { max-width: none; }
+  main { padding: 0 20px 24px; }
+  .topbar { padding: 10px 20px 2px; }
+  .cal-handle { display: none; }
+  .grid { border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-radius: 0; }
+  .cell { padding: 6px 6px 8px; align-items: stretch; }
+  .cell:nth-child(7n) { border-right: 0; }
+  .cell .num { align-self: flex-start; font-size: 14px; width: 28px; height: 28px; }
+  .cell .ln { height: 18px; font-size: 12.5px; gap: 6px; }
+  .cell .ln i { width: 3px; height: 13px; }
+  .cell .ln em { display: block; }
+  .cell .val { align-self: flex-end; font-size: 13.5px; }
+  .cell .bud { align-self: flex-start; margin-left: 6px; }
+  .cell .flag { right: 8px; top: 9px; }
+  .fab { right: 28px; bottom: 28px; }
+  body.day-open .fab { right: calc(var(--dock) + 28px); }
+  .toast { right: 120px; }
+  body.day-open .toast { right: calc(var(--dock) + 120px); }
+  .sel-bar { right: 0; }
+  body.day-open .sel-bar { right: var(--dock); }
+  #daySheet.docked { transform: translateX(100%); transition: transform .22s var(--ease); }
+  #daySheet.docked.on { transform: none; }
+  .summary-line { padding: 10px 4px; }
+}
+.cell .ln em { display: block; font-size: 9px; color: var(--text-2); }
+.cell .ln em.pos { color: var(--green); } .cell .ln em.neg { color: var(--red); }
+body.cal-exp .cell .tags { display: none; }
+/* colunas sempre iguais, mesmo com textos longos dentro dos dias */
+.weekdays, .grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.cell { min-width: 0; }
+/* o botão + não cobre o valor do saldo */
+body.cal-exp .summary-line { padding-right: 78px; }
+@media (min-width: 1100px) { .summary-line { padding-right: 96px; } }
+
+/* menu lateral enxuto + engrenagem (como no Samsung Calendar) */
+.drawer-head { padding: 10px 8px 6px 18px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.drawer-head .gear svg { width: 22px; height: 22px; color: var(--text-2); }
+.settings-body { padding-top: 4px; }
+#settingsSheet { z-index: 42; }
+@media (min-width: 1100px) { #settingsSheet { width: min(560px, 92vw) !important; } }
+.nav .row > .ic { flex: none; }
+.nav .row > span:not(.ic) { text-align: left; }
+.nav .row { justify-content: flex-start; }
+
+/* =================== v1.4 — PC em formato de agenda de mesa =================== */
+@media (min-width: 1100px) {
+  :root {
+    --deskW: min(1280px, calc(100vw - 48px));          /* largura total do conteúdo, centralizado */
+    --off: calc((100vw - var(--deskW)) / 2);            /* margem lateral */
+    --dock: clamp(300px, 26vw, 360px);                  /* painel do dia */
+    --gap: 24px;
+    --calW: calc(var(--deskW) - var(--dock) - var(--gap));
+  }
+  .topbar, main, body.day-open .topbar, body.day-open main {
+    margin-left: var(--off); margin-right: 0; width: var(--calW); transition: none;
+  }
+  .topbar { padding: 14px 0 4px; }
+  main { padding: 0 0 28px; }
+  .month-title { font-size: 26px; }
+  .grid { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .cell:nth-child(7n) { border-right: 0; }
+  .grid .cell:nth-last-child(-n+7) { border-bottom: 0; }
+  .cell { padding: 6px 8px 8px; }
+  .cell .ln { font-size: 12px; height: 17px; }
+  .cell .val { font-size: 13px; }
+
+  /* painel do dia: cartão fixo à direita, sempre visível */
+  #daySheet.docked, #daySheet.docked.on {
+    top: 16px; bottom: 16px; right: var(--off); left: auto; width: var(--dock); height: auto; max-height: none;
+    border: 1px solid var(--line); border-radius: 18px; transform: none; padding-top: 6px;
+    background: var(--s1); z-index: 4;
+  }
+  #btnDayClose { display: none; }
+  #daySheet.docked .sheet-title { font-size: 19px; }
+
+  .fab, body.day-open .fab { right: calc(var(--off) + var(--dock) + var(--gap) + 16px); bottom: 24px; }
+  .toast, body.day-open .toast { left: var(--off); right: auto; width: min(420px, var(--calW)); bottom: 24px; }
+  .sel-bar, body.day-open .sel-bar { left: var(--off); right: auto; width: var(--calW); padding: 12px 0 20px; }
+  .summary-line { padding-right: 84px; }
+}
+.new-btn { display: none; }
+@media (min-width: 1100px) {
+  .fab { display: none; }
+  .new-btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 10px; margin-right: 10px; border-radius: 18px; background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 14px; }
+  .new-btn svg { width: 18px; height: 18px; stroke-width: 2.4; }
+  .new-btn:hover { filter: brightness(1.08); }
+  /* o cartão do dia acompanha o conteúdo, sem esticar até o fim da tela */
+  #daySheet.docked, #daySheet.docked.on { top: 74px; bottom: auto; max-height: calc(100vh - 96px); }
+  .summary-line { padding-right: 4px; }
+}
+@media (min-width: 1100px) { body.cal-exp .summary-line, .summary-line { padding-right: 4px; } }
+.segmented.basis-top { margin-top: 16px; }
+#accLabel { display: block; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0; margin-top: -2px; }
+#accLabel:empty { display: none; }
+
+
+/* =================== v1.7 — fundo preto e quadrados cinza neutros (Samsung) =================== */
+.grid { gap: 3px; border: 0 !important; background: transparent; border-radius: 0; }
+.cell, .cell:nth-child(7n) { background: var(--cell); border: 0 !important; border-radius: 5px !important; }
+.cell.out { background: var(--cell-out); }
+.cell.out .num { color: #4F4F4F; }
+.cell:active { background: #232323; }
+/* dia selecionado: só um contorno fino neutro, sem pintar o quadrado */
+.cell.sel { background: var(--cell); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .34); }
+.cell.out.sel { background: var(--cell-out); }
+/* hoje: número num pequeno selo azul-claro (único detalhe de cor do dia) */
+.cell.today .num { background: var(--accent); color: var(--accent-ink); border-radius: 8px; font-weight: 700; }
+/* seleção de vários dias: fundo cinza um pouco mais claro + contorno azul fino */
+.cell.picked { background: #262626; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.cell.picked .num { color: var(--text); }
+.weekdays div { color: var(--text-2); }
+.topbar { background: var(--bg); }
+.summary-line { border-top-color: var(--line); }
+.sheet, .drawer, #daySheet.docked { background: var(--s1); }
+.group, .segmented, .step { background: var(--s2); }
+.segmented button.on { background: var(--s3); }
+.dialog-card { background: var(--s2); }
+.dialog-body input, .dialog-body select, .dialog-body .chip { background: var(--s3); }
+.toast { background: var(--s3); }
+.item + .item, .card-row, .scope, .pick, .alert-row, .hist, .tagbar, .kv { border-color: var(--line); }
+.cell .bud.s-pending { box-shadow: inset 0 0 0 1.5px var(--orange); background: transparent !important; }
+@media (min-width: 1100px) {
+  :root { --cell: #181818; --cell-out: #101010; }
+  .grid { gap: 4px; }
+  .cell { border-radius: 7px !important; }
+  .cell:hover { background: #1F1F1F; }
+  .cell.out:hover { background: #141414; }
+}
+
+/* PC: calendário ~75% e painel lateral ~25% */
+@media (min-width: 1100px) {
+  :root {
+    --deskW: min(1680px, calc(100vw - 48px));
+    --dock: clamp(300px, calc(var(--deskW) * .26), 420px);
+  }
+  .day-hint { padding: 28px 6px; color: var(--text-2); font-size: 14px; line-height: 1.5; }
+  .day-hint b { display: block; color: var(--text); font-size: 17px; margin-bottom: 4px; }
+}
+.hist-det { display: block; font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.45; }
+
+/* =================== v1.7 — modo limpo, painel do dia e detalhes neutros =================== */
+/* Tags desligadas: cada dia mostra só o número e o saldo acumulado no rodapé */
+.grid.clean .cell .val { font-size: 12px; }
+@media (min-width: 1100px) { .grid.clean .cell .val { font-size: 15px; } }
+/* identificação das tags: só uma barrinha fina ao lado de cada lançamento */
+.cell .ln { color: var(--text-2); }
+.cell .ln.done b { color: var(--text-3); }
+/* alça de expansão visível sobre o preto, sem chamar atenção */
+.cal-handle i { background: #333; }
+.cal-handle:active i, .cal-handle:hover i { background: #555; }
+/* botão de adicionar: cinza-escuro neutro com o + em azul-claro (como o "Adic." do Samsung) */
+.fab { background: #232323; color: var(--accent); box-shadow: inset 0 0 0 1px #343434; }
+.fab:active { background: #2E2E2E; }
+@media (min-width: 1100px) {
+  .new-btn { background: #1E1E1E; color: var(--text); box-shadow: inset 0 0 0 1px #333; }
+  .new-btn svg { color: var(--accent); }
+  .new-btn:hover { background: #262626; filter: none; }
+}
+/* painel do dia */
+.balance .cur small { color: var(--text); }
+.reveal { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 13px 4px; margin-top: 4px; border-top: 1px solid var(--line); color: var(--accent); font-size: 14px; font-weight: 500; }
+.reveal:hover { filter: brightness(1.15); }
+.section-label + .reveal, .item + .reveal { margin-top: 6px; }
+/* superfícies neutras (sem tom azulado) */
+#daySheet.docked, #daySheet.docked.on { border-color: #262626; }
+
+/* =================== v1.8 — lançamentos como etiquetas (referência: Samsung Calendar) =================== */
+/* Cada lançamento é uma etiqueta preenchida com a cor da tag, texto branco legível e o valor à direita.
+   Só a etiqueta recebe cor; o quadrado do dia continua cinza neutro. */
+.cell .num { font-weight: 600; color: var(--text); }
+.cell.wkend .num, .cell.out .num { font-weight: 500; }
+.cell .lns { gap: 2px; margin-top: 4px; }
+.cell .ln {
+  height: 16px; line-height: 16px; font-size: 10.5px; gap: 3px; padding: 0 3px 0 0; border-radius: 3px; overflow: hidden;
+  color: #F4F4F4; background: rgba(255, 255, 255, .08); background: color-mix(in srgb, var(--c, #888) 36%, #151515);
+}
+.cell .ln i { width: 3px; height: 100%; border-radius: 0; background: var(--c, #888); }
+.cell .ln b { font-weight: 500; color: #F4F4F4; text-overflow: clip; letter-spacing: -.15px; }
+.cell .ln em { display: block; font-size: 9.5px; font-weight: 600; color: #F4F4F4; letter-spacing: -.2px; }
+.cell .ln em.pos { color: #9BE8BD; }
+.cell .ln em.neg { color: #F6B0B0; }
+.cell .ln.done { opacity: .62; }
+.cell .ln.done b { color: #F4F4F4; }
+.cell .ln.more { background: none; color: var(--text-2); padding-left: 3px; font-weight: 600; }
+/* feriado: etiqueta azul-claro discreta com o nome (como "Finados" no Samsung) */
+.cell .ln.hol { background: rgba(169, 212, 245, .22); padding: 0 4px; }
+.cell .ln.hol b { color: #EAF4FC; }
+@media (min-width: 600px) { .cell .ln { font-size: 11.5px; } .cell .ln em { font-size: 10.5px; } }
+@media (min-width: 1100px) {
+  .cell .lns { gap: 2px; margin-top: 5px; }
+  .cell .ln { height: 16px; line-height: 16px; font-size: 11.5px; gap: 5px; padding-right: 6px; border-radius: 4px; }
+  .cell .ln em { font-size: 11px; }
+  .cell .ln.hol { padding: 0 6px; }
+}
+/* barrinha da tag sempre colada à esquerda da etiqueta */
+.cell .ln { position: relative; padding-left: 6px; }
+.cell .ln i { position: absolute; left: 0; top: 0; bottom: 0; }
+.cell .ln.hol, .cell .ln.more { padding-left: 4px; }
+/* celular: etiqueta em duas linhas (nome em cima, valor embaixo), como as etiquetas do Samsung */
+@media (max-width: 599px) {
+  .cell .ln { flex-direction: column; align-items: stretch; justify-content: center; gap: 0; height: 25px; line-height: 12px; padding: 0 2px 0 5px; }
+  .cell .ln b { flex: none; line-height: 12.5px; }
+  .cell .ln em { line-height: 12px; text-align: left; font-size: 10px; }
+  .cell .ln.hol b { white-space: normal; word-break: break-all; overflow: hidden; max-height: 25px; line-height: 12.5px; }
+  .cell .ln.more { height: 16px; justify-content: flex-start; }
+}
+/* seletor de conta no topo do menu (uma conta por vez) */
+.acc-seg { overflow-x: auto; scrollbar-width: none; }
+.acc-seg::-webkit-scrollbar { display: none; }
+.acc-seg button { flex: 1 0 auto; padding: 0 12px; white-space: nowrap; }
+
+/* =================== v1.8 — cores medidas nas capturas do Calendário Samsung (pixel a pixel) ===================
+   fundo #010101 · dia #141414 · outro mês #0D0D0D (número #545454) · feriado #0F1223 com etiqueta #3E4B91
+   hoje: selo branco com número preto · selecionado: contorno #565656 · números e cabeçalho brancos, domingo #E27472
+   botão "Adic.": #1E1E1E com borda #3A3B3D e texto #CDCDCF · texto secundário #9B9B9B */
+:root { --bg: #010101; --cell: #141414; --cell-out: #0D0D0D; --text: #FFFFFF; --text-2: #9B9B9B; --sun: #E27472; --hol-cell: #0F1223; --hol-chip: #3E4B91; --sel-line: #565656; }
+@media (min-width: 1100px) { :root { --cell: #141414; --cell-out: #0D0D0D; } .cell:hover { background: #1A1A1A; } .cell.out:hover { background: #111111; } }
+html, body, .topbar { background: var(--bg); }
+.weekdays div { color: #FFFFFF; }
+.weekdays div.sun { color: var(--sun); }
+.cell .num, .cell.wkend .num { color: #FFFFFF; font-weight: 600; }
+.cell.sun .num { color: var(--sun); }
+.cell.out .num, .cell.out.sun .num { color: #545454; font-weight: 500; }
+/* feriado: quadrado com o tom azul-marinho do Samsung e etiqueta com o nome */
+.cell.hol:not(.out) { background: var(--hol-cell); }
+.cell.hol .num { color: #FFFFFF; }
+.cell.hol.sun .num { color: var(--sun); }
+.cell .ln.hol { background: var(--hol-chip); }
+.cell .ln.hol b { color: #F7FDFF; }
+/* hoje: selo branco com o número preto */
+.cell.today .num, .cell.today.sun .num, .cell.today.hol .num { background: #FFFFFF; color: #000000; border-radius: 8px; font-weight: 700; }
+/* dia selecionado: só o contorno cinza do Samsung */
+.cell.sel { box-shadow: inset 0 0 0 1.5px var(--sel-line); }
+.cell.sel:not(.hol) { background: var(--cell); }
+/* botão de adicionar e "Novo": a pílula "Adic." do Samsung */
+.fab { background: #1E1E1E; color: #E6E6E6; box-shadow: inset 0 0 0 1px #3A3B3D; }
+.fab:active { background: #262626; }
+@media (min-width: 1100px) {
+  .new-btn { background: #1E1E1E; color: #CDCDCF; box-shadow: inset 0 0 0 1px #3A3B3D; }
+  .new-btn svg { color: #CDCDCF; }
+  .new-btn:hover { background: #262626; }
+}
+/* lançamentos como os eventos do Samsung ("Teste"): barrinha na cor da tag + texto branco, sem preenchimento */
+.cell .ln { background: transparent; }
+.cell .ln i { width: 3px; border-radius: 1.5px; }
+.cell .ln b { color: #FFFFFF; }
+.cell .ln em { color: #CDCDCF; }
+.cell .ln em.pos { color: var(--green); }
+.cell .ln em.neg { color: var(--red); }
+.cell .ln.done { opacity: .55; }
+
+/* =================== v1.8.2 — etiquetas das tags no formato da etiqueta do Samsung; feriado e fim de semana discretos ===================
+   Lançamento: etiqueta preenchida (cor da tag no tom do Samsung) com texto branco, cantos de 4px, sem barrinha.
+   Feriado: só o número em azul-claro (o quadrado fica igual aos outros). Sábado e domingo: quadrado um pouco mais escuro
+   e número em cinza claro — sem vermelho, que continua só para valores negativos. */
+:root { --wkend-cell: #0F0F0F; --wkend-num: #A0A0A0; }
+.cell .ln { background: var(--c, #3E4B91); border-radius: 4px; padding: 0 4px; }
+.cell .ln i { display: none; }
+.cell .ln b { color: #FFFFFF; font-weight: 500; }
+.cell .ln em, .cell .ln em.pos, .cell .ln em.neg { color: rgba(255, 255, 255, .86); font-weight: 600; }
+.cell .ln.done { opacity: .5; }
+.cell .ln.more { background: none; padding-left: 2px; }
+@media (max-width: 599px) { .cell .ln { padding: 0 3px; } }
+/* fim de semana */
+.cell.wkend:not(.out) { background: var(--wkend-cell); }
+.cell.wkend .num, .cell.sun .num, .cell.hol.sun .num { color: var(--wkend-num); font-weight: 600; }
+.weekdays div.sun { color: var(--wkend-num); }
+/* feriado: só o número */
+.cell.hol:not(.out) { background: var(--cell); }
+.cell.hol.wkend:not(.out) { background: var(--wkend-cell); }
+.cell.hol .num, .cell.hol.wkend .num, .cell.hol.sun .num { color: var(--accent); }
+.cell.out .num { color: #545454; }
+.cell.today .num, .cell.today.wkend .num, .cell.today.hol .num { background: #FFFFFF; color: #000000; }
+.cell.sel:not(.hol), .cell.sel { background: var(--cell); }
+.cell.sel.wkend { background: var(--wkend-cell); }
+@media (min-width: 1100px) { .cell.wkend:not(.out):hover { background: #161616; } }
+/* tags agrupadas pela meta (Configurações › Tags) e tags no cartão da meta */
+#tagList .row.tag-meta { font-size: 12px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .4px; min-height: 0; padding-top: 12px; padding-bottom: 4px; }
+#tagList .row.tag-meta .dot { width: 8px; height: 8px; }
+#tagList .row.tag-row { padding-left: 26px; }
+.card-row .meta-tags { color: var(--text-3); }
+
+/* =================== v1.9.1 — fim de semana azul-claro como feriado; bolacha das metas =================== */
+.cell.wkend .num, .cell.sun .num, .cell.hol.sun .num, .cell.hol.wkend .num { color: var(--accent); }
+.weekdays div.sun { color: var(--accent); }
+.cell.out .num, .cell.out.wkend .num { color: #545454; }
+.cell.today .num, .cell.today.wkend .num, .cell.today.hol .num { color: #000000; }
+.donut-card { background: var(--s2); border-radius: var(--r); padding: 12px 12px 14px; margin: 4px 0 14px; }
+.donut-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.donut-head b { font-size: 15px; }
+.donut-head .segmented { margin: 0; min-width: 190px; }
+.donut { display: flex; justify-content: center; margin: 8px 0 6px; }
+.donut svg { width: 230px; height: 230px; overflow: visible; }
+.donut circle[data-a] { cursor: pointer; transition: opacity .15s, stroke-width .15s; }
+.donut-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; }
+.donut-legend button { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-2); padding: 3px 0; }
+.donut-legend button.on { color: var(--text); font-weight: 600; }
+.donut-legend i { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.donut-empty { margin: 26px 0 14px; }
+.donut svg, .donut svg circle { stroke-linecap: butt; stroke-linejoin: miter; }
+.donut svg text { stroke: none; font-family: inherit; }
+
+/* =================== v1.9.2 — etiquetas no tom dos eventos do Samsung ===================
+   barrinha viva na cor da tag (como #52B7D3 / #EC514D), fundo da mesma cor bem escuro (~17%, como #0B1C23 / #250D0D)
+   e texto branco. Moderno, limpo e sem tons "barrentos". */
+.cell .ln { background: rgba(255, 255, 255, .06); background: color-mix(in srgb, var(--c, #52B7D3) 17%, #060606); border-radius: 4px; padding-left: 7px; }
+.cell .ln i { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px; background: var(--c, #52B7D3); }
+.cell .ln b { color: #FFFFFF; font-weight: 500; }
+.cell .ln em, .cell .ln em.pos, .cell .ln em.neg { color: rgba(255, 255, 255, .78); font-weight: 600; }
+.cell .ln.done { opacity: .5; }
+.cell .ln.more { background: none; padding-left: 3px; }
+@media (max-width: 599px) { .cell .ln { padding: 0 2px 0 6px; } }
+
+/* =================== v1.9.4 — menu flutuante (uma mão só), aba pela direita, fim de semana =================== */
+/* fim de semana e feriado: quadrado igual aos dias normais; só o número azul-claro diferencia
+   (o cinza mais escuro confundia com os dias de outro mês) */
+.cell.wkend:not(.out), .cell.hol:not(.out), .cell.hol.wkend:not(.out), .cell.sel.wkend { background: var(--cell); }
+@media (min-width: 1100px) { .cell.wkend:not(.out):hover { background: #1A1A1A; } }
+.cell.wkend .num, .cell.sun .num, .cell.hol .num, .cell.hol.wkend .num, .cell.hol.sun .num { color: var(--accent); }
+.cell.out .num, .cell.out.wkend .num, .cell.out.hol .num { color: #545454; }
+.cell.today .num, .cell.today.wkend .num, .cell.today.hol .num { color: #000000; }
+
+/* botão do menu: flutuante, acima do +, no celular */
+.fab-menu { width: 46px; height: 46px; right: 22px; bottom: calc(20px + 54px + 14px + var(--bottom)); touch-action: none; user-select: none; -webkit-user-select: none; }
+.fab-menu svg { width: 22px; height: 22px; }
+.fab-menu.moved { right: auto; bottom: auto; }
+.fab-menu.dragging { transform: scale(1.08); box-shadow: 0 6px 18px rgba(0, 0, 0, .5), inset 0 0 0 1px #3A3B3D; transition: none; }
+body.selecting .fab-menu { opacity: 0; pointer-events: none; }
+@media (max-width: 1099px) {
+  #btnMenu { display: none; }
+  .topbar { padding-left: 14px; }
+  /* aba lateral pela direita, no alcance do polegar */
+  .drawer { left: auto; right: 0; border-radius: 20px 0 0 20px; transform: translateX(102%); }
+  .drawer.on { transform: none; }
+}
+@media (min-width: 1100px) { .fab-menu { display: none; } }
+
+/* =================== v1.9.5 — alça do menu na borda direita (painel Edge do Samsung) =================== */
+.fab-menu { display: none !important; }
+.edge-handle { display: none; }
+@media (max-width: 1099px) {
+  .edge-handle {
+    display: block; position: fixed; right: 0; top: 42%; z-index: 7; width: 22px; height: 88px;
+    touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab;
+  }
+  /* a alça visível: fininha, cinza bem clarinho, encostada na borda */
+  .edge-handle i { position: absolute; right: 3px; top: 6px; bottom: 6px; width: 5px; border-radius: 3px; background: rgba(220, 220, 225, .38); transition: background .15s, width .15s; }
+  .edge-handle:active i { background: rgba(235, 235, 240, .6); width: 6px; }
+  body.selecting .edge-handle { opacity: 0; pointer-events: none; }
+  /* menu puxado pelo dedo: aparece por cima, sem esperar a animação */
+  .drawer.peek { visibility: visible; }
+}
+
+/* =================== v1.9.6 — sem "puxar para atualizar", botão de etiquetas, alça garantida =================== */
+/* arrastar o calendário para baixo não recarrega mais a página (o navegador não faz "puxar para atualizar") */
+html, body { overscroll-behavior: none; overscroll-behavior-y: none; }
+/* o ⋮ do topo só some quando a alça da borda existe de fato */
+@media (max-width: 1099px) {
+  #btnMenu { display: inline-grid; }
+  body.edge-on #btnMenu { display: none; }
+  .edge-handle { z-index: 25; }
+}
+/* botão de mostrar/esconder os lançamentos nos dias (celular) */
+.view-btn { color: var(--text-2); }
+.view-btn.on { color: var(--accent); }
+@media (min-width: 1100px) { .view-btn { display: none; } }
+/* v1.9.7 — sem gesto de arrastar para expandir: o botão do topo liga/desliga os lançamentos nos dias */
+#calHandle { display: none !important; }
+
+/* =================== v1.9.8 — resumo do dinheiro embaixo do calendário (como no app antigo) =================== */
+.money { display: block; width: 100%; margin-top: 10px; padding: 10px 14px 4px; border-top: 1px solid var(--line); text-align: left; }
+.money small { display: block; font-size: 12px; color: var(--text-2); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.money b { display: block; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.money .mb-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.money .mb-bal b { font-size: 24px; color: #FFFFFF; letter-spacing: -.3px; }
+.money .mb-bal b.neg { color: var(--red); }
+.money .mb-next { text-align: right; min-width: 0; }
+.money .mb-next b { font-size: 17px; }
+.money .mb-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; padding-right: 70px; }
+.money .mb-row b { font-size: 14px; margin-top: 1px; }
+@media (min-width: 1100px) {
+  .money { padding: 12px 6px 4px; }
+  .money .mb-row { padding-right: 0; }
+  .money .mb-bal b { font-size: 26px; }
+}
+/* sem zoom (pinça/toque duplo): o app fica fixo como um app instalado */
+html, body { touch-action: pan-x pan-y; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* o botão + fica à direita: o resumo reserva esse espaço nas duas linhas */
+@media (max-width: 1099px) {
+  .money { padding-right: 78px; }
+  .money .mb-row { padding-right: 0; }
+  .money .mb-top { flex-wrap: wrap; row-gap: 2px; }
+  .money .mb-next { text-align: left; flex-basis: 100%; }
+  .money .mb-next small, .money .mb-next b { display: inline; }
+  .money .mb-next b { margin-left: 6px; font-size: 15px; }
+}
+
+/* =================== v1.9.9 — visualizações Dia / Semana / Mês / Ano =================== */
+.view-btn { color: var(--text-2); }
+@media (min-width: 1100px) { .view-btn { display: inline-grid; } }
+#rowExpand { display: flex; }
+@media (min-width: 1100px) { #rowExpand { display: none; } }
+/* janelinha de escolha, logo abaixo do botão */
+.view-pop { position: fixed; z-index: 36; top: calc(54px + var(--top)); right: 12px; min-width: 190px; padding: 6px; border-radius: 16px;
+  background: #1E1E1E; box-shadow: 0 10px 30px rgba(0, 0, 0, .55), inset 0 0 0 1px #2E2E2E;
+  opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top right; pointer-events: none; transition: opacity .14s, transform .14s var(--ease); }
+.view-pop.on { opacity: 1; transform: none; pointer-events: auto; }
+.view-pop button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 14px; border-radius: 11px; font-size: 16px; color: var(--text); }
+.view-pop button:active, .view-pop button:hover { background: #2A2A2A; }
+.view-pop button i { width: 8px; height: 8px; border-radius: 50%; }
+.view-pop button.on { color: var(--accent); font-weight: 600; }
+.view-pop button.on i { background: var(--accent); }
+@media (min-width: 1100px) { .view-pop { top: 64px; right: calc(var(--dock) + 40px); } }
+
+/* nas outras visualizações a grade do mês fica escondida */
+body.alt-on .weekdays, body.alt-on #gridWrap { display: none; }
+.alt-view { padding: 4px 8px 0; }
+.av-date { display: flex; flex-direction: column; align-items: center; width: 44px; flex: none; line-height: 1.1; }
+.av-date small { font-size: 11px; font-weight: 600; color: var(--text-2); letter-spacing: .4px; }
+.av-date b { font-size: 20px; font-weight: 600; color: #FFFFFF; margin-top: 2px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; }
+.wkend .av-date b, .hol .av-date b { color: var(--accent); }
+.today .av-date b { background: #FFFFFF; color: #000000; }
+/* Semana: um quadrado por dia, com as etiquetas e o saldo */
+.av-week { display: flex; flex-direction: column; gap: 4px; }
+.av-day { display: flex; align-items: flex-start; gap: 10px; width: 100%; min-height: 68px; padding: 10px 12px 10px 6px; border-radius: 8px; background: var(--cell); text-align: left; }
+.av-day.sel { box-shadow: inset 0 0 0 1.5px var(--sel-line); }
+.av-list { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 4px 5px; padding-top: 2px; }
+.av-bal { flex: none; align-self: flex-end; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.av-bal.zero { color: var(--text-3); }
+.av-item { position: relative; display: inline-flex; align-items: center; gap: 6px; max-width: 100%; height: 24px; padding: 0 8px 0 9px; border-radius: 5px; font-size: 13px; color: #FFFFFF;
+  background: rgba(255, 255, 255, .06); background: color-mix(in srgb, var(--c, #52B7D3) 17%, #060606); }
+.av-item i { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px; background: var(--c, #52B7D3); }
+.av-item b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.av-item em { font-style: normal; font-weight: 600; color: rgba(255, 255, 255, .78); font-variant-numeric: tabular-nums; flex: none; }
+.av-item.done { opacity: .5; }
+.av-more { font-size: 12px; color: var(--text-2); align-self: center; }
+.av-hol { font-size: 12px; color: var(--accent); align-self: center; }
+/* Dia: o dia em destaque, os lançamentos em lista e o saldo */
+.av-dayview { background: var(--cell); border-radius: 10px; padding: 14px 12px 12px; }
+.av-dhead { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.av-date.big b { font-size: 26px; width: 44px; height: 44px; border-radius: 11px; }
+.av-dinfo { display: flex; flex-direction: column; color: var(--text-2); font-size: 13px; }
+.av-dinfo small { margin-top: 6px; font-size: 12px; }
+.av-dinfo b { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.av-dlist { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; }
+.av-dlist .av-item { height: 40px; font-size: 15px; padding: 0 12px 0 14px; justify-content: space-between; border-radius: 7px; cursor: pointer; }
+.av-dlist .av-item i { width: 4px; }
+.av-dlist .av-item em { font-size: 15px; }
+.av-add { width: 100%; }
+/* Ano: os 12 meses, com o resultado e o saldo no fim de cada um */
+.av-year { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.av-month { display: flex; flex-direction: column; gap: 3px; padding: 12px 10px; border-radius: 9px; background: var(--cell); text-align: left; min-height: 104px; }
+.av-month b { font-size: 15px; color: #FFFFFF; }
+.av-month.cur { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.av-mres { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.av-month small { font-size: 11px; color: var(--text-2); line-height: 1.3; }
+@media (min-width: 1100px) {
+  .alt-view { padding: 4px 0 0; }
+  .av-year { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .av-month { min-height: 130px; padding: 16px 14px; }
+  .av-day { min-height: 76px; }
+}
+.av-month.empty b { color: var(--text-2); }
+.av-month.empty .av-mres { color: var(--text-3); }
+
+/* =================== v2.0 — visualizações como no app antigo (Ano · Mês · Semana · Dia · Agenda) =================== */
+.vp-title { padding: 8px 14px 6px; font-size: 12px; font-weight: 600; color: var(--text-2); letter-spacing: .3px; }
+.view-pop button i { width: auto; height: auto; background: none !important; font-style: normal; font-weight: 700; color: var(--accent); visibility: hidden; }
+.view-pop button.on i { visibility: visible; }
+.alt-view { padding: 4px 10px 0; }
+/* Semana: faixa com os 7 dias */
+.wk7 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; margin: 2px 0 12px; }
+.wk7 button { background: var(--cell); border-radius: 10px; padding: 7px 0 8px; color: #FFFFFF; box-shadow: inset 0 0 0 1.5px transparent; }
+.wk7 button small { display: block; font-size: 10px; font-weight: 700; color: var(--text-2); margin-bottom: 3px; letter-spacing: .3px; }
+.wk7 button b { font-size: 17px; font-weight: 600; }
+.wk7 button.off b, .wk7 button.off small { color: var(--accent); }
+.wk7 button.td b { background: #FFFFFF; color: #000000; border-radius: 7px; padding: 0 6px; }
+.wk7 button.sl { box-shadow: inset 0 0 0 1.5px var(--sel-line); background: #1C1C1C; }
+/* cabeçalho do dia: número grande + dia da semana */
+.dph2 { display: flex; align-items: baseline; gap: 10px; margin: 2px 4px 12px; }
+.dph2 b { font-size: 34px; font-weight: 800; letter-spacing: -1px; color: #FFFFFF; }
+.dph2 span { font-size: 14px; font-weight: 700; letter-spacing: .3px; color: var(--text); }
+.dph2.off b, .dph2.off span { color: var(--accent); }
+/* conteúdo do dia */
+.dpanel { display: flex; flex-direction: column; gap: 8px; }
+.ldsum { display: flex; justify-content: space-between; align-items: center; background: #1B1B1D; border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; font-size: 13px; color: var(--text-2); }
+.ldsum b { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ldp { background: var(--cell); border-radius: 14px; padding: 2px 12px 10px; }
+.ldp.done { padding-bottom: 2px; opacity: .72; }
+.ldr { display: flex; align-items: center; gap: 10px; padding: 11px 2px; cursor: pointer; }
+.ldr .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--c); }
+.ldr .dot.dash { background: transparent; border: 2px dashed var(--c); width: 12px; height: 12px; }
+.ldn { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ldn b { font-size: 15px; font-weight: 600; color: #FFFFFF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ldn small { font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ldr > b { flex: none; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ldb { display: flex; gap: 6px; }
+.ldb .primary-btn.sm { flex: 1; min-height: 42px; padding: 8px 4px; font-size: 13.5px; border-radius: 12px; }
+.dpanel .reveal { margin-top: 0; border-top: 0; }
+/* Agenda */
+.agd { display: flex; align-items: center; gap: 8px; margin: 14px 4px 6px; font-size: 14px; }
+.agd b { color: #FFFFFF; font-weight: 700; }
+.agd b.off { color: var(--accent); }
+.agd .hj { background: #FFFFFF; color: #000000; border-radius: 6px; padding: 1px 8px; font-weight: 700; font-size: 13px; }
+.agd:first-child { margin-top: 4px; }
+/* Ano: 12 mini calendários */
+.yr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 10px; margin-top: 6px; }
+.ym { display: block; text-align: center; }
+.ym > b { display: inline-block; margin: 0 auto 6px; font-size: 15px; font-weight: 600; padding: 1px 8px; border-radius: 7px; color: #FFFFFF; }
+.ym.cur > b { background: #FFFFFF; color: #000000; }
+.yg { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.yg i { font-style: normal; font-size: 9px; font-weight: 600; text-align: center; border-radius: 4px; background: #1C1C1E; padding: 2px 0; line-height: 1.25; min-height: 15px; color: #E6E6E6; }
+.yg i:empty { background: none; }
+.yg i.w { background: none; color: var(--text-2); }
+.yg i.off { color: var(--accent); }
+.yg i.ng { background: rgba(228, 119, 119, .28); }
+.yg i.ut { background: #FFFFFF; color: #000000; }
+.yr-note { display: flex; align-items: center; gap: 6px; justify-content: center; margin: 12px 0 0; font-size: 12px; color: var(--text-2); }
+.yr-note i { width: 12px; height: 10px; border-radius: 3px; background: rgba(228, 119, 119, .28); }
+@media (min-width: 1100px) {
+  .alt-view { padding: 4px 0 0; }
+  .yr { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 18px; }
+  .yg i { font-size: 11px; min-height: 19px; }
+  .wk7 button { padding: 10px 0; }
+}
+.yr { align-items: start; }
+.ym { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; }
+.ym > b { align-self: center; }
+
+/* =================== v2.0.1 — resumo do dinheiro em cima do calendário (como no app antigo) =================== */
+.money { margin: 4px 0 10px; padding: 14px 16px 12px; border: 0; border-radius: 16px; background: #141414; }
+.money small { text-transform: uppercase; letter-spacing: .5px; font-size: 10.5px; font-weight: 600; color: var(--text-2); }
+.money .mb-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: end; flex-wrap: nowrap; }
+.money .mb-bal b { font-size: 25px; color: #FFFFFF; }
+.money .mb-next { text-align: right; flex-basis: auto; }
+.money .mb-next small { display: block; white-space: normal; line-height: 1.3; }
+.money .mb-next b { display: block; margin: 2px 0 0; font-size: 20px; }
+.money .mb-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; padding: 10px 0 0; border-top: 1px solid var(--line); }
+.money .mb-row > div:nth-child(2) { text-align: center; }
+.money .mb-row > div:nth-child(3) { text-align: right; }
+.money .mb-row b { font-size: 14.5px; }
+@media (max-width: 1099px) { .money { padding-right: 16px; margin-left: 6px; margin-right: 6px; } }
+@media (min-width: 1100px) {
+  .money { margin: 2px 0 10px; padding: 16px 20px 14px; }
+  .money .mb-bal b { font-size: 28px; }
+  .money .mb-next b { font-size: 22px; }
+}
+.money { width: auto; box-sizing: border-box; }
+/* resumo compacto: o calendário mantém o espaço dos lançamentos */
+.money { padding: 10px 14px 9px; margin-bottom: 8px; }
+.money small { font-size: 10px; }
+.money .mb-bal b { font-size: 22px; }
+.money .mb-next b { font-size: 18px; }
+.money .mb-row { margin-top: 8px; padding-top: 7px; }
+.money .mb-row b { font-size: 13.5px; }
+/* PC: uma faixa só, com os cinco valores lado a lado */
+@media (min-width: 1100px) {
+  .money { display: flex; align-items: flex-end; gap: 24px; padding: 12px 20px; }
+  .money .mb-top { display: contents; }
+  .money .mb-row { display: contents; }
+  .money .mb-row > div, .money .mb-bal, .money .mb-next { text-align: left !important; flex: 1 1 0; min-width: 0; }
+  .money .mb-bal { flex: 1.2 1 0; }
+  .money .mb-next { flex: 1.6 1 0; order: 5; text-align: right !important; }
+  .money .mb-next small { white-space: nowrap; }
+  .money .mb-bal b { font-size: 24px; }
+  .money .mb-next b, .money .mb-row b { font-size: 17px; }
+}
+
+/* =================== v2.0.2 — PC: menu fixo à esquerda e painel do dia na altura do calendário =================== */
+@media (min-width: 1100px) {
+  :root {
+    --side: 228px;                                       /* menu lateral sempre aberto */
+    --off: 24px;                                         /* respiro entre as colunas e as bordas */
+    --deskW: calc(100vw - var(--side) - var(--off) * 2);
+    --dock: clamp(280px, calc(var(--deskW) * .24), 400px);
+    --calW: calc(var(--deskW) - var(--dock) - var(--gap));
+  }
+  /* o menu vira uma coluna fixa, sem precisar tocar no ⋮ */
+  .drawer, .drawer.on {
+    left: 0; right: auto; width: var(--side); transform: none !important; transition: none;
+    border-radius: 0; border-right: 1px solid #1E1E1E; background: #0A0A0A; z-index: 5; padding-top: 10px;
+  }
+  .drawer-head { padding: 8px 8px 8px 18px; border-bottom: 0; margin-bottom: 2px; }
+  .drawer-head > span:first-child { font-size: 15px; font-weight: 600; color: var(--text-2); }
+  .drawer .group { background: transparent; }
+  .drawer .nav .row { border-radius: 10px; }
+  .drawer .nav .row:hover { background: #1A1A1A; }
+  .drawer-body { padding: 0 10px 24px; }
+  #btnMenu { display: none !important; }
+  .edge-handle { display: none !important; }
+  /* calendário entre o menu e o painel do dia */
+  .topbar, main, body.day-open .topbar, body.day-open main { margin-left: calc(var(--side) + var(--off)); width: var(--calW); }
+  .toast, body.day-open .toast { left: calc(var(--side) + var(--off)); }
+  .sel-bar, body.day-open .sel-bar { left: calc(var(--side) + var(--off)); }
+  /* painel do dia: do topo do resumo até o fim do calendário */
+  #daySheet.docked, #daySheet.docked.on {
+    right: var(--off); top: var(--dockTop, 74px); bottom: auto; height: var(--dockH, auto); max-height: none;
+    display: flex; flex-direction: column; border-radius: 16px; border-color: #1E1E1E; background: #141414;
+  }
+  #daySheet.docked .sheet-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  .view-pop { right: calc(var(--off) + var(--dock) + var(--gap) + 16px); }
+}
+@media (min-width: 1100px) {
+  /* troca de conta no menu: uma conta por linha, sem cortar o nome */
+  .drawer .acc-seg { display: flex; flex-direction: column; gap: 2px; padding: 4px; margin: 14px 0 4px; border-radius: 12px; }
+  .drawer .acc-seg button { text-align: left; padding: 9px 12px; border-radius: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+/* notebooks menores: menu e painel um pouco mais estreitos para o calendário respirar */
+@media (min-width: 1100px) and (max-width: 1399px) {
+  :root { --side: 204px; --dock: clamp(250px, calc(var(--deskW) * .24), 300px); --off: 18px; --gap: 18px; }
+  .drawer .nav .row b { font-size: 12px; }
+}
+
+/* =================== v2.1 — simulação do cofrinho (estilo Tesouro) =================== */
+.sim-title { margin-top: 22px; }
+.sim-srcs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.sim-src { background: var(--s2); border-radius: 14px; padding: 2px 12px 2px; }
+.sim-src .row { padding: 10px 0; }
+.sim-src .row b { display: block; font-weight: 600; }
+.sim-src .row small { display: block; color: var(--text-2); font-size: 12px; margin-top: 2px; }
+.sim-src:not(.on) { opacity: .7; }
+.sim-mode { padding: 0 0 10px; }
+.sim-mode .segmented { margin: 0 0 6px; }
+.sim-mode .row.field { padding: 6px 0 0; }
+.sim-rates { margin-top: 4px; }
+.sim-tab { display: flex; flex-direction: column; gap: 6px; margin: 6px 0 4px; }
+.sim-row { display: grid; grid-template-columns: 74px repeat(4, minmax(0, 1fr)); gap: 6px; align-items: center; background: var(--s2); border-radius: 12px; padding: 10px 12px; }
+.sim-row span { min-width: 0; }
+.sim-row .h { font-weight: 700; font-size: 14px; white-space: nowrap; }
+.sim-row small { display: block; font-size: 10px; font-weight: 500; color: var(--text-2); margin-top: 2px; white-space: nowrap; }
+.sim-row .v { text-align: right; font-size: 12.5px; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; }
+.sim-row .v b { font-size: 14px; color: #FFFFFF; }
+.sim-row .v.pos { color: var(--green); }
+.sim-leg { flex-wrap: wrap; gap: 4px 14px; font-size: 11.5px; }
+.sim-week { display: flex; align-items: center; gap: 10px; background: var(--s2); border-radius: 14px; padding: 12px; margin-bottom: 6px; }
+.sim-week b { display: block; font-size: 13.5px; font-weight: 600; }
+.sim-week span { display: block; font-size: 12.5px; color: var(--text-2); margin: 2px 0 6px; }
+.sim-week .progress { margin: 0; }
+.primary-btn.sm { width: auto; padding: 0 14px; height: 36px; font-size: 13px; flex: none; }
+.sim-note { margin-top: 14px; }
+@media (max-width: 420px) {
+  .sim-row { grid-template-columns: 74px repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+  .sim-row .h { grid-row: span 2; }
+}
+
+/* =================== v2.1.1 — simulação do cofrinho simples, como o simulador do Tesouro =================== */
+.sim-card { background: #141414; border: 1px solid #222; border-radius: 18px; padding: 16px 16px 12px; margin: 4px 0 12px; }
+.sim-have { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.sim-have small { font-size: 13px; color: var(--text-2); }
+.sim-have b { font-size: 20px; color: #FFFFFF; font-variant-numeric: tabular-nums; }
+.sim-years { margin: 14px 0 4px; }
+.sim-years button { font-size: 13px; }
+.sim-main { padding: 14px 0 12px; }
+.sim-main small { display: block; font-size: 13px; color: var(--text-2); }
+.sim-main b { display: block; font-size: 34px; line-height: 1.15; font-weight: 800; color: var(--green); letter-spacing: -.5px; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+.sim-main span { display: block; font-size: 12px; color: var(--text-2); }
+.sim-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 12px 0 4px; border-top: 1px solid var(--line); }
+.sim-facts small { display: block; font-size: 11.5px; color: var(--text-2); }
+.sim-facts b { display: block; font-size: 13.5px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.sim-src-line { font-size: 12px; color: var(--text-2); margin: 10px 0 0; line-height: 1.45; }
+.sim-src-line .link-btn { font-size: 12px; padding: 0; }
+.sim-card > .primary-btn { margin-top: 4px; }
+.sim-toggle { display: block; width: 100%; margin: 14px 0 4px; padding: 12px; border-radius: 12px; background: var(--s2); color: var(--accent); font-size: 14px; font-weight: 600; }
+.sim-more { margin-top: 6px; }
+.sim-months { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.sim-months span { background: var(--s2); border-radius: 10px; padding: 7px 8px; }
+.sim-months small { display: block; font-size: 10.5px; color: var(--text-2); }
+.sim-months b { font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.sim-foot { list-style: none; padding: 0; margin: 16px 2px 8px; font-size: 11.5px; line-height: 1.6; color: var(--text-3, #7a7a7a); }
+@media (min-width: 1100px) { .sim-main b { font-size: 40px; } }
+
+/* =================== v2.2 — renda se parar de contribuir + metas acompanhando a visualização =================== */
+.sim-stop { background: rgba(69, 207, 127, .08); border: 1px solid rgba(69, 207, 127, .22); border-radius: 14px; padding: 12px 14px; margin: 0 0 12px; }
+.sim-stop small { display: block; font-size: 12.5px; color: var(--text-2); }
+.sim-stop b { display: block; font-size: 26px; font-weight: 800; color: #FFFFFF; margin: 4px 0 2px; font-variant-numeric: tabular-nums; letter-spacing: -.3px; }
+.sim-stop b em { font-style: normal; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.sim-stop span { display: block; font-size: 13px; color: var(--green); font-variant-numeric: tabular-nums; }
+.sim-stop span.nom { color: var(--text-2); font-size: 11.5px; margin-top: 4px; }
+.sim-facts b.pos { color: var(--green); }
+.sim-row { grid-template-columns: 74px repeat(5, minmax(0, 1fr)); }
+.sim-row .v.stop { color: var(--green); font-weight: 600; }
+@media (max-width: 700px) {
+  .sim-row { grid-template-columns: 74px repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+  .sim-row .h { grid-row: span 3; }
+}
+.sim-srcs .row b { display: block; font-weight: 600; }
+.sim-srcs .row small { display: block; font-size: 12px; color: var(--text-2); margin-top: 2px; }
+/* metas abaixo do calendário */
+.mp-group { font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--text-2); margin: 12px 4px 6px; }
+.mp-row { display: block; width: 100%; text-align: left; background: var(--s2); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
+.mp-row .line { display: flex; align-items: center; gap: 8px; }
+.mp-row .t { font-size: 14px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mp-row .t small { font-weight: 500; color: var(--text-2); font-size: 11.5px; }
+.mp-row .line b { font-size: 12.5px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mp-row .line b.neg { color: var(--red); } .mp-row .line b.pos { color: var(--green); }
+.mp-row .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.mp-bar { position: relative; display: block; height: 5px; border-radius: 3px; background: #2A2A2E; margin: 8px 0 6px; overflow: hidden; }
+.mp-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+.mp-bar i.p { opacity: .3; }
+.mp-bar.over { box-shadow: inset 0 0 0 1px rgba(255, 95, 87, .6); }
+.mp-row .s { display: block; font-size: 11.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.mp-parts { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+.mp-part { flex: 1 1 0; min-width: 30px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.mp-part small { font-size: 10px; color: var(--text-2); }
+.mp-part i { display: block; width: 100%; height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--green) var(--p), #2A2A2E var(--p)); }
+.mp-part.over i { background: linear-gradient(90deg, var(--red) 100%, #2A2A2E 100%); }
+.mp-part.none i { background: #2A2A2E; }
+.mp-hint { font-size: 11px; margin: 6px 4px 4px; }
+.mp-row .line b.warn { color: var(--orange); }
+
+/* =================== v2.3 — Tesouro em aba própria + divisão da renda (bolacha de 100%) =================== */
+.sim-card { position: relative; }
+.sim-gear { position: absolute; top: 8px; right: 8px; color: var(--text-2); }
+.sim-gear + .sim-have { padding-right: 40px; }
+.sim-card > .segmented.sim-years:first-of-type { margin-top: 0; }
+.sim-main.small b { font-size: 24px; }
+.sim-main b.plain { color: #FFFFFF; font-size: 22px; }
+.sim-card > .primary-btn { display: block; width: 100%; margin-top: 8px; }
+.sim-stop.big b { font-size: 34px; color: var(--green); }
+.icon-btn.sm { width: 32px; height: 32px; }
+.icon-btn.sm svg { width: 18px; height: 18px; }
+.tr-item { gap: 6px; }
+.tr-item .icon-btn:nth-of-type(1) svg { transform: rotate(90deg); }
+.tr-item .icon-btn:nth-of-type(2) svg { transform: rotate(90deg); }
+.tr-item .icon-btn[disabled] { opacity: .25; }
+.warn { color: var(--orange); } .hint.warn { color: var(--orange); } .hint.neg { color: var(--red); }
+.donut-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.dist-model { margin: 2px 0 0; }
+.dist-accs { margin: 8px 0 0; justify-content: center; }
+.dist-legend button { display: inline-flex; align-items: center; gap: 5px; }
+.dist-legend button b { font-weight: 700; color: var(--text); }
+.dist-legend button small { color: var(--text-2); font-size: 11px; }
+.dist-legend button small.neg { color: var(--red); }
+.dist-detail { margin-top: 10px; background: var(--s2); border-radius: 12px; padding: 6px 12px 8px; }
+.dist-detail .kv { font-size: 13.5px; }
+.dist-detail .card-row { background: transparent; padding-left: 0; padding-right: 0; }
+.dist-cat { align-items: center; gap: 10px; text-align: left; width: 100%; }
+.dist-cat .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.dist-cat b { font-weight: 600; }
+.dist-cat small { display: block; font-size: 12px; color: var(--text-2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dist-cat .grow { min-width: 0; }
+.group-title .pos { color: var(--green); } .group-title .neg { color: var(--red); } .group-title .warn { color: var(--orange); }
+.mp-dist { margin: 4px 0 8px; }
+.hint.center { text-align: center; }
+.btn-row .primary-btn.sm { flex: 1 1 auto; height: 38px; }
+.btn-row { flex-wrap: wrap; }
+.rep-meta b { font-weight: 600; }
+.rep-tag { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-2); padding: 3px 4px 3px 18px; }
+.mp-part.met i { background: var(--green); }
+
+/* =================== v2.4 — configuração inicial (primeiro acesso) =================== */
+.onb { position: fixed; inset: 0; z-index: 55; background: #010101; display: none; }
+.onb.on { display: block; }
+.onb-in { max-width: 560px; height: 100%; margin: 0 auto; display: flex; flex-direction: column; padding: calc(10px + var(--top)) 18px calc(12px + var(--bottom)); }
+.onb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 0 10px; }
+.onb-top .text-btn { color: var(--text-2); font-size: 14px; }
+.onb-dots { display: flex; gap: 6px; }
+.onb-dots i { width: 8px; height: 8px; border-radius: 50%; background: #2A2A2E; }
+.onb-dots i.done { background: #4f6a80; } .onb-dots i.on { background: var(--accent); width: 20px; border-radius: 4px; }
+.onb-count { font-size: 12px; color: var(--text-2); min-width: 32px; text-align: right; }
+.onb-body { flex: 1 1 auto; overflow-y: auto; padding-bottom: 12px; }
+.onb-body h1 { font-size: 26px; line-height: 1.2; margin: 12px 0 8px; font-weight: 700; letter-spacing: -.3px; }
+.onb-lead { color: var(--text-2); font-size: 15px; line-height: 1.5; margin: 0 0 16px; }
+.onb-hint { color: var(--text-2); font-size: 12.5px; line-height: 1.5; margin: 8px 2px; }
+.onb-sub { font-size: 14px; font-weight: 600; margin: 14px 2px 8px; } .onb-sub small { font-weight: 400; color: var(--text-2); margin-left: 6px; }
+.onb-card { background: #141414; border-radius: 16px; padding: 12px; margin: 10px 0; }
+.onb-card p { margin: 4px 2px; font-size: 14px; line-height: 1.45; }
+.onb-card .onb-sub { margin-top: 2px; }
+.onb-row { display: flex; gap: 10px; align-items: flex-end; }
+.onb-row > .grow, .onb-row .grow { flex: 1 1 0; min-width: 0; }
+.onb-f { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; font-size: 13px; color: var(--text-2); }
+.onb-f input, .onb-f select, .onb-row > input { background: #1E1E1E; border: 1px solid #2A2A2E; border-radius: 12px; color: var(--text); font-size: 15px; padding: 11px 12px; min-width: 0; width: 100%; }
+.onb-check { display: flex; gap: 10px; align-items: center; font-size: 14px; margin: 10px 2px 2px; color: var(--text); }
+.onb-add { display: block; width: 100%; padding: 13px; border-radius: 14px; border: 1px dashed #3A3A3C; color: var(--accent); font-weight: 600; margin: 10px 0; background: transparent; }
+.onb-options { display: flex; flex-direction: column; gap: 8px; margin: 6px 0 12px; }
+.onb-options button { text-align: left; padding: 15px 16px; border-radius: 14px; background: #141414; border: 1px solid #222; font-size: 15px; color: var(--text); }
+.onb-options button.on { border-color: var(--accent); background: rgba(169, 212, 245, .08); }
+.onb-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; border-top: 1px solid #1E1E1E; }
+.onb-foot .primary-btn { width: auto; min-width: 120px; padding: 0 18px; }
+.onb .chips { margin: 4px 0 6px; }
+.onb-foot .primary-btn { height: 48px; flex: 0 0 auto; }
+
+/* =================== v2.6 — acabamento minimalista: cartão "Por metas" no estilo do app antigo =================== */
+.bm-card { background: #141414; border-radius: 22px; padding: 16px 16px 10px; }
+.bm-card .donut-head b { font-size: 19px; font-weight: 700; }
+.bm-head-r { display: inline-flex; align-items: center; gap: 4px; }
+.bm-head-r small { color: var(--text-2); font-size: 12.5px; }
+.bm-card .donut { margin: 14px 0 6px; }
+.bm-card .donut svg { width: 210px; height: 210px; }
+.bm-warn { text-align: center; color: var(--red); font-size: 12.5px; margin: 0 0 6px; }
+.bm-note { text-align: center; color: var(--text-2); font-size: 12px; margin: 6px 0 4px; }
+.bm-list { display: flex; flex-direction: column; margin-top: 6px; }
+.bm-row { display: block; width: 100%; text-align: left; padding: 12px 4px 11px; border-top: 1px solid #1F1F22; background: none; }
+.bm-row:first-child { border-top: 0; }
+.bm-l1 { display: flex; align-items: center; gap: 10px; }
+.bm-l1 i { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.bm-l1 .grow { font-size: 16px; font-weight: 600; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bm-l1 b { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bm-l1 small { width: 42px; text-align: right; color: var(--text-2); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bm-bar { display: block; height: 5px; border-radius: 3px; background: #2A2A2E; margin: 9px 0 7px 21px; overflow: hidden; }
+.bm-bar i { display: block; height: 100%; border-radius: 3px; }
+.bm-l3 { display: flex; justify-content: space-between; gap: 10px; padding-left: 21px; font-size: 12.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.bm-l3 b { color: var(--text); font-weight: 700; }
+.bm-l3 .neg, .bm-l3 .neg b { color: var(--red); }
+.mp-more { margin-top: 2px; }
+.sim-note { color: var(--text-3, #7a7a7a); font-size: 11.5px; margin: 14px 2px 6px; line-height: 1.5; }
+@media (min-width: 1100px) { .bm-card .donut svg { width: 230px; height: 230px; } }
+
+/* v2.6.1 — formulários mais limpos: cores e etiquetas pequenas */
+.swatches.sm { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 4px; }
+.swatches.sm button { width: 26px; height: 26px; flex: none; aspect-ratio: auto; }
+.swatches.sm button.on { box-shadow: 0 0 0 2px var(--s2), 0 0 0 4px #fff; }
+.row.col .chips { gap: 6px; }
+.row.col .chips .chip { font-size: 12.5px; padding: 5px 10px; min-height: 0; }
+.bm-eco { cursor: default; } .bm-eco .grow { color: #45cf7f; } b.pos { color: var(--green); }
+
+/* v2.6.3 — tocar na bolacha mostra a Meta */
+.donut svg .bm-seg { cursor: pointer; transition: opacity .15s; }
+.donut svg.picked .bm-seg { opacity: .3; }
+.donut svg.picked .bm-seg.on { opacity: 1; }
+.donut svg .bm-hole { cursor: pointer; }
+.bm-row.sel { background: rgba(255,255,255,.06); border-radius: 10px; }
+.donut svg, .donut svg * { outline: none; -webkit-tap-highlight-color: transparent; }
+/* v2.6.5 — botão R$ / % da bolacha */
+.bv-tog { display: inline-flex; background: #1F1F22; border-radius: 999px; padding: 2px; margin-right: 2px; }
+.bv-tog button { min-width: 34px; height: 26px; padding: 0 9px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: var(--text-2); background: none; }
+.bv-tog button.on { background: #3A3A3F; color: var(--text); }

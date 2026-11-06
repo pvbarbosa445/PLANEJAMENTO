@@ -1,8 +1,8 @@
 // Meu Planejamento Financeiro — funciona offline.
 // Rede primeiro: quando há internet, abre sempre a versão mais nova do GitHub; sem internet, usa a última guardada.
 // Os dados ficam no navegador (localStorage) e nunca são apagados por este arquivo.
-const CACHE = 'mpf-2026-11-04u';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
+const CACHE = 'mpf-2026-11-06-supabase-sync-v3';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './sync.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(ASSETS.map(a => c.add(a).catch(() => {})))).then(() => self.skipWaiting()));
