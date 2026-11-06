@@ -26,17 +26,19 @@ function appRedirect() {
 }
 
 function placeSyncInDrawer() {
-  // Keep a direct reference: the app rebuilds the drawer with innerHTML,
-  // which temporarily detaches this element from the document.
+  // The app rebuilds #drw with innerHTML. Reattach this node only when it
+  // was actually detached. Do not call paint() here: the observer watches
+  // childList changes on body, and paint() writes cloud-user.textContent.
+  // Doing that on every observer callback caused an endless mutation loop
+  // and froze the page immediately after login.
   const root = syncRoot || $('cloud-sync-root');
   if (!root) return;
   const drawer = $('drw');
   if (!drawer) {
     if (root.parentElement !== document.body) document.body.appendChild(root);
-    root.hidden = true;
+    if (!root.hidden) root.hidden = true;
     return;
   }
-  root.hidden = false;
   if (root.parentElement !== drawer) {
     const headings = Array.from(drawer.querySelectorAll('.dgt'));
     const displayHeading = headings.find(el => el.textContent.trim() === 'Exibição');
@@ -44,13 +46,13 @@ function placeSyncInDrawer() {
     if (controls && controls.classList.contains('dgr')) controls.after(root);
     else drawer.append(root);
   }
+  if (root.hidden) root.hidden = false;
   if (recoveryMode) {
     const panel = $('cloud-sync-panel');
-    if (panel) panel.classList.add('open');
+    if (panel && !panel.classList.contains('open')) panel.classList.add('open');
     const trigger = $('cloud-sync-open');
-    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    if (trigger && trigger.getAttribute('aria-expanded') !== 'true') trigger.setAttribute('aria-expanded', 'true');
   }
-  paint();
 }
 function ensureUI() {
   if (syncRoot && syncRoot.isConnected) return;
@@ -117,7 +119,12 @@ function ensureUI() {
   $('cloud-logout').onclick = async () => { await sb.auth.signOut(); };
 
   // O menu lateral é criado e reconstruído pelo app; recoloca o bloco sempre que necessário.
-  const observer = new MutationObserver(() => placeSyncInDrawer());
+  const observer = new MutationObserver(() => {
+    const drawer = $('drw');
+    // Ignore all ordinary app mutations while the sync node is already in
+    // the drawer. Reinsert only after the app has replaced drawer.innerHTML.
+    if (drawer && root.parentElement !== drawer) placeSyncInDrawer();
+  });
   observer.observe(document.body, { childList: true, subtree: true });
   placeSyncInDrawer();
 }
@@ -139,11 +146,22 @@ function status(message) {
 }
 
 function paint() {
-  if (!$('cloud-auth')) return;
-  $('cloud-auth').hidden = !!session || recoveryMode;
-  $('cloud-reset').hidden = !recoveryMode;
-  $('cloud-account').hidden = !session || recoveryMode;
-  if (session && !recoveryMode) $('cloud-user').textContent = 'Conectado: ' + session.user.email;
+  const authBox = $('cloud-auth');
+  const resetBox = $('cloud-reset');
+  const accountBox = $('cloud-account');
+  if (!authBox || !resetBox || !accountBox) return;
+  const authHidden = !!session || recoveryMode;
+  const resetHidden = !recoveryMode;
+  const accountHidden = !session || recoveryMode;
+  if (authBox.hidden !== authHidden) authBox.hidden = authHidden;
+  if (resetBox.hidden !== resetHidden) resetBox.hidden = resetHidden;
+  if (accountBox.hidden !== accountHidden) accountBox.hidden = accountHidden;
+  if (session && !recoveryMode) {
+    const user = $('cloud-user');
+    const label = 'Conectado: ' + session.user.email;
+    // Avoid replacing the text node when the value is already current.
+    if (user && user.textContent !== label) user.textContent = label;
+  }
 }
 
 async function auth(method) {
