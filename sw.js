@@ -1,6 +1,6 @@
 // Meu Planejamento Financeiro — cache offline com atualização de versão.
 // Rede primeiro; se estiver offline, utiliza a última cópia local.
-const CACHE = 'mpf-2026-11-06-auto-bidirectional-sync-v1';
+const CACHE = 'mpf-2026-11-06-auto-bidirectional-sync-pc-typography-v2';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './sync.js'];
 
 self.addEventListener('install', event => {
