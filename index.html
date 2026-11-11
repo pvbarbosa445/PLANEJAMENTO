@@ -1292,78 +1292,148 @@ html[data-theme="light"] .memo-progress span {
   background-color:var(--ac)!important;
 }
 
-/* Ajustes visuais finais solicitados pelo usuário */
-html[data-theme="light"] .mod .mf {
-  background: #FFFFFF !important;
-}
+/* Ajustes visuais finais — Correção completa modo claro, formato das tags e alinhamento */
 
-/* Aplica o estilo translúcido e arredondado (estilo Apple) nas tags da versão escura */
-body.lean .cal2.xl .cb {
-  display: block !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 18px !important;
-  height: auto !important;
-  line-height: 1.2 !important;
-  padding: 3px 5px !important;
-  border: 0 !important;
-  border-left: 3px solid var(--cb-color, #8E8E93) !important;
-  border-radius: 5px !important;
-  background: color-mix(in srgb, var(--cb-color, #8E8E93) 25%, transparent) !important;
-  color: #F5F5F5 !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-  font-family: inherit !important;
-  font-size: 10.5px !important;
-  font-style: normal !important;
-  font-weight: 600 !important;
-  text-align: left !important;
-  letter-spacing: 0 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+/* 1. Limpa TODOS os resquícios de preto e fundo branco destoante nos modais e painéis do modo claro (#E5E5EA) */
+html[data-theme="light"] .mod .mf,
+html[data-theme="light"] .mf {
+  background-color: #E5E5EA !important;
+  border-top-color: #C7C7CC !important;
 }
-body.lean .cal2.xl .cb.pv {
-  border: 1px dashed var(--cb-color, #8E8E93) !important;
-  border-left: 3px dashed var(--cb-color, #8E8E93) !important;
-  background: color-mix(in srgb, var(--cb-color, #8E8E93) 12%, transparent) !important;
-  opacity: .9 !important;
-  box-shadow: none !important;
+html[data-theme="light"] .tp,
+html[data-theme="light"] .box,
+html[data-theme="light"] .fp,
+html[data-theme="light"] .fp .ck,
+html[data-theme="light"] .srow,
+html[data-theme="light"] .ht .gh td,
+html[data-theme="light"] .ht tr.xr td,
+html[data-theme="light"] .tbl tr.pr td,
+html[data-theme="light"] .bx,
+html[data-theme="light"] .dpanel .empty,
+html[data-theme="light"] .lsw.mini,
+html[data-theme="light"] .wk7 button,
+html[data-theme="light"] .yg i:not(.ut):not(.w),
+html[data-theme="light"] .addpill {
+  background-color: #D8D8DC !important;
+  color: #1D1D1F !important;
+  border-color: #C7C7CC !important;
 }
-
-/* Ajuste de proporção das tags esticadas no celular (Z Flip 6) */
+html[data-theme="light"] .tp button {
+  background: transparent !important;
+  color: #636366 !important;
+}
+html[data-theme="light"] .tp button.in.on {
+  background: rgba(36, 138, 61, 0.18) !important;
+  color: #248A3D !important;
+}
+html[data-theme="light"] .tp button.out.on {
+  background: rgba(215, 0, 21, 0.15) !important;
+  color: #D70015 !important;
+}
+html[data-theme="light"] .pl button {
+  background-color: #D8D8DC !important;
+  border: 1px solid #B8B8BF !important;
+  color: #1D1D1F !important;
+}
+html[data-theme="light"] .pl button.on {
+  background-color: rgba(0, 122, 255, 0.16) !important;
+  border-color: #007AFF !important;
+  color: #007AFF !important;
+}
+html[data-theme="light"] .refb,
+html[data-theme="light"] .mgrid button,
+html[data-theme="light"] .tb,
+html[data-theme="light"] .tgb.add,
+html[data-theme="light"] .tagc,
+html[data-theme="light"] .lnk b,
+html[data-theme="light"] .dfo .bd,
+html[data-theme="light"] .ch.more,
+html[data-theme="light"] .d2 .ch.more {
+  background-color: #D8D8DC !important;
+  border-color: #B8B8BF !important;
+  color: #1D1D1F !important;
+}
+html[data-theme="light"] .mgrid button.on,
+html[data-theme="light"] .pg .pn button.on {
+  background-color: #007AFF !important;
+  border-color: #007AFF !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="light"] .tl .it:hover,
+html[data-theme="light"] .tl .it.hv,
+html[data-theme="light"] .pop button:hover,
+html[data-theme="light"] .mh .x:hover,
+html[data-theme="light"] .ib:hover,
+html[data-theme="light"] .mc:hover,
+html[data-theme="light"] .fp label.cb:hover,
+html[data-theme="light"] .accpop button.on {
+  background-color: #D1D1D6 !important;
+  color: #1D1D1F !important;
+}
+html[data-theme="light"] .sel,
+html[data-theme="light"] .fchip {
+  background-color: rgba(0, 122, 255, 0.12) !important;
+  border-color: rgba(0, 122, 255, 0.35) !important;
+  color: #1D1D1F !important;
+}
+html[data-theme="light"] .st.r {
+  background-color: rgba(36, 138, 61, 0.16) !important;
+  color: #248A3D !important;
+}
+html[data-theme="light"] #toast {
+  background-color: #1D1D1F !important;
+  color: #FFFFFF !important;
+}
 @media (max-width: 760px) {
-  body.lean .cal2.xl .cb {
+  html[data-theme="light"] table.tbl tr {
+    background-color: #D8D8DC !important;
+    border-color: #C7C7CC !important;
+  }
+}
+
+/* 2. Tags no modo escuro: mantém A COR EXATA que era antes (fundo sólido colorido e texto #111),
+      aplicando apenas o formato/layout da versão clara (borda lateral 3px, raio 5px, tracejado nas previstas) */
+html:not([data-theme="light"]) body.lean .cal2.xl .cb {
+  border: 0 !important;
+  border-left: 3px solid rgba(0, 0, 0, 0.28) !important;
+  border-radius: 5px !important;
+  padding: 3px 5px !important;
+  min-height: 18px !important;
+  line-height: 1.2 !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  color: #111111 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+html:not([data-theme="light"]) body.lean .cal2.xl .cb.pv {
+  border: 1px dashed rgba(0, 0, 0, 0.38) !important;
+  border-left: 3px dashed rgba(0, 0, 0, 0.48) !important;
+  opacity: 0.85 !important;
+  box-shadow: none !important;
+}
+@media (max-width: 760px) {
+  html:not([data-theme="light"]) body.lean .cal2.xl .cb {
     font-size: 10px !important;
     min-height: 16px !important;
     padding: 2px 4px !important;
   }
 }
 
-/* Mantém as cores de texto e fundo exclusivas da versão clara na proporção correta */
-html[data-theme="light"] body.lean .cal.cal2.xl .cb {
-  background: color-mix(in srgb, var(--cb-color, #8E8E93) 19%, #FFFFFF) !important;
-  color: color-mix(in srgb, var(--cb-color, #8E8E93) 62%, #252525) !important;
-}
-html[data-theme="light"] body.lean .cal.cal2.xl .cb.pv {
-  background: color-mix(in srgb, var(--cb-color, #8E8E93) 10%, #FFFFFF) !important;
-}
-
-/* Centraliza perfeitamente o número do dia e o valor na base da célula (Versão PC) */
-@media (min-width: 761px) {
-  /* Centraliza o saldo no tema escuro */
-  body.lean .cal2 .d2 .sb {
-    text-align: center !important;
-    justify-content: center !important;
-  }
-}
-
-/* Centraliza o número do dia e o saldo no tema claro */
-html[data-theme="light"] body.lean .cal.cal2 > .d2 .n {
+/* 3. Centraliza perfeitamente o número do dia (ex: 5) e o saldo embaixo com a letra da coluna (ex: Q) no PC e no Z Flip 6 */
+body.lean .cal.cal2 > .d2 .n,
+html[data-theme="light"] body.lean .cal.cal2 > .d2 .n,
+body.acc3 .agenda-cal > .d2 .n,
+html[data-theme="light"] body.acc3 .agenda-cal > .d2 .n {
   align-self: center !important;
+  justify-self: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
 }
+body.lean .cal.cal2 > .d2 .sb,
 html[data-theme="light"] body.lean .cal.cal2 > .d2 .sb {
+  align-self: stretch !important;
   text-align: center !important;
   justify-content: center !important;
 }
