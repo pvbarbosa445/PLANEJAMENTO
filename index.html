@@ -642,35 +642,32 @@ body.acc3 .agenda-cal .d2{min-width:0}
 @media(min-width:761px){body.acc3 .agenda-cal .d2{min-height:max(110px,calc((100vh - 330px)/6))}body.acc3 .agenda-cal .agenda-chip{font-size:11px;line-height:1.25;padding:3px 5px}body.acc3 .agenda-today{max-width:900px}}
 
 /* ==========================================================================
-   TEMA ÚNICO CINZA ESCURO + AZUL (#A9D4F5) — Z FLIP 6 (MOBILE) E PC (DESKTOP)
-   Mantém 100% da estrutura original de celular e PC:
-   - Z Flip 6: n (topo), sb (order:3, embaixo), cdw/cbw (order:2, no meio)
-   - PC: n (order:0), cbw/cdw (order:1, no meio), sb (order:2, embaixo)
+   TEMA ÚNICO PRETO TRUE BLACK + AZUL (#A9D4F5) — Z FLIP 6 E PC
    ========================================================================== */
-
 :root {
-  --bg: #1E1F23 !important;
-  --sb: #26282D !important;
-  --cd: #26282D !important;
-  --in: #30333A !important;
-  --bd: #3E424B !important;
-  --tx: #F5F5F7 !important;
-  --t2: #A5ACB8 !important;
+  --bg: #000000 !important;
+  --sb: #1C1C1E !important;
+  --cd: #1C1C1E !important;
+  --in: #2C2C2E !important;
+  --bd: #38383A !important;
+  --tx: #FFFFFF !important;
+  --t2: #8E8E93 !important;
   --ac: #A9D4F5 !important;
   --gr: #30D158 !important;
   --rd: #FF453A !important;
   --nt: #8E8E93 !important;
 }
 
-/* Substitui os pretos puros (#000, #141416) pelo cinza escuro sem mexer no layout */
 body, #app, main, #main {
-  background: var(--bg) !important;
-  color: var(--tx) !important;
+  background: #000000 !important;
+  color: #FFFFFF !important;
 }
+
 nav, #drw, body.lean #drw, .mod, .mod .mf, .pop, .tip, body.lean .apill, .addpill {
-  background: #26282D !important;
-  border-color: var(--bd) !important;
+  background: #1C1C1E !important;
+  border-color: #38383A !important;
 }
+
 body.lean .cal2 .d,
 body.lean .cal2 .d.e,
 body.acc3 .agenda-cal .d2,
@@ -695,26 +692,30 @@ body.lean .wk7 button,
 .cofl,
 .lpg,
 .ltri > div {
-  background: #282A30 !important;
+  background: #1C1C1E !important;
 }
+
 body.lean .cal2 .d.om,
 body.acc3 .agenda-cal .d2.om {
-  background: #1A1B1F !important;
+  background: #0B0B0C !important;
 }
+
 body.lean .cal2 .d.om .n,
 body.acc3 .agenda-cal .d2.om .n {
-  color: #5E626B !important;
+  color: #555555 !important;
 }
+
 body.lean .cal2 .d.sl,
 body.lean .cal2 .d2.sl {
-  background-color: #282A30 !important;
+  background-color: #1C1C1E !important;
   box-shadow: inset 0 0 0 1.5px #A9D4F5 !important;
 }
+
 #drw .dsw input:checked + i {
   background: #A9D4F5 !important;
 }
 
-/* Sábados, domingos, feriados e cabeçalho D / S em AZUL (#A9D4F5) tanto no Z Flip 6 quanto no PC */
+/* Sábados, domingos, feriados e cabeçalhos em AZUL (#A9D4F5) */
 body.lean .cal2 > .w:nth-child(1),
 body.lean .cal2 > .w:nth-child(7),
 body.lean .cal2 .w.wk,
@@ -735,7 +736,7 @@ body.acc3 .agenda-cal .d2.ho:not(.om) .n {
   color: #A9D4F5 !important;
 }
 
-/* Dia atual (hoje) com bolinha na mesma tonalidade de azul (#A9D4F5) e texto escuro */
+/* Dia atual (hoje) em AZUL (#A9D4F5) com texto escuro */
 body.lean .cal2 .d2.td .n,
 body.lean .yg i.ut,
 body.lean .wk7 button.td b,
@@ -744,10 +745,10 @@ body.acc3 .agenda-cal .d2.td .n {
   color: #101820 !important;
 }
 
-/* Ordem e centralização nas células do calendário (Z Flip 6 e PC):
-   1º Número do dia (.n) centralizado no topo
-   2º Barrinhas/Tags (.cdw / .cbw) no meio
-   3º Valor (.sb) centralizado EMBAIXO das tags */
+/* Ordem e alinhamento no Z Flip 6 e PC:
+   1º Número (.n) no topo
+   2º Tags/barrinhas (.cdw / .cbw) no meio
+   3º Saldo (.sb) embaixo */
 body.lean .cal2 .d2 {
   display: flex !important;
   flex-direction: column !important;
@@ -778,7 +779,6 @@ body.lean .cal2 .d2 .sb {
 }
 
 </style>
-</head><body>
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
