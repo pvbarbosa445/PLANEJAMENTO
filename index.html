@@ -1062,6 +1062,28 @@ html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):no
 html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
   background-color:rgba(10,132,255,.095)!important;
 }
+
+
+</style>
+<style id="desktop-weekend-blue-soft-match-sidebar">
+/* PC: clarear o azul dos fins de semana e feriados para combinar com o azul suave da aba de contas.
+   O ajuste vale nos temas claro e escuro e não altera o Z Flip 6, o dia atual ou a seleção do usuário. */
+@media (min-width:761px) and (hover:hover) and (pointer:fine){
+  html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
+  html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
+    background-color:rgba(169,212,245,.38)!important;
+    border-color:rgba(43,120,214,.20)!important;
+  }
+  html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
+  html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
+  html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
+  html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
+    background-color:rgba(169,212,245,.28)!important;
+    border-color:rgba(169,212,245,.22)!important;
+  }
+}
 </style>
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>

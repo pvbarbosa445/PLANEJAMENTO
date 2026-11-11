@@ -1,0 +1,17 @@
+ATUALIZAÇÃO — AZUL MAIS CLARO NO CALENDÁRIO DO PC
+
+Esta versão clareia o fundo azul dos sábados, domingos e feriados no calendário de computador, aproximando-o do azul suave do botão de conta na aba lateral.
+
+- Tema escuro: fundo azul mais claro e suave, mantendo texto azul claro.
+- Tema claro: fundo azul pastel mais visível.
+- O dia atual continua com seu destaque próprio.
+- A mudança vale também para a visão mensal da Conta 3 no PC.
+- O CSS do celular/Z Flip 6 não foi alterado por esta melhoria.
+
+COMO APLICAR
+1. Faça uma cópia de segurança do repositório.
+2. Envie index.html e sw.js para a raiz do repositório PLANEJAMENTO, substituindo os arquivos existentes.
+3. Confirme o commit.
+4. No PC, atualize a página com Ctrl+Shift+R.
+
+Não apague o repositório, não limpe os dados do navegador e não execute SQL no Supabase.
