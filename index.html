@@ -1026,304 +1026,34 @@ html:not([data-theme="light"]) #drw .dx.dtheme{background:#1C1C1E;border:1px sol
   html[data-theme="light"] body.acc3 .agenda-cal .agenda-day.td .n{background:#007AFF!important;color:#FFFFFF!important}
   html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{background:color-mix(in srgb,var(--agc) 18%,#FFFFFF)!important;color:#33343A!important;border-left:3px solid var(--agc)!important;border-radius:5px!important;padding:3px 5px!important}
 }
-</style><script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(['light','medium','dark'].includes(t))document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
+</style><script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
 
 <style id="weekends-holidays-app-blue">
-/* Identidade do aplicativo: sábados, domingos e feriados em azul em todos os dispositivos e temas.
-   As regras usam as classes reais .we e .ho, sem depender da posição do dia na grade. */
+/* Tema claro: sábados, domingos e feriados azuis. Tema escuro tradicional: vermelho. */
 html[data-theme="light"] body.lean .cal2 .w.wk,
-html[data-theme="light"] body.acc3 .agenda-cal .w.wk,
-html:not([data-theme="light"]) body.lean .cal2 .w.wk,
-html:not([data-theme="light"]) body.acc3 .agenda-cal .w.wk{
-  color:var(--ac)!important;opacity:1!important;
-}
-
+html[data-theme="light"] body.acc3 .agenda-cal .w.wk { color:#007AFF!important; opacity:1!important; }
 html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td) .n,
 html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
 html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n { color:#007AFF!important; opacity:1!important; }
+html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl) { background-color:rgba(0,122,255,.055)!important; }
+
+html:not([data-theme="light"]) body.lean .cal2 .w.wk,
+html:not([data-theme="light"]) body.acc3 .agenda-cal .w.wk { color:#FF453A!important; opacity:1!important; }
 html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td) .n,
 html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
 html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n{
-  color:var(--ac)!important;opacity:1!important;
-}
-
-/* Fundo azulado quase imperceptível, mantendo o branco no tema claro e o preto no escuro. */
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-  background-color:rgba(43,120,214,.055)!important;
-}
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n { color:#FF453A!important; opacity:1!important; }
 html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
 html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
 html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-  background-color:rgba(10,132,255,.095)!important;
-}
-
-
-</style>
-<style id="desktop-weekend-blue-soft-match-sidebar">
-/* PC: clarear o azul dos fins de semana e feriados para combinar com o azul suave da aba de contas.
-   O ajuste vale nos temas claro e escuro e não altera o Z Flip 6, o dia atual ou a seleção do usuário. */
-@media (min-width:761px) and (hover:hover) and (pointer:fine){
-  html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-    background-color:rgba(169,212,245,.38)!important;
-    border-color:rgba(43,120,214,.20)!important;
-  }
-  html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-  html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-  html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-  html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-    background-color:rgba(169,212,245,.28)!important;
-    border-color:rgba(169,212,245,.22)!important;
-  }
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl) {
+  background:#141416!important; border-color:#38383A!important;
 }
 </style>
-
-<style id="mid-gray-light-theme">
-/* Tema claro em cinza intermediário: menos branco, sem escurecer a tipografia.
-   Só afeta o tema claro; o modo escuro tradicional permanece intacto. */
-html[data-theme="light"]{
-  color-scheme:light;
-  --bg:#C8CBD0;
-  --sb:#D5D8DD;
-  --cd:#DDE0E4;
-  --in:#C3C7CE;
-  --bd:#AEB4BD;
-  --tx:#202833;
-  --t2:#505B69;
-  --ac:#2B78D6;
-  --gr:#16864B;
-  --rd:#C93642;
-  --nt:#596574;
-}
-html[data-theme="light"] body,
-html[data-theme="light"] #app,
-html[data-theme="light"] main,
-html[data-theme="light"] #main{
-  background:#C8CBD0!important;
-  color:#202833!important;
-}
-html[data-theme="light"] nav,
-html[data-theme="light"] #drw{
-  background:#D5D8DD!important;
-  color:#202833!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] .c,
-html[data-theme="light"] .kpi,
-html[data-theme="light"] .cofi,
-html[data-theme="light"] .dcard,
-html[data-theme="light"] .sim-note,
-html[data-theme="light"] .sim-ef,
-html[data-theme="light"] .tpv,
-html[data-theme="light"] .oes label,
-html[data-theme="light"] .memo-card,
-html[data-theme="light"] .memo-routine,
-html[data-theme="light"] .memo-info,
-html[data-theme="light"] .lhero,
-html[data-theme="light"] .lrow>div,
-html[data-theme="light"] .lcat,
-html[data-theme="light"] .mcard,
-html[data-theme="light"] .cofl,
-html[data-theme="light"] .lpg{
-  background:#DDE0E4!important;
-  color:#202833!important;
-  border-color:#AEB4BD!important;
-  box-shadow:none!important;
-}
-html[data-theme="light"] .btn,
-html[data-theme="light"] .seg,
-html[data-theme="light"] .seg.r button,
-html[data-theme="light"] .msel,
-html[data-theme="light"] .mbox,
-html[data-theme="light"] .pill,
-html[data-theme="light"] .ib,
-html[data-theme="light"] .ltog,
-html[data-theme="light"] .accb,
-html[data-theme="light"] .dtg{
-  background:#DDE0E4!important;
-  color:#202833!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] .btn.p,
-html[data-theme="light"] .seg button.on,
-html[data-theme="light"] .seg.r button.on,
-html[data-theme="light"] nav a.on,
-html[data-theme="light"] .ltog button.on,
-html[data-theme="light"] .accb button.on,
-html[data-theme="light"] .dtg button.on{
-  background:#2B78D6!important;
-  color:#FFFFFF!important;
-  border-color:#2B78D6!important;
-}
-html[data-theme="light"] .i,
-html[data-theme="light"] input,
-html[data-theme="light"] select,
-html[data-theme="light"] textarea{
-  background:#E4E6E9!important;
-  color:#202833!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] .cal.cal2{
-  background:#C8CBD0!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] .cal2 .w{
-  background:#D5D8DD!important;
-  color:#303A47!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] .cal2 .d2{
-  background:#D3D6DB!important;
-  color:#202833!important;
-  border-color:#B2B8C0!important;
-}
-html[data-theme="light"] .cal2 .d2 .n,
-html[data-theme="light"] .cal2 .d2 .tot,
-html[data-theme="light"] .cal2 .d2 .sb{
-  color:#202833!important;
-}
-html[data-theme="light"] .cal2 .d2.om{
-  background:#C0C4CB!important;
-}
-html[data-theme="light"] .cal2 .d2.om .n{
-  color:#707987!important;
-}
-/* Fins de semana e feriados continuam azuis só no modo claro. */
-html[data-theme="light"] body.lean .cal2 .w.wk,
-html[data-theme="light"] body.lean .cal2>.w:nth-child(7),
-html[data-theme="light"] body.acc3 .agenda-cal .w.wk,
-html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(7){
-  color:#0066CC!important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-  background:#B9CEE4!important;
-  border-color:#8EADD0!important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n{
-  color:#0066CC!important;
-}
-html[data-theme="light"] #drw .dgr{
-  background:#E1E3E7!important;
-  border-color:#AEB4BD!important;
-}
-html[data-theme="light"] #drw .drow{color:#202833!important}
-html[data-theme="light"] #drw .drow.on{background:#B9CEE4!important;color:#005DBB!important}
-html[data-theme="light"] .fab,
-html[data-theme="light"] body.lean .apill{
-  background:#2B78D6!important;
-  color:#FFFFFF!important;
-}
-html[data-theme="light"] .sub,
-html[data-theme="light"] .mu,
-html[data-theme="light"] .empty,
-html[data-theme="light"] .lleg{color:#505B69!important}
-</style>
-
-<style id="mid-gray-grid-priority">
-/* Prioridade final para a grade: neutraliza os seletores mais específicos do tema claro anterior. */
-html[data-theme="light"] body.lean .cal.cal2,
-html[data-theme="light"] body.acc3 .cal.cal2,
-html[data-theme="light"] body.acc3 .agenda-cal{
-  background:#C8CBD0!important;border-color:#AEB4BD!important;
-}
-html[data-theme="light"] body.lean .cal2 .w,
-html[data-theme="light"] body.acc3 .agenda-cal .w{
-  background:#D5D8DD!important;color:#303A47!important;border-color:#AEB4BD!important;
-}
-html[data-theme="light"] body.lean .cal2 .w.wk,
-html[data-theme="light"] body.lean .cal2>.w:nth-child(7),
-html[data-theme="light"] body.acc3 .agenda-cal .w.wk,
-html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(7){color:#0066CC!important}
-html[data-theme="light"] body.lean .cal2 .d2,
-html[data-theme="light"] body.acc3 .agenda-cal .d2{
-  background:#D3D6DB!important;color:#202833!important;border-color:#B2B8C0!important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.om,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.om{
-  background:#C0C4CB!important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.om .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.om .n{color:#707987!important}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
-  background:#B9CEE4!important;border-color:#8EADD0!important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n{color:#0066CC!important}
-@media(max-width:760px){
-  html[data-theme="light"] body.lean .cal2 .d2,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2{background:#D3D6DB!important}
-  html[data-theme="light"] body.lean .cal2 .d2.om,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.om{background:#C0C4CB!important}
-  html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){background:#B9CEE4!important}
-}
-</style>
-
-<style id="three-coordinated-gray-themes">
-/* Três paletas alinhadas ao azul do app: claro cinza intermediário, escuro cinza médio, profundo quase preto. */
-html[data-theme="light"]{color-scheme:light;--bg:#BEC5CE;--sb:#CBD2DB;--cd:#D9DFE6;--in:#E2E7ED;--bd:#A8B3C0;--tx:#202B38;--t2:#536273;--ac:#287BCB;--gr:#16864D;--rd:#D83F4B;--nt:#647180;--weekend-bg:rgba(40,123,203,.16)}
-html[data-theme="medium"]{color-scheme:dark;--bg:#555D68;--sb:#48515D;--cd:#636D79;--in:#707B88;--bd:#808C9A;--tx:#F5F7FA;--t2:#D1D8E1;--ac:#91C9FF;--gr:#55D991;--rd:#FF818B;--nt:#BBC5D0;--weekend-bg:rgba(145,201,255,.17)}
-html[data-theme="dark"]{color-scheme:dark;--bg:#171C22;--sb:#202730;--cd:#29323C;--in:#333E49;--bd:#414E5B;--tx:#F3F6FA;--t2:#B3BFCC;--ac:#83C5FF;--gr:#50D88E;--rd:#FF7882;--nt:#9EABB9;--weekend-bg:rgba(131,197,255,.16)}
-html[data-theme] body,html[data-theme] #app,html[data-theme] main,html[data-theme] #main{background:var(--bg)!important;color:var(--tx)!important}
-html[data-theme] nav,html[data-theme] #drw{background:var(--sb)!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme] .c,html[data-theme] .kpi,html[data-theme] .cofi,html[data-theme] .dcard,html[data-theme] .sim-note,html[data-theme] .sim-ef,html[data-theme] .tpv,html[data-theme] .memo-card,html[data-theme] .memo-routine,html[data-theme] .memo-info,html[data-theme] .lhero,html[data-theme] .lcat,html[data-theme] .mcard,html[data-theme] .cofl{background:var(--cd)!important;color:var(--tx)!important;border-color:var(--bd)!important;box-shadow:none!important}
-html[data-theme] .btn,html[data-theme] .seg,html[data-theme] .msel,html[data-theme] .mbox,html[data-theme] .pill,html[data-theme] .ib,html[data-theme] .ltog,html[data-theme] .accb,html[data-theme] .dtg{background:var(--in)!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme] .btn.p,html[data-theme] .seg button.on,html[data-theme] nav a.on,html[data-theme] #drw .dseg button.on,html[data-theme] #drw .drow.on{background:var(--ac)!important;color:#10263B!important;border-color:var(--ac)!important}
-html[data-theme] input,html[data-theme] select,html[data-theme] textarea,html[data-theme] .i{background:var(--in)!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme] .sub,html[data-theme] .mu,html[data-theme] .dgt,html[data-theme] .empty{color:var(--t2)!important}
-html[data-theme] #drw .dgr{background:var(--cd)!important;border:1px solid var(--bd)!important}
-html[data-theme] #drw .dseg{background:var(--in)!important}
-html[data-theme] #drw .drow{background:transparent!important;color:var(--tx)!important}
-html[data-theme] #drw .drow svg{color:var(--t2)!important}
-html[data-theme] #drw .dx{background:var(--in)!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme] #drw .dtheme{color:var(--ac)!important}
-html[data-theme] .mod,html[data-theme] .modal,html[data-theme] .pop,html[data-theme] .tip{background:var(--cd)!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme] .fab{background:var(--ac)!important;color:#10263B!important}
-/* Calendário principal e Conta 3: substitui fundos e tipografia hardcoded nas regras antigas. */
-html[data-theme="light"] body.lean .cal.cal2,html[data-theme="medium"] body.lean .cal.cal2,html[data-theme="dark"] body.lean .cal.cal2,
-html[data-theme="light"] body.acc3 .agenda-cal,html[data-theme="medium"] body.acc3 .agenda-cal,html[data-theme="dark"] body.acc3 .agenda-cal{background:var(--cd)!important;border-color:var(--bd)!important}
-html[data-theme] body.lean .cal2 .w,html[data-theme] body.acc3 .agenda-cal .w{background:var(--sb)!important;color:var(--t2)!important;border-color:var(--bd)!important}
-html[data-theme] body.lean .cal2 .d2,html[data-theme] body.acc3 .agenda-cal .d2{background:var(--cd)!important;color:var(--tx)!important;border-color:var(--bd)!important;box-shadow:none!important}
-html[data-theme] body.lean .cal2 .d2 .n,html[data-theme] body.acc3 .agenda-cal .d2 .n{color:var(--tx)!important}
-html[data-theme] body.lean .cal2 .d2.om,html[data-theme] body.acc3 .agenda-cal .d2.om{background:var(--in)!important;opacity:.82!important}
-html[data-theme] body.lean .cal2 .d2.om .n,html[data-theme] body.acc3 .agenda-cal .d2.om .n{color:var(--t2)!important;opacity:.75!important}
-html[data-theme] body.lean .cal2 .d2 .sb{color:var(--gr)!important}
-html[data-theme] body.lean .cal2 .w.wk,html[data-theme] body.acc3 .agenda-cal .w.wk{color:var(--ac)!important;opacity:1!important}
-html[data-theme] body.lean .cal2 .d2.we:not(.om) .n,html[data-theme] body.lean .cal2 .d2.ho:not(.om) .n,html[data-theme] body.acc3 .agenda-cal .d2.we:not(.om) .n,html[data-theme] body.acc3 .agenda-cal .d2.ho:not(.om) .n{color:var(--ac)!important;opacity:1!important}
-html[data-theme] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),html[data-theme] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),html[data-theme] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),html[data-theme] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){background:var(--weekend-bg)!important}
-html[data-theme] body.lean .cal2 .d2.td .n,html[data-theme] body.acc3 .agenda-cal .d2.td .n{background:var(--ac)!important;color:#fff!important;border-radius:50%!important;font-weight:800!important}
-/* Controles e superfícies de apoio que antes usavam preto fixo. */
-html[data-theme] body.lean .ldsum,html[data-theme] body.lean .tgi,html[data-theme] body.lean .dpanel .ldr,html[data-theme] body.lean .dpanel .ldp,html[data-theme] body.lean .bar2,html[data-theme] body.lean .lg .bt{background:var(--in)!important;border-color:var(--bd)!important;color:var(--tx)!important}
-html[data-theme] body.lean .tgi .s,html[data-theme] body.lean .tgi .s b{color:var(--t2)!important}
-html[data-theme] body.lean .lhd b,html[data-theme] body.lean h1,html[data-theme] body.lean h2,html[data-theme] body.lean h3,html[data-theme] body.acc3 h1,html[data-theme] body.acc3 h2,html[data-theme] body.acc3 h3{color:var(--tx)!important}
-html[data-theme] body.lean .lhd button,html[data-theme] body.lean .pc-month-arrows button{background:var(--in)!important;color:var(--ac)!important;border-color:var(--bd)!important}
-@media(max-width:760px){
- html[data-theme] body.lean .cal2 .w,html[data-theme] body.acc3 .agenda-cal .w{display:flex!important;align-items:center!important;justify-content:center!important;min-height:28px!important;color:var(--t2)!important;border-bottom:1px solid var(--bd)!important;border-right:1px solid var(--bd)!important;background:var(--sb)!important}
- html[data-theme] body.lean .cal2 .w.wk,html[data-theme] body.acc3 .agenda-cal .w.wk{color:var(--ac)!important}
-}
-</style>
-
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -2609,7 +2339,7 @@ function drwHTML(){
  const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
  const tabs=['1','2','3'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''} ${a==='3'?'a3':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${esc(ACCN[a])}</span><small>${a==='3'?'Organização':bv(a)}</small></button>`).join('');
  const display=is3?`<div class="dgt">Exibição</div><div class="dgr"><div class="sm mu" style="padding:7px 2px">Os compromissos, tarefas e horários aparecem nas datas do calendário desta conta.</div></div>`:`<div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label><label class="dsw"><span>Saldos dos dias anteriores</span><input type="checkbox" ${S.showPast?'checked':''} onchange="pastDayToggle()"><i></i></label></div>`;
- return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx drl dtheme" onclick="themeCycle();drwSync()" aria-label="Alternar entre Claro, Escuro e Escuro profundo" title="Tema atual: ${themeLabel(readGlobalTheme())} · toque para alternar"><svg viewBox="0 0 24 24">${themeIcon(readGlobalTheme())}</svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
+ return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx drl dtheme" onclick="themeSet(S.theme==='light'?'dark':'light');drwSync()" aria-label="Alternar aparência" title="Alternar aparência"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
 <div class="dseg" role="tablist" aria-label="Conta">${tabs}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
 ${display}
@@ -2653,44 +2383,31 @@ function memoEnsure(){
   if(!S.theme) S.theme='dark';
 }
 const THEME_KEY='mpf_theme';
-const THEME_ORDER=['light','medium','dark'];
-function themeLabel(t){
-  return t==='light'?'Claro · cinza intermediário':t==='medium'?'Escuro · cinza médio':'Escuro profundo · quase preto';
-}
-function themeIcon(t){
-  if(t==='light')return '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>';
-  if(t==='medium')return '<path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/><path d="M16 3v4m-2-2h4"/>';
-  return '<path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/>';
-}
 function readGlobalTheme(){
   try{
     const saved=localStorage.getItem(THEME_KEY);
-    if(THEME_ORDER.includes(saved))return saved;
-    const legacy=S&&THEME_ORDER.includes(S.theme)?S.theme:'dark';
+    if(saved==='light'||saved==='dark')return saved;
+    const legacy=S&&S.theme==='light'?'light':'dark';
     localStorage.setItem(THEME_KEY,legacy);
     return legacy;
-  }catch(e){return S&&THEME_ORDER.includes(S.theme)?S.theme:'dark'}
+  }catch(e){return S&&S.theme==='light'?'light':'dark'}
 }
 function applyTheme(){
   const t=readGlobalTheme();
   S.theme=t;
   document.documentElement.setAttribute('data-theme',t);
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.content=t==='light'?'#C4CAD2':t==='medium'?'#565D67':'#1B2026';
+  if(meta) meta.content=t==='light'?'#FFFFFF':'#000000';
 }
 function themeSet(t){
-  const next=THEME_ORDER.includes(t)?t:'dark';
+  const next=t==='light'?'light':'dark';
   S.theme=next;
   try{localStorage.setItem(THEME_KEY,next)}catch(e){}
   applyTheme();
   save();
 }
-function themeCycle(){
-  const current=readGlobalTheme(),i=THEME_ORDER.indexOf(current);
-  themeSet(THEME_ORDER[(i+1)%THEME_ORDER.length]);
-}
 window.addEventListener('storage',e=>{
-  if(e.key===THEME_KEY&&THEME_ORDER.includes(e.newValue)){
+  if(e.key===THEME_KEY&&(e.newValue==='light'||e.newValue==='dark')){
     applyTheme();
     if(typeof drwSync==='function')try{drwSync()}catch(x){}
   }

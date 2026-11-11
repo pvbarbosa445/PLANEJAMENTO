@@ -1,15 +1,9 @@
-ATUALIZAÇÃO — TRÊS TEMAS CINZA COM AZUL
+RESTAURAÇÃO DOS DOIS TEMAS ORIGINAIS
 
-Foram adicionadas três aparências no mesmo botão:
-1. CLARO — cinza intermediário;
-2. ESCURO — cinza médio;
-3. ESCURO PROFUNDO — cinza quase preto.
+- Modo claro: branco com azul, como antes da alteração para cinza.
+- Modo escuro: preto tradicional, com letras vermelhas nos sábados, domingos e feriados.
+- O seletor volta a alternar somente entre Claro e Escuro.
+- A preferência permanece global e salva; qualquer valor antigo de tema intermediário é convertido para Escuro.
 
-O botão percorre as três opções nessa ordem. A escolha fica salva globalmente e acompanha a navegação entre páginas, contas e abas do navegador. O azul é mantido como cor de destaque e também nos fins de semana e feriados; as cores próprias das tags e os indicadores financeiros são preservados.
-
-ARQUIVOS PARA SUBSTITUIR NA RAIZ DO REPOSITÓRIO:
-- index.html
-- sw.js
-
-Antes, faça backup dos arquivos atuais. Não apague o repositório. Não execute SQL: esta é uma atualização visual.
-Após o GitHub Pages publicar, abra o app com internet e atualize a página. O novo cache no sw.js força a busca dos arquivos atualizados.
+Para atualizar, faça backup e substitua na raiz do GitHub somente index.html e sw.js.
+Não apague o repositório, não remova os dados do navegador e não execute SQL.
