@@ -2527,4 +2527,113 @@ body.lean .cal2 .d2 .sb {
   padding-left: 6px !important;
   margin-top: auto !important;
 }
-</style><!-- [FIX-CAL-OK] --></body></html>
+</style><!-- [FIX-CAL-OK] --><style id="fix-cal-samsung">
+/* --- CONTAINER E DIAS --- */
+body.lean .cal.cal2 { gap: 4px !important; }
+body.lean .cal2 .d, body.lean .cal2 .d2 {
+    background: #1C1C1E !important;
+    border-radius: 10px !important;
+    border: 1px solid #2C2C2E !important;
+    padding: 4px 5px !important;
+    min-height: 82px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+/* Remove fundo de hoje e de selecionado */
+body.lean .cal2 .d.sl, body.lean .cal2 .d.td, body.lean .cal2 .d2.sl, body.lean .cal2 .d2.td, body.lean .cal2 .d.we, body.lean .cal2 .d.ho {
+    background: #1C1C1E !important;
+    box-shadow: none !important;
+}
+body.lean .cal2 .d.sl { border: 1.5px solid #8E8E93 !important; } /* Borda cinza para o dia selecionado */
+
+/* --- NÚMEROS (TOPO ESQUERDO) --- */
+body.lean .cal2 .d2 .n {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #FFF !important;
+    align-self: flex-start !important;
+    justify-self: flex-start !important;
+    margin: 0 0 4px 0 !important;
+    width: 26px !important;
+    height: 26px !important;
+    line-height: 26px !important;
+    text-align: center !important;
+    border-radius: 50% !important;
+    display: block !important;
+}
+
+/* Finais de semana vermelhos */
+body.lean .cal2 .d:not(.om):nth-child(7n+1) .n,
+body.lean .cal2 .d:not(.om):nth-child(7n) .n {
+    color: #FF453A !important;
+}
+
+/* HOJE: Círculo Branco */
+body.lean .cal2 .d2.td .n {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* --- CABEÇALHO (D, S, T...) --- */
+body.lean .cal2 .w {
+    font-size: 11px !important;
+    color: #8E8E93 !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    padding: 4px 0 !important;
+    border: none !important;
+}
+body.lean .cal2 > .w:nth-child(1), body.lean .cal2 > .w:nth-child(7) {
+    color: #8E8E93 !important; /* Tira o vermelho do cabeçalho */
+}
+
+/* --- EVENTOS (TEXTO COLORIDO) --- */
+body.lean .cal2 .cbw, body.lean .cal2 .cdw {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    align-items: stretch !important;
+}
+body.lean .cal2 .cb {
+    display: block !important;
+    font-size: 9.5px !important;
+    line-height: 13px !important;
+    height: auto !important;
+    min-height: 14px !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
+    background: var(--cb-color) !important;
+    color: #111 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    margin-bottom: 1px !important;
+    text-shadow: none !important;
+}
+body.lean .cal2 .cb.pv {
+    opacity: 0.8 !important;
+    border: 1px dashed rgba(0,0,0,0.3) !important;
+}
+
+/* --- VALOR (CANTO INFERIOR DIREITO) --- */
+body.lean .cal2 .d2 .sb {
+    margin-top: auto !important;
+    align-self: flex-end !important;
+    font-size: 10px !important;
+    color: #8E8E93 !important;
+    font-weight: 600 !important;
+    text-align: right !important;
+    padding: 0 !important;
+    display: block !important;
+}
+body.lean .cal2 .d2 .sb.neg { color: #FF453A !important; }
+body.lean .cal2 .d2 .sb.pj { font-style: normal !important; }
+body.lean .cal2 .d2 .sb.pj::before { content: '' !important; }
+</style><!-- [FIX-CAL-SAMSUNG] --></body></html>
