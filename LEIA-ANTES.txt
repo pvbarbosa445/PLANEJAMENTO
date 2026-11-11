@@ -1,17 +1,15 @@
-ATUALIZAÇÃO — AZUL MAIS CLARO NO CALENDÁRIO DO PC
+ATUALIZAÇÃO — TRÊS TEMAS CINZA COM AZUL
 
-Esta versão clareia o fundo azul dos sábados, domingos e feriados no calendário de computador, aproximando-o do azul suave do botão de conta na aba lateral.
+Foram adicionadas três aparências no mesmo botão:
+1. CLARO — cinza intermediário;
+2. ESCURO — cinza médio;
+3. ESCURO PROFUNDO — cinza quase preto.
 
-- Tema escuro: fundo azul mais claro e suave, mantendo texto azul claro.
-- Tema claro: fundo azul pastel mais visível.
-- O dia atual continua com seu destaque próprio.
-- A mudança vale também para a visão mensal da Conta 3 no PC.
-- O CSS do celular/Z Flip 6 não foi alterado por esta melhoria.
+O botão percorre as três opções nessa ordem. A escolha fica salva globalmente e acompanha a navegação entre páginas, contas e abas do navegador. O azul é mantido como cor de destaque e também nos fins de semana e feriados; as cores próprias das tags e os indicadores financeiros são preservados.
 
-COMO APLICAR
-1. Faça uma cópia de segurança do repositório.
-2. Envie index.html e sw.js para a raiz do repositório PLANEJAMENTO, substituindo os arquivos existentes.
-3. Confirme o commit.
-4. No PC, atualize a página com Ctrl+Shift+R.
+ARQUIVOS PARA SUBSTITUIR NA RAIZ DO REPOSITÓRIO:
+- index.html
+- sw.js
 
-Não apague o repositório, não limpe os dados do navegador e não execute SQL no Supabase.
+Antes, faça backup dos arquivos atuais. Não apague o repositório. Não execute SQL: esta é uma atualização visual.
+Após o GitHub Pages publicar, abra o app com internet e atualize a página. O novo cache no sw.js força a busca dos arquivos atualizados.

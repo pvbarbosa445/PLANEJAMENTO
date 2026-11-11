@@ -1,6 +1,6 @@
 // Meu Planejamento Financeiro — cache offline com atualização de versão.
 // Rede primeiro; se estiver offline, utiliza a última cópia local.
-const CACHE = 'mpf-2026-11-11-zflip-mobile-light-v6';
+const CACHE = 'mpf-2026-11-11-three-gray-blue-v1';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './sync.js'];
 
 self.addEventListener('install', event => {
