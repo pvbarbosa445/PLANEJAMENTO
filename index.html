@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"><meta name="theme-color" content="#141414"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Meu Planejamento Financeiro</title>
 <style>
-:root{--bg:#222327;--sb:#2B2D32;--cd:#2B2D32;--in:#34373D;--bd:#434750;--tx:#F5F5F7;--t2:#A5ACB8;--ac:#0A84FF;--gr:#30D158;--rd:#FF453A;--nt:#8E8E93;color-scheme:dark;padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#141414;--sb:#1C1C1E;--cd:#202022;--in:#181819;--bd:#303033;--tx:#F5F5F5;--t2:#A5ACB8;--ac:#A9D4F5;--gr:#20C86A;--rd:#FF4848;--nt:#8B95A5;color-scheme:dark;padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.35 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
 .app{display:grid;grid-template-columns:64px 1fr;min-height:100vh}.app.ex{grid-template-columns:210px 1fr}
 nav{background:var(--sb);border-right:1px solid var(--bd);padding:14px 9px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
@@ -226,8 +226,8 @@ body.lean #lbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;b
 body.acc2{--ac:#34D399}.gll{color:var(--tx);font-weight:700;font-size:13px;cursor:pointer;text-align:right}.gck{font-style:normal;color:#34D399;font-size:11px;margin-left:3px}
 .cdw{display:flex;flex-direction:column;gap:2px;margin:3px 0 2px}.cst{display:block;width:100%;height:4px;border-radius:2px;box-sizing:border-box}.cst.pv{border:1px solid var(--sc);background:repeating-linear-gradient(135deg,var(--sc) 0 3px,transparent 3px 6px)}.cdm{font-size:10px;line-height:10px;color:var(--t2);font-weight:700;text-align:right}
 body.lean .d2 .sb{font-variant-numeric:tabular-nums;text-align:left}body.lean .d2 .sb small{font-size:.62em;font-weight:700;opacity:.7;letter-spacing:0}
-body.lean .d2 .sb{font-size:13px;font-weight:800;letter-spacing:-.4px;margin-top:auto;text-align:center;}
-@media(min-width:761px){body.lean .d2 .sb{font-size:18px;letter-spacing:-.3px}.cst{height:6px;border-radius:3px}.cdw{gap:3px;margin:2px 0 0;display:flex;flex-direction:column;width:100%;}body.lean .d2{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:4px;padding:9px 8px}body.lean .d2 .n{align-self:center;margin:0 auto 3px;font-size:16px;}body.lean .d2 .sb{margin-top:auto;text-align:center;align-self:stretch;font-size:16px;font-weight:800;letter-spacing:-0.3px;}}
+body.lean .d2 .sb{font-size:13px;font-weight:800;letter-spacing:-.4px;margin-top:auto}
+@media(min-width:761px){body.lean .d2 .sb{font-size:18px;letter-spacing:-.3px}.cst{height:6px;border-radius:3px}.cdw{gap:3px;margin:0;grid-area:t;align-self:end;min-width:0}body.lean .d2{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"n n" "v t";grid-template-rows:auto 1fr;column-gap:12px;row-gap:6px;align-items:end}body.lean .d2 .n{grid-area:n;align-self:start}body.lean .d2 .sb{grid-area:v;align-self:end;margin:0;font-size:17px;text-align:left}}
 body.lean .d2 .sb.pj::before{content:''!important}
 /* estilo Calendário iOS: grade contínua, sem caixas */
 body.lean .cal.cal2{gap:0;row-gap:0}
@@ -236,10 +236,10 @@ body.lean .cal2 .w{font-size:11px;font-weight:300;color:#8e8e93;letter-spacing:0
 body.lean .cal2 .d{background:transparent!important;border:0!important;border-top:1px solid #38383a!important;border-radius:0;box-shadow:none;padding-top:8px}
 body.lean .cal2 .d.e{border-top:1px solid #38383a!important}
 body.lean .cal2 .d.we .n,body.lean .cal2 .d.we{color:#5B9DFF}
-body.lean .cal2 .d.ho .n{color:var(--ac)}body.lean .cal2 .d.ho .n::after{content:none}
+body.lean .cal2 .d.ho .n{color:#ff453a}body.lean .cal2 .d.ho .n::after{content:none}
 body.lean .cal2 .d2 .n{font-size:17px;font-weight:600;color:#fff;justify-self:center;align-self:start;text-align:center;width:28px;height:28px;line-height:28px;border-radius:50%;margin:0 auto;display:block}
 body.lean .cal2 .d.we .n{color:#5B9DFF;font-weight:600}body.lean .cal2 .w.wk{color:#5B9DFF}
-body.lean .cal2 .d2.td .n{background:var(--ac);color:#fff}
+body.lean .cal2 .d2.td .n{background:#ff453a;color:#fff}
 body.lean .cal2 .d2.sl{background:rgba(255,255,255,.06)!important}
 body.lean .cal2 .d:hover{border-color:#38383a}body.lean .cal2 .d{border-left:1px solid #2b2b2e!important}body.lean .cal2>:nth-child(7n+1){border-left:0!important}
 body.lean .cal2 .d2 .sb{font-weight:700}
@@ -263,17 +263,17 @@ body.lean .lhd b{order:0;flex:1;text-align:left;font-size:28px;font-weight:800;l
 body.lean .lhd button{order:1;background:none!important;border:0!important;width:40px;height:40px;min-height:0;padding:0;font-size:30px;line-height:1;color:#fff;border-radius:50%}
 body.lean .cal.cal2{gap:6px;margin-top:6px}
 body.lean .cal2 .w{border:0!important;padding:6px 0 4px;font-size:14px;font-weight:700;color:#fff;margin:0}
-body.lean .cal2 .w.wk{color:#fff}body.lean .cal2>.w:nth-child(1){color:var(--ac)}
+body.lean .cal2 .w.wk{color:#fff}body.lean .cal2>.w:nth-child(1){color:#FF6B6B}
 body.lean .cal2 .d,body.lean .cal2 .d.e{background:#141416!important;border:0!important;border-radius:10px;box-shadow:none;padding:6px 3px 5px;min-height:62px}
 body.lean .cal2 .d.om{background:#0b0b0c!important}
 body.lean .cal2 .d.om .n{color:#555!important;font-weight:600}
 body.lean .cal2 .d2 .n,body.lean .cal2 .d.we .n{color:#fff;font-weight:700}
-body.lean .cal2 .d.ho .n,body.lean .cal2 .d:not(.om):nth-child(7n+1) .n{color:var(--ac)}
+body.lean .cal2 .d.ho .n,body.lean .cal2 .d:not(.om):nth-child(7n+1) .n{color:#FF6B6B}
 body.lean .cal2 .d2.td .n{background:#FF453A;color:#fff!important}
 body.lean .cal2 .d.sl,body.lean .cal2 .d2.sl{box-shadow:inset 0 0 0 1.5px #8E8E93!important;background-color:#141416!important;background-image:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,.07))!important}
 body.lean .cal2 .d:hover{border:0!important}
 @media(max-width:760px){
-body.lean .d2{display:flex;flex-direction:column;align-items:stretch;gap:2px;padding:5px 3px 4px;}
+body.lean .d2{display:flex;flex-direction:column;align-items:stretch;gap:2px}
 body.lean .cal2 .d2 .n{margin:0 auto;font-size:16px;width:26px;height:26px;line-height:26px}
 body.lean .d2 .sb{order:2;text-align:center!important;font-size:11px;margin:1px 0 0}
 body.lean .d2 .cdw{order:3;margin:auto 0 0;gap:2px}
@@ -359,15 +359,15 @@ body.lean .yg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
 body.lean .yg i{font-style:normal;font-size:9px;font-weight:600;text-align:center;border-radius:4px;background:#1c1c1e;padding:2px 0;line-height:1.25;min-height:15px}
 body.lean .yg i:empty{background:none}
 body.lean .yg i.w{background:none;color:#8e8e93;font-weight:600}
-body.lean .yg i.hr{color:var(--ac)}
-body.lean .yg i.ut{background:var(--ac);color:#fff}
+body.lean .yg i.hr{color:#FF6B6B}
+body.lean .yg i.ut{background:#FF453A;color:#fff}
 body.lean .wk7{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:2px 0 10px}
 body.lean .wk7 button{background:#141416;border:1.5px solid transparent;border-radius:10px;color:#fff;padding:6px 0 8px;cursor:pointer;font-family:inherit}
 body.lean .wk7 button small{display:block;font-size:10px;font-weight:700;color:#8e8e93;margin-bottom:3px}
 body.lean .wk7 button b{font-size:17px}
-body.lean .wk7 button.hr small,body.lean .wk7 button.hr b{color:var(--ac)}
+body.lean .wk7 button.hr small,body.lean .wk7 button.hr b{color:#FF6B6B}
 body.lean .wk7 button.sl{border-color:#8E8E93}
-body.lean .wk7 button.td b{background:var(--ac);color:#fff;border-radius:50%;display:inline-block;width:26px;line-height:26px}
+body.lean .wk7 button.td b{background:#FF453A;color:#fff;border-radius:50%;display:inline-block;width:26px;line-height:26px}
 body.lean .dph2{margin:4px 2px 8px;gap:8px}
 body.lean .dph2 b{font-size:26px}
 body.lean .dph2 span{font-size:13px;text-transform:none;color:var(--t2)}
@@ -378,16 +378,16 @@ body.lean .apill b{font-size:26px;font-weight:300;color:#fff;line-height:1}
 body.lean .cal2 .d{min-height:var(--ch,62px)!important}
 @media(max-width:760px){body.lean .cal.cal2.xl .d2{align-items:stretch;padding:5px 2px 4px}
 body.lean .cal2.xl .cbw{gap:2px;margin-top:2px;align-self:stretch;width:100%}
-body.lean .cal2.xl .cb{display:block;font-style:normal;font-size:10.5px;line-height:1.25;min-height:18px;height:auto;padding:3px 5px;border:0;border-left:3px solid rgba(0,0,0,0.28);border-radius:5px;color:#111;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;text-shadow:none;box-shadow:none}
-body.lean .cal2.xl .cb.pv{border:1px dashed rgba(0,0,0,0.38);border-left:3px dashed rgba(0,0,0,0.48);opacity:0.85;box-shadow:none;background:transparent}
+body.lean .cal2.xl .cb{display:block;font-style:normal;font-size:10px;line-height:15px;height:15px;padding:0 3px;border-radius:3px;color:#fff;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;text-shadow:0 1px 2px #0009}
+body.lean .cal2.xl .cb.pv{opacity:.8}
 body.lean .cal2.xl .sb{margin-top:auto}}
 body.lean .cgrab{display:flex;justify-content:center;align-items:center;height:22px;margin:2px 0 0;cursor:ns-resize;touch-action:none}
 body.lean .cgrab i{display:block;width:44px;height:4px;border-radius:2px;background:#48484a}
 body.lean .lean.swn,body.lean .lean.swp{animation:swin .22s ease-out}
 body.lean .lean.swp{--sw:-28px}body.lean .lean.swn{--sw:28px}
 @keyframes swin{from{opacity:.3;transform:translateX(var(--sw))}to{opacity:1;transform:none}}
-@media(max-width:760px){
-
+@media(max-width:760px){body.lean .cal2.xl .cbw{order:2!important;margin:3px 0 0!important}
+body.lean .cal2.xl .sb{order:3!important;margin-top:auto!important}
 body.lean .cal2.xl .cb{color:#111!important;text-shadow:none!important;font-weight:700}
 body.lean .cal2.xl .cb.pv{opacity:.85;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}}
 
@@ -582,39 +582,6 @@ body.lean .dm.sel,.dm.sel{display:block;border:0;margin:0;padding:7px 4px 6px;bo
   body.lean .pc-month-arrows button:focus-visible{outline:2px solid #A9D4F5!important;outline-offset:2px}
 }
 
-/* Modo claro branco + azul, aplicado ao app inteiro sem alterar o tema escuro padrão. */
-html[data-theme="light"]{
-  color-scheme:light;
-  --bg:#F4F8FF;--sb:#FFFFFF;--cd:#FFFFFF;--in:#F0F5FC;--bd:#D7E2F0;
-  --tx:#17263D;--t2:#60728A;--ac:#2B78D6;--gr:#169B54;--rd:#DE414B;--nt:#718096;
-}
-html[data-theme="light"] body{background:var(--bg)!important;color:var(--tx)!important}
-html[data-theme="light"] nav,html[data-theme="light"] #drw{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] main,html[data-theme="light"] #main,html[data-theme="light"] .app{background:var(--bg)!important;color:var(--tx)!important}
-html[data-theme="light"] .c,html[data-theme="light"] .kpi,html[data-theme="light"] .cofi,html[data-theme="light"] .dcard,html[data-theme="light"] .sim-note,html[data-theme="light"] .sim-ef,html[data-theme="light"] .tpv,html[data-theme="light"] .oes label,html[data-theme="light"] .memo-card,html[data-theme="light"] .memo-routine,html[data-theme="light"] .memo-info{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .d,html[data-theme="light"] .d2,html[data-theme="light"] .cal2 .d2,html[data-theme="light"] .ltri>div{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .d .n,html[data-theme="light"] .d2 .n,html[data-theme="light"] .cal2 .d2 .n{color:var(--tx)!important}
-html[data-theme="light"] .d .tot,html[data-theme="light"] .d2 .sb{color:var(--gr)!important}
-html[data-theme="light"] .btn,html[data-theme="light"] .seg,html[data-theme="light"] .seg.r button,html[data-theme="light"] .msel,html[data-theme="light"] .mbox,html[data-theme="light"] .pill,html[data-theme="light"] .ib{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .btn.p,html[data-theme="light"] .seg button.on,html[data-theme="light"] .seg.r button.on,html[data-theme="light"] nav a.on{background:var(--ac)!important;color:#FFFFFF!important;border-color:var(--ac)!important}
-html[data-theme="light"] .i,html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .dgt,html[data-theme="light"] .tgh{background:#EEF4FC!important;color:var(--t2)!important}
-html[data-theme="light"] .dgr .drow,html[data-theme="light"] #drw .drow{color:var(--tx)!important}
-html[data-theme="light"] .dinst{color:#10213D!important}
-html[data-theme="light"] .mod,html[data-theme="light"] .modal,html[data-theme="light"] .pop{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .ov{background:rgba(25,45,75,.35)!important}
-html[data-theme="light"] .tip{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .act .ic{background:#EAF2FC!important;color:var(--tx)!important}
-html[data-theme="light"] .pb,html[data-theme="light"] .lg .bt{background:#E5EDF7!important}
-html[data-theme="light"] .ch,html[data-theme="light"] .cal2 .cb{color:#111!important}
-html[data-theme="light"] .dc{fill:var(--tx)!important}
-html[data-theme="light"] #cloud-sync-root{color:var(--tx)!important}
-html[data-theme="light"] #cloud-sync-open{background:#EEF5FF!important;color:#1B5FAE!important;border-color:#CBDCF2!important}
-html[data-theme="light"] #cloud-sync-panel{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] #cloud-sync-panel p{color:var(--t2)!important}
-html[data-theme="light"] #cloud-sync-panel input{background:#F7FAFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] #cloud-sync-panel button.alt{background:#EEF4FC!important;color:var(--tx)!important;border-color:var(--bd)!important}
-
 /* Espaço de planos, anotações e rotina: usa as cores adaptáveis do tema. */
 .memo-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0 16px}
 .memo-toolbar h2{font-size:20px;margin:0}.memo-toolbar .sub{max-width:760px}
@@ -674,67 +641,145 @@ body.acc3 .agenda-cal .d2{min-width:0}
 @media(max-width:760px){body.acc3 .agenda-view-actions{display:block}body.acc3 .agenda-view-actions .ctl{margin-top:8px}body.acc3 .agenda-view-actions .btn{flex:1}body.acc3 .agenda-cal .agenda-chip{font-size:8px;line-height:1.15;padding:2px 3px}body.acc3 .agenda-cal .agenda-count{font-size:8px}body.acc3 .agenda-item{grid-template-columns:27px 46px minmax(0,1fr);gap:6px}body.acc3 .agenda-item>.btn{grid-column:3;justify-self:start}}
 @media(min-width:761px){body.acc3 .agenda-cal .d2{min-height:max(110px,calc((100vh - 330px)/6))}body.acc3 .agenda-cal .agenda-chip{font-size:11px;line-height:1.25;padding:3px 5px}body.acc3 .agenda-today{max-width:900px}}
 
+/* ==========================================================================
+   TEMA ÚNICO CINZA ESCURO + AZUL (#A9D4F5) — Z FLIP 6 (MOBILE) E PC (DESKTOP)
+   Mantém 100% da estrutura original de celular e PC:
+   - Z Flip 6: n (topo), sb (order:3, embaixo), cdw/cbw (order:2, no meio)
+   - PC: n (order:0), cbw/cdw (order:1, no meio), sb (order:2, embaixo)
+   ========================================================================== */
 
+:root {
+  --bg: #1E1F23 !important;
+  --sb: #26282D !important;
+  --cd: #26282D !important;
+  --in: #30333A !important;
+  --bd: #3E424B !important;
+  --tx: #F5F5F7 !important;
+  --t2: #A5ACB8 !important;
+  --ac: #A9D4F5 !important;
+  --gr: #30D158 !important;
+  --rd: #FF453A !important;
+  --nt: #8E8E93 !important;
+}
 
-/* Reforço de centralização e tags */
-body.lean .cal.cal2 > .d2 .n,
-body.acc3 .agenda-cal > .d2 .n {
+/* Substitui os pretos puros (#000, #141416) pelo cinza escuro sem mexer no layout */
+body, #app, main, #main {
+  background: var(--bg) !important;
+  color: var(--tx) !important;
+}
+nav, #drw, body.lean #drw, .mod, .mod .mf, .pop, .tip, body.lean .apill, .addpill {
+  background: #26282D !important;
+  border-color: var(--bd) !important;
+}
+body.lean .cal2 .d,
+body.lean .cal2 .d.e,
+body.acc3 .agenda-cal .d2,
+body.lean .lhero.lh1,
+body.lean .lhero:not(.lh1),
+body.lean .ltog,
+body.lean .lrow > div,
+body.lean .lcat,
+body.lean .mcard,
+body.lean .accb,
+body.lean .dcard,
+body.lean .ldsum,
+body.lean .ldr,
+body.lean .ldp,
+body.lean .wk7 button,
+.dpanel .ldr,
+.dpanel .ldp,
+.dpanel .empty,
+.lsw.mini,
+#drw .dseg,
+#drw .dgr,
+.cofl,
+.lpg,
+.ltri > div {
+  background: #282A30 !important;
+}
+body.lean .cal2 .d.om,
+body.acc3 .agenda-cal .d2.om {
+  background: #1A1B1F !important;
+}
+body.lean .cal2 .d.om .n,
+body.acc3 .agenda-cal .d2.om .n {
+  color: #5E626B !important;
+}
+body.lean .cal2 .d.sl,
+body.lean .cal2 .d2.sl {
+  background-color: #282A30 !important;
+  box-shadow: inset 0 0 0 1.5px #A9D4F5 !important;
+}
+#drw .dsw input:checked + i {
+  background: #A9D4F5 !important;
+}
+
+/* Sábados, domingos, feriados e cabeçalho D / S em AZUL (#A9D4F5) tanto no Z Flip 6 quanto no PC */
+body.lean .cal2 > .w:nth-child(1),
+body.lean .cal2 > .w:nth-child(7),
+body.lean .cal2 .w.wk,
+body.lean .cal2 .d.we:not(.om) .n,
+body.lean .cal2 .d2.we:not(.om) .n,
+body.lean .cal2 .d.ho:not(.om) .n,
+body.lean .cal2 .d2.ho:not(.om) .n,
+body.lean .cal2 .d:not(.om):nth-child(7n+1) .n,
+body.lean .cal2 .d:not(.om):nth-child(7n) .n,
+body.lean .yg i.hr,
+body.lean .wk7 button.hr small,
+body.lean .wk7 button.hr b,
+body.acc3 .agenda-cal > .w:nth-child(1),
+body.acc3 .agenda-cal > .w:nth-child(7),
+body.acc3 .agenda-cal .w.wk,
+body.acc3 .agenda-cal .d2.we:not(.om) .n,
+body.acc3 .agenda-cal .d2.ho:not(.om) .n {
+  color: #A9D4F5 !important;
+}
+
+/* Dia atual (hoje) com bolinha na mesma tonalidade de azul (#A9D4F5) e texto escuro */
+body.lean .cal2 .d2.td .n,
+body.lean .yg i.ut,
+body.lean .wk7 button.td b,
+body.acc3 .agenda-cal .d2.td .n {
+  background: #A9D4F5 !important;
+  color: #101820 !important;
+}
+
+/* Ordem e centralização nas células do calendário (Z Flip 6 e PC):
+   1º Número do dia (.n) centralizado no topo
+   2º Barrinhas/Tags (.cdw / .cbw) no meio
+   3º Valor (.sb) centralizado EMBAIXO das tags */
+body.lean .cal2 .d2 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+body.lean .cal2 .d2 .n,
+body.acc3 .agenda-cal .d2 .n {
+  order: 0 !important;
   align-self: center !important;
   justify-self: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
   text-align: center !important;
 }
-
-body.lean .cal.cal2 > .d2 .sb {
-  margin-top: auto !important;
+body.lean .cal2 .d2 .cdw,
+body.lean .cal2 .d2 .cbw {
+  order: 1 !important;
+  margin: 2px 0 0 !important;
+  width: 100% !important;
+}
+body.lean .cal2 .d2 .sb {
+  order: 2 !important;
+  margin: auto 0 0 !important;
   align-self: stretch !important;
   text-align: center !important;
   justify-content: center !important;
 }
 
-body.lean .cal2.xl .cb {
-  display: block !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 18px !important;
-  height: auto !important;
-  line-height: 1.2 !important;
-  padding: 3px 5px !important;
-  border: 0 !important;
-  border-left: 3px solid rgba(0, 0, 0, 0.28) !important;
-  border-radius: 5px !important;
-  color: #111111 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  font-family: inherit !important;
-  font-size: 10.5px !important;
-  font-style: normal !important;
-  font-weight: 700 !important;
-  text-align: left !important;
-  letter-spacing: 0 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-body.lean .cal2.xl .cb.pv {
-  border: 1px dashed rgba(0, 0, 0, 0.38) !important;
-  border-left: 3px dashed rgba(0, 0, 0, 0.48) !important;
-  opacity: 0.85 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-@media (max-width: 760px) {
-  body.lean .cal2.xl .cb {
-    font-size: 10px !important;
-    min-height: 16px !important;
-    padding: 2px 4px !important;
-  }
-}
 </style>
-</head>
-<body>
+</head><body>
+</head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
 <script>
@@ -2019,7 +2064,7 @@ function drwHTML(){
  const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
  const tabs=['1','2','3'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''} ${a==='3'?'a3':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${esc(ACCN[a])}</span><small>${a==='3'?'Organização':bv(a)}</small></button>`).join('');
  const display=is3?`<div class="dgt">Exibição</div><div class="dgr"><div class="sm mu" style="padding:7px 2px">Os compromissos, tarefas e horários aparecem nas datas do calendário desta conta.</div></div>`:`<div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label><label class="dsw"><span>Saldos dos dias anteriores</span><input type="checkbox" ${S.showPast?'checked':''} onchange="pastDayToggle()"><i></i></label></div>`;
- return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx drl dtheme" onclick="themeSet(S.theme==='light'?'dark':'light');drwSync()" aria-label="Alternar aparência" title="Alternar aparência"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
+ return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
 <div class="dseg" role="tablist" aria-label="Conta">${tabs}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
 ${display}
@@ -2073,11 +2118,11 @@ function readGlobalTheme(){
   }catch(e){return S&&S.theme==='light'?'light':'dark'}
 }
 function applyTheme(){
-  const t=readGlobalTheme();
-  S.theme=t;
-  document.documentElement.setAttribute('data-theme',t);
+  S.theme='dark';
+  document.documentElement.removeAttribute('data-theme');
+  try{localStorage.removeItem('mpf_theme')}catch(e){}
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.content=t==='light'?'#FFFFFF':'#000000';
+  if(meta) meta.content='#1E1F23';
 }
 function themeSet(t){
   const next=t==='light'?'light':'dark';
