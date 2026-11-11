@@ -12,8 +12,8 @@ const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
 });
 
 const $ = id => document.getElementById(id);
-const profiles = ['1', '2'];
-const dataKey = p => p === '2' ? 'mpf2' : 'mpf1';
+const profiles = ['1', '2', '3'];
+const dataKey = p => p === '2' ? 'mpf2' : p === '3' ? 'mpf3' : 'mpf1';
 const stampKey = p => 'mpf_cloud_stamp_' + p;
 const dirtyKey = p => 'mpf_cloud_dirty_' + p;
 const backupKey = (uid, p) => 'mpf_pre_sync_backup_' + uid + '_' + p;
@@ -383,13 +383,13 @@ function handleSession(nextSession) {
 
 ensureUI();
 
-// Intercepta toda gravação dos dados principais (Conta 1 e Conta 2), inclusive
+// Intercepta toda gravação dos dados principais (Contas 1, 2 e 3), inclusive
 // gravações diretas feitas pelas rotinas de transferência entre contas.
 const nativeStorageSetItem = Storage.prototype.setItem;
 Storage.prototype.setItem = function (name, value) {
   nativeStorageSetItem.call(this, name, value);
-  if (this === localStorage && !applyingRemote && (name === 'mpf1' || name === 'mpf2')) {
-    const profile = name === 'mpf2' ? '2' : '1';
+  if (this === localStorage && !applyingRemote && (name === 'mpf1' || name === 'mpf2' || name === 'mpf3')) {
+    const profile = name === 'mpf2' ? '2' : name === 'mpf3' ? '3' : '1';
     nativeStorageSetItem.call(localStorage, dirtyKey(profile), new Date().toISOString());
     schedulePush(profile);
   }

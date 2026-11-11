@@ -1,35 +1,36 @@
-# Calendário Financeiro — modo claro, anotações e planos
+# Calendário Financeiro — Conta 3 de organização pessoal
 
-Este pacote substitui a versão atual do Calendário Financeiro mantendo o app financeiro e a sincronização Supabase já configurada.
+Este pacote acrescenta uma terceira conta/perfil dentro do MESMO Calendário Financeiro. Não é um aplicativo separado. A Conta 3 usa o calendário mensal, semanal e diário já existente, mas guarda apenas tarefas, compromissos, horários recorrentes, planos e anotações.
 
-## Novidades
-- Tema claro branco e azul, com alternância no menu lateral em Planejamento > Aparência.
-- Nova página "Anotações e planos" na navegação.
-- Subáreas: Planos, Rotina diária e Anotações.
-- Modelo editável do plano de 12 semanas fornecido pelo usuário.
-- Rotina diária inicial com horários, dias da semana e marcação de tarefas concluídas.
-- Registro de anotações e acompanhamento das entregas das marmitas Live Up.
-- As informações novas ficam dentro do estado de cada perfil (mpf1/mpf2), para serem incluídas no mesmo payload de sincronização Supabase já usado pelo app.
-- Service worker com novo identificador de cache para solicitar atualização dos arquivos.
+## O que muda
+- O seletor de contas passa a mostrar Conta 1, Conta 2 e Conta 3 · Organização.
+- A Conta 3 começa vazia e isolada; não copia nem altera receitas, despesas, saldos, metas ou cofrinhos das Contas 1 e 2.
+- O calendário da Conta 3 mostra tarefas/compromissos com data e horários recorrentes nos dias da semana escolhidos.
+- A área Planos e anotações permite criar planos livres (com título, resumo, data inicial, duração em semanas e texto), rotinas recorrentes, compromissos e notas.
+- O tema claro (branco e azul) continua disponível no menu de Aparência.
+- A sincronização Supabase inclui o perfil 3, separado dos perfis 1 e 2.
+
+## Arquivos do site
+Mantenha `index.html`, `sync.js`, `sw.js`, `manifest.webmanifest`, `.nojekyll` e os ícones na raiz do GitHub Pages.
+
+## Configuração do Supabase existente
+A tabela `finance_state` já existe e o Realtime já foi ativado neste projeto. Execute SOMENTE `supabase/add_profile3.sql`, uma vez, no SQL Editor do projeto `calendario`. Esse comando substitui a restrição de perfil aceita para incluir o valor `3`; não apaga linhas nem altera os payloads existentes.
+
+Não execute novamente `schema.sql` nem `realtime.sql`.
 
 ## Publicação
-1. Faça backup do repositório GitHub.
-2. Extraia este ZIP.
-3. Envie os arquivos da raiz para a raiz do repositório `PLANEJAMENTO`, substituindo os de mesmo nome.
-4. Faça Commit changes.
-5. Espere o build e deploy terminarem.
-6. Abra o site e use Ctrl+Shift+R.
+1. Baixe um backup do repositório atual.
+2. Extraia este pacote.
+3. Envie os arquivos da raiz do pacote à raiz do repositório `PLANEJAMENTO`, substituindo os arquivos com o mesmo nome.
+4. Faça Commit changes e aguarde o GitHub Pages terminar o deploy.
+5. Abra `https://pvbarbosa445.github.io/PLANEJAMENTO/` e atualize com `Ctrl+Shift+R`.
+6. No seletor de contas, escolha Conta 3 · Organização.
 
-## Como usar
-- No menu lateral, abra "Anotações e planos".
-- Em "Planos", use "Usar meu modelo de 12 semanas" para carregar o cronograma de rotina, treino e alimentação descrito pelo usuário.
-- Em "Rotina diária", marque os itens concluídos e adicione horários.
-- Em "Anotações", crie notas livres.
-- No menu lateral > Aparência, ative ou desative "Modo claro (branco e azul)".
+## Primeiro uso da Conta 3
+- Em Planos e anotações > Planos, crie um plano e escreva seu cronograma no campo de conteúdo. O exemplo de 12 semanas enviado foi usado como referência de estrutura; seus horários pessoais não foram inseridos automaticamente.
+- Em Rotina e horários, crie atividades recorrentes e selecione os dias da semana. Elas aparecem nos dias correspondentes do calendário.
+- No calendário, toque/clique em um dia para adicionar uma tarefa ou compromisso específico.
+- Em Anotações, registre notas livres.
 
-## Observações importantes
-- O tema escuro permanece como padrão.
-- O layout móvel do calendário financeiro não foi refeito; as regras novas de tema aplicam-se ao app todo e os componentes da nova página se adaptam ao celular.
-- O HTML `conta2-rotina-saude.html` fornecido era um app independente, com armazenamento local `rotina_saude_v1`. As funções de rotina foram incorporadas à página do financeiro, gravando os dados no objeto do perfil (em vez de manter um segundo app isolado).
-- O modelo de 12 semanas é editável. Os horários e texto fornecidos pelo usuário foram usados como base, não como aconselhamento médico ou nutricional.
-- Não execute `schema.sql` ou `realtime.sql` novamente se a tabela e a publicação já foram configuradas. A sincronização remota real depende de a autenticação e o canal Supabase estarem conectados no navegador.
+## Isolamento e sincronização
+A Conta 3 é gravada localmente em `mpf3` e remotamente com `profile_id='3'`. A Conta 1 usa `mpf1`/perfil `1`; a Conta 2 usa `mpf2`/perfil `2`. O login Supabase é o mesmo, mas os dados de cada perfil permanecem separados.

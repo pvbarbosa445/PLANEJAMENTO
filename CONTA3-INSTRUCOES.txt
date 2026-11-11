@@ -1,0 +1,20 @@
+CONTA 3 — PERFIL DE ORGANIZAÇÃO PESSOAL
+
+A Conta 3 é parte do mesmo aplicativo Calendário Financeiro. Não é um segundo site ou app independente.
+
+- Aparece no seletor junto de Conta 1 e Conta 2.
+- Usa o mesmo calendário mensal, semanal e diário.
+- O calendário mostra tarefas, compromissos e horários recorrentes, sem exibir valores financeiros.
+- A página Planos e anotações tem Planos, Rotina e horários, e Anotações.
+- A Conta 3 começa vazia. O exemplo do plano de 12 semanas foi usado apenas como referência; nenhum dado pessoal foi pré-cadastrado.
+- Dados da Conta 3 ficam isolados em localStorage `mpf3` e Supabase `profile_id='3'`.
+- Contas 1 e 2 e seus dados não são alterados.
+
+INSTALAÇÃO
+1. Faça backup do repositório GitHub atual.
+2. Substitua os arquivos da raiz pelo conteúdo deste pacote, mantendo index.html, sync.js e sw.js lado a lado na raiz.
+3. No Supabase existente, execute uma única vez `supabase/add_profile3.sql` no SQL Editor.
+4. Não execute novamente schema.sql nem realtime.sql: a tabela finance_state e a publicação Realtime já foram criadas no projeto.
+5. Aguarde o deploy do GitHub Pages e atualize o site com Ctrl+Shift+R.
+
+A Conta 3 não copia lançamentos financeiros nem saldos das Contas 1 e 2.

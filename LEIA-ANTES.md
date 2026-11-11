@@ -1,11 +1,7 @@
-# Ativação dos eventos em tempo real
+# Migração da Conta 3
 
-A tabela `public.finance_state` já foi criada anteriormente com `schema.sql`. Não execute esse arquivo novamente.
+No projeto Supabase já utilizado pelo Calendário Financeiro, execute somente `add_profile3.sql` no SQL Editor.
 
-1. Abra o projeto `calendario` no Supabase.
-2. Entre em **SQL Editor** e clique em **New query**.
-3. Abra este arquivo `realtime.sql` no pacote, copie todo o conteúdo e cole no editor.
-4. Clique em **Run** uma única vez.
-5. O resultado deve mostrar `finance_state` na publicação `supabase_realtime`.
+A migração remove a antiga restrição `finance_state_profile_id_check` (que aceitava apenas perfis 1 e 2) e cria a mesma restrição aceitando 1, 2 e 3. Nenhum registro é apagado.
 
-Esse complemento não apaga nem altera os registros financeiros. Mesmo sem ele, o aplicativo consulta atualizações como contingência a cada 12 segundos; com Realtime, as alterações são entregues mais rapidamente.
+Não execute `schema.sql` novamente. A tabela `finance_state` já existe. Não execute `realtime.sql` novamente se `finance_state` já aparece como tabela na publicação `supabase_realtime`.

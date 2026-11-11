@@ -1,15 +1,11 @@
-CALENDARIO FINANCEIRO — INSTRUCOES CORRETAS DA SINCRONIZACAO AUTOMATICA
+CALENDÁRIO FINANCEIRO — SINCRONIZAÇÃO AUTOMÁTICA
 
-Este pacote implementa sincronizacao automatica bidirecional. Nao e um fluxo de backup manual.
+O app usa o mesmo login Supabase nos aparelhos. Depois da conexão inicial, salvamentos são enviados automaticamente e alterações remotas são recebidas via Supabase Realtime, com consulta de contingência a cada 12 segundos.
 
-1) Publique os arquivos deste pacote na raiz do repositorio GitHub Pages. O index.html, sync.js, sw.js e manifest.webmanifest devem ficar lado a lado na raiz.
-2) No Supabase, a tabela finance_state ja foi criada anteriormente com schema.sql. NAO execute schema.sql novamente.
-3) Para ativar eventos em tempo real, execute uma vez o arquivo supabase/realtime.sql no SQL Editor. Ele apenas adiciona finance_state a publicacao supabase_realtime. A consulta de contingencia do app roda a cada 12 segundos mesmo sem Realtime.
-4) Confira Authentication > URL Configuration: Site URL e Redirect URLs devem incluir https://pvbarbosa445.github.io/PLANEJAMENTO/.
-5) Primeiro abra o app no aparelho que possui os dados mais completos e entre com a conta existente. Se a nuvem ainda nao tiver dados desse perfil, esse aparelho envia automaticamente a copia local inicial.
-6) Depois abra o app no segundo aparelho e entre com o mesmo e-mail e senha. O segundo aparelho recebe automaticamente os dados ja existentes na nuvem. Antes de substituir uma copia local diferente, o aplicativo tenta guardar uma copia de seguranca naquele navegador.
-7) Apos a inicializacao, cada salvamento local e enviado automaticamente. Alteracoes remotas chegam via Supabase Realtime; se ele nao estiver ativo, ha verificacao a cada 12 segundos. O botao Sincronizar apenas abre o painel de login/status; nao e necessario apertar enviar/baixar.
+A Conta 1, Conta 2 e Conta 3 são perfis distintos na tabela finance_state (profile_id 1, 2 e 3). A Conta 3 não mistura dados financeiros com as outras contas.
 
-IMPORTANTE: nao conecte primeiro o aparelho que tem dados incompletos se a nuvem estiver vazia. O primeiro aparelho conectado inicializa a nuvem. Nao apague sua conta, o projeto ou a tabela. Nao compartilhe chaves secretas.
+O usuário deve preservar os dados locais dos dois aparelhos antes da primeira conexão. O primeiro aparelho autenticado com dados locais inicia a cópia remota se o perfil ainda não tiver registro na nuvem. No segundo aparelho, o conteúdo remoto passa a ser aplicado automaticamente. Antes de uma substituição, o app tenta guardar um backup local de segurança.
 
-Conflitos: duas alteracoes offline ou simultaneas do mesmo perfil nao sao mescladas campo a campo. A versao mais recente prevalece e o app tenta preservar uma copia local anterior antes de substituir.
+Conflitos de alterações simultâneas/offline não são mesclados campo a campo; a versão mais recente pode prevalecer. O app mantém cópia local prévia antes de substituir o payload remoto.
+
+Supabase já configurado neste projeto: não executar schema.sql nem realtime.sql novamente. Para acrescentar a Conta 3, execute somente supabase/add_profile3.sql uma vez.

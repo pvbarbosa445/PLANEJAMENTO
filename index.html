@@ -650,12 +650,35 @@ html[data-theme="light"] #cloud-sync-panel button.alt{background:#EEF4FC!importa
  .memo-fields{grid-template-columns:1fr}
  .memo-card .hdr{flex-direction:column}
 }
+
+/* Conta 3: agenda usa o mesmo calendário, sem indicadores ou valores financeiros. */
+body.acc3 .agenda-view-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 10px}
+body.acc3 .agenda-cal .agenda-day{cursor:pointer;min-width:0}
+body.acc3 .agenda-cal .agenda-chips{display:flex;flex-direction:column;gap:3px;width:100%;min-width:0;margin-top:3px}
+body.acc3 .agenda-cal .agenda-chip{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:4px;padding:2px 4px;background:var(--agc);color:#13202c;font-size:10px;font-style:normal;font-weight:700;line-height:1.25}
+body.acc3 .agenda-cal .agenda-chip.done{text-decoration:line-through;opacity:.55}
+body.acc3 .agenda-cal .agenda-more,body.acc3 .agenda-cal .agenda-count{font-size:10px;color:var(--t2);font-weight:700}
+body.acc3 .agenda-today{margin-top:14px;padding-bottom:72px}
+body.acc3 .agenda-today>div:first-child{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+body.acc3 .agenda-item{display:grid;grid-template-columns:28px 56px minmax(0,1fr) auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+body.acc3 .agenda-tick{width:26px;height:26px;border-radius:50%;border:1px solid var(--ac);background:transparent;color:var(--ac);font-weight:800;cursor:pointer}
+body.acc3 .agenda-time{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ac)}
+body.acc3 .agenda-name{min-width:0}.agenda-name b{display:block;overflow-wrap:anywhere}.agenda-name small{display:block;color:var(--t2);font-size:11px;margin-top:2px}
+body.acc3 .agenda-item.done .agenda-name{text-decoration:line-through;opacity:.55}
+body.acc3 .agenda-date-group{margin:12px 0 18px}
+body.acc3 .agenda-date-head{width:100%;display:flex;justify-content:space-between;background:none;border:0;border-bottom:1px solid var(--bd);padding:8px 2px;text-align:left;cursor:pointer;color:var(--tx)}
+body.acc3 .agenda-date-head span{color:var(--t2);font-size:12px}
+body.acc3 .agenda-cal .d2.td .n{background:var(--ac);color:#101820}
+body.acc3 .agenda-cal .d2.om{opacity:.35}
+body.acc3 .agenda-cal .d2{min-width:0}
+@media(max-width:760px){body.acc3 .agenda-view-actions{display:block}body.acc3 .agenda-view-actions .ctl{margin-top:8px}body.acc3 .agenda-view-actions .btn{flex:1}body.acc3 .agenda-cal .agenda-chip{font-size:8px;line-height:1.15;padding:2px 3px}body.acc3 .agenda-cal .agenda-count{font-size:8px}body.acc3 .agenda-item{grid-template-columns:27px 46px minmax(0,1fr);gap:6px}body.acc3 .agenda-item>.btn{grid-column:3;justify-self:start}}
+@media(min-width:761px){body.acc3 .agenda-cal .d2{min-height:max(110px,calc((100vh - 330px)/6))}body.acc3 .agenda-cal .agenda-chip{font-size:11px;line-height:1.25;padding:3px 5px}body.acc3 .agenda-today{max-width:900px}}
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
 <script>
 /* ===================== DADOS E MOTOR CENTRAL ===================== */
-let ACC=(()=>{try{return localStorage.getItem('mpf_acc')==='2'?'2':'1'}catch(e){return'1'}})(),K=ACC==='2'?'mpf2':'mpf1';const VER=31,BASE_DATE='2026-10-30';
+let ACC=(()=>{try{const a=localStorage.getItem('mpf_acc');return ['1','2','3'].includes(a)?a:'1'}catch(e){return'1'}})(),K=ACC==='2'?'mpf2':ACC==='3'?'mpf3':'mpf1';const VER=31,BASE_DATE='2026-10-30';
 const MN=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],MS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const pad=n=>String(n).padStart(2,'0'),iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
 /* Calendário brasileiro (America/Sao_Paulo): feriados nacionais, estadual RS, municipal Porto Alegre e dias cadastrados pelo usuário */
@@ -674,9 +697,10 @@ d.tags=d.tags.filter(t=>t.id!=='Extra');[['Recarga da bike','Recarga','#38BDF8']
 const re=d.tags.find(t=>t.n==='Renda extra');if(re){re.n='Extra';re.c='#34D399';re.inc=1}
 d.rec=[];d.lim=[];d.pit=[];d.cof=[];d.tx=[];d.open=0;d.plan={on:0,tr:0,alm:0,jan:0,laz:0,res:0};d.ig={};d.fxd=0;d.subSeeded=1;
 d.gl=[{id:'g1',tag:'Recarga da bike',per:'w',days:'all',v:50},{id:'g2',tag:'Emergência da bike',per:'w',days:'all',v:50},{id:'g3',tag:re?re.id:'Renda extra',per:'d',days:'wd',v:80}];return d}
+function def3(){const d=def();d.tx=[];d.planTx=[];d.rec=[];d.tags=[];d.lim=[];d.goals=[];d.buys=[];d.caixa=[];d.cof=[];d.open=0;d.name='';d.agendaProfile=1;d.fxd=1;d.asn=1;d.subSeeded=1;d.ver=VER;d.memo={notes:[],plans:[],routine:[],events:[],done:{},tab:'plans',editor:null};return d}
 function def(){const t=TG.map(([n,c,id])=>({id:id||n,n,c,vis:1,arch:0})),r=(d,v,rule,n,tag)=>({id:uid(),d,type:'in',v,rule,n,adj:'prev',meta:'',tag,start:'2026-11-01',end:'',vis:1,on:1,obs:''});
 return{ver:VER,start:BASE_DATE,open:0,cof:[],tx:[],planTx:[],tags:t,rec:[],skip:{},ovr:{},hol:[],goals:[],ref:0,lim:[],caixa:[],buys:[],name:'',nav:1}}
-let S;try{S=Object.assign(ACC==='2'?def2():def(),JSON.parse(localStorage.getItem(K)||'null')||{})}catch(e){S=ACC==='2'?def2():def()}
+let S;try{S=Object.assign(ACC==='2'?def2():ACC==='3'?def3():def(),JSON.parse(localStorage.getItem(K)||'null')||{})}catch(e){S=ACC==='2'?def2():ACC==='3'?def3():def()}
 ['tx','planTx','rec','tags','lim','goals','buys','caixa','cof'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=def()[k]});if(!S.skip||typeof S.skip!=='object')S.skip={};if(!S.ovr||typeof S.ovr!=='object')S.ovr={};delete S.sim;if(!Array.isArray(S.hol))S.hol=[];S.tx=S.tx.filter(t=>t&&t.date&&typeof t.date==='string');
 if((S.ver||0)<3){S.tx=S.tx.filter(t=>!/^teste/i.test(t.desc));S.hol=[];S.start=BASE_DATE;if(!S.tags.some(t=>t.id==='Entretenimento'))S.tags.push({id:'Entretenimento',n:'Entretenimento',c:'#E50914',vis:1,arch:0});S.ver=3}
 if(S.ver<4){/* Contas removidas: o histórico permanece; só o rótulo de conta some e transferências voltam para os 3 grupos de dinheiro */
@@ -807,7 +831,7 @@ function dayItems(ds){const ym=ds.slice(0,7),ts=S.tx.filter(t=>t.date===ds&&cnt(
 /* ===================== UI BASE ===================== */
 const ICON={inicio:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',calendario:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',transacoes:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>',orcamento:'<path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M14 3.2A9 9 0 0 1 20.8 10H14z"/>',metas:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/>',tags:'<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.3"/>',metas:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',cofrinhos:'<path d="M5 11a7 6 0 0 1 14 0c0 2.5-1.3 4-3 5v3h-3v-1.5h-2V19H8v-3c-1.7-1-3-2.5-3-5z"/><path d="M12 5V3M9.5 10h.01"/>',investimentos:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',ajuda:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',investimentos:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',simples:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',limites:'',perfil:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',anotacoes:'<path d="M5 4h14a2 2 0 0 1 2 2v14H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M7 8h10M7 12h10M7 16h7"/>',ajuda:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>'};
 const NAV=[['inicio','Início'],['calendario','Calendário'],['transacoes','Transações'],['orcamento','Orçamento'],['metas','Metas'],['tags','Tags'],['cofrinhos','Cofrinhos'],['anotacoes','Anotações e planos'],0,['perfil','Perfil'],['simples','Modo simples']];
-function nav(){$('#app').classList.toggle('ex',!S.nav);$('#nav').innerHTML=`<div class="logo">MPF</div>`+NAV.map(p=>p?`<a class="${p[0]===pg?'on':''}" href="#${p[0]}" data-n="${p[1]}" title="${p[1]}"><svg viewBox="0 0 24 24">${ICON[p[0]]}</svg><span class="lb">${p[1]}</span></a>`:'<div class="sp"></div>').join('')+`<div class="fill"></div><button class="tgl" onclick="S.nav=S.nav?0:1;save()" title="Expandir/recolher menu">${S.nav?'›':'‹'}</button>`}
+function nav(){const items=ACC==='3'?[['simples','Calendário'],['anotacoes','Planos e anotações']]:NAV.filter(p=>!p||p[0]!=='anotacoes');$('#app').classList.toggle('ex',!S.nav);$('#nav').innerHTML=`<div class="logo">MPF</div>`+items.map(p=>p?`<a class="${p[0]===pg?'on':''}" href="#${p[0]}" data-n="${p[1]}" title="${p[1]}"><svg viewBox="0 0 24 24">${ICON[p[0]]}</svg><span class="lb">${p[1]}</span></a>`:'<div class="sp"></div>').join('')+`<div class="fill"></div><button class="tgl" onclick="S.nav=S.nav?0:1;save()" title="Expandir/recolher menu">${S.nav?'›':'‹'}</button>`}
 const hello=()=>{const h=new Date().getHours();return h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'};
 const msel=()=>`<div class="msel"><button onclick="mv(-1)" title="Mês anterior">‹</button><div class="mbox"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>${ml(cur)} <span class="mu">⌄</span><input type="month" value="${cur}" onchange="if(this.value){cur=this.value;R()}"></div><button onclick="mv(1)" title="Próximo mês">›</button></div>`,mv=n=>{cur=addM(cur,n);R()};
 const don=(items,T)=>{const r=78,C=2*Math.PI*r;let off=0,segs='';const n=items.filter(x=>x.v>0).length;items.filter(x=>x.v>0).forEach(x=>{const len=x.v/T*C,gap=n>1?2:0;segs+=`<circle class="sg" cx="110" cy="110" r="${r}" fill="none" stroke="${x.c}" stroke-width="26" stroke-dasharray="${Math.max(0,len-gap)} ${C-Math.max(0,len-gap)}" stroke-dashoffset="${-off}" transform="rotate(-90 110 110)" onmouseover="dh('${esc(x.n).replace(/'/g,'')}','${fmt(x.v)}','${(x.v/T*100).toFixed(1)}%')" onmouseout="dh()"><title>${esc(x.n)}: ${fmt(x.v)} (${(x.v/T*100).toFixed(1)}%)</title></circle>`;off+=len});
@@ -1090,7 +1114,7 @@ else if(v==='w'){const sun=addD(d,-dt.getDay());body=`${leanTog()}<div class="wk
 else if(v==='d'){body=`${leanTog()}<div class="dph2"><b>${+d.slice(8)}</b><span>${wdn[dt.getDay()]}</span></div>${leanDayHtml(d)}`}
 else{const N=dim(cur);let h='';for(let i=1;i<=N;i++){const ds=cur+'-'+pad(i),x=leanDayHtml(ds,1);if(x.includes('Nada neste dia'))continue;const w=new Date(ds+'T12:00:00');h+=`<div class="agd">${ds===today?'<span class="hj">Hoje</span>':''}<b>${wda[w.getDay()].toLowerCase()} ${i} ${MS[+cur.slice(5)-1]}.</b></div>${x}`}body=`${leanTog()}${h||'<div class="empty">Nenhum lançamento neste mês.</div>'}`}
 return`<div class="lean ${swc()}"><div class="lhd">${accTitle(title)}</div>${body}${cvPill(d,tp)}</div>`}
-function V_lean(){if(CVW!=='m')return leanAlt();const D=leanData(),over=D.L>0&&D.rest<-0.004;
+function V_lean(){if(ACC==='3')return V_agendaCalendar();if(CVW!=='m')return leanAlt();const D=leanData(),over=D.L>0&&D.rest<-0.004;
 let hero;if(!D.L)hero=`<div class="lhero"><small>LIMITES</small><div class="lbig">Defina seus limites</div><button class="btn p" onclick="location.hash='#limites'">Definir limites</button></div>`;
 else if(!D.isCur)hero=`<div class="lhero lh1"><div><small>${cur>ym0?'ORÇAMENTO DO MÊS':'RESULTADO DO MÊS'}</small><div class="lbig ${over?'rd':''}">${over?fmt(-D.rest)+' acima':fmt(D.rest)+' sobram'}</div></div></div>`;
 else if(over)hero=`<div class="lhero bad"><small>ORÇAMENTO ESTOURADO</small><div class="lbig rd">${fmt(-D.rest)} acima</div><div class="sm mu">${fmt(D.G)} gastos de ${fmt(D.L)} previstos no mês</div></div>`;
@@ -1125,7 +1149,7 @@ ${ct.length?`<div class="lsec">Para onde foi</div>${ct.map(([k,v])=>`<div class=
 /* folha do dia (modo simples): cru, colorido por categoria */
 let LSEL=null;
 const leanSelD=()=>LSEL&&LSEL.slice(0,7)===cur?LSEL:(cur===ym0?today:null);
-function leanDay(ds){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),V=lview(),tp=V==='r'?'in':V==='g'?'out':'';M(`${mh(wd+', '+f)}${leanDayHtml(ds)}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="closeM();leanAdd('${tp==='in'||(ACC==='2'&&!tp)?'in':'out'}','','${ds}')">${tp==='in'||(ACC==='2'&&!tp)?'+ Receita':'+ Despesa'}</button></div>`)}
+function leanDay(ds){if(ACC==='3')return agendaDay(ds);const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),V=lview(),tp=V==='r'?'in':V==='g'?'out':'';M(`${mh(wd+', '+f)}${leanDayHtml(ds)}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="closeM();leanAdd('${tp==='in'||(ACC==='2'&&!tp)?'in':'out'}','','${ds}')">${tp==='in'||(ACC==='2'&&!tp)?'+ Receita':'+ Despesa'}</button></div>`)}
 function leanDayHtml(ds,lite){const wd=['dom','seg','ter','qua','qui','sex','sáb'][new Date(ds+'T12:00:00').getDay()],f=ds.slice(8)+'/'+ds.slice(5,7),sg=ds>=today?leanSeries('g',ds.slice(0,7))[ds]:null,sj=ds>=today?leanSeries('s',ds.slice(0,7))[ds]:null,sr=ds>=today?leanSeries('r',ds.slice(0,7))[ds]:null,V=lview(),tp=V==='r'?'in':V==='g'?'out':'',tx=S.tx.filter(t=>t.date===ds&&cnt(t)&&(!tp||t.type===tp)),ps=occD(ds.slice(0,7)).filter(o=>o.date===ds&&!o.tx&&!o.sk&&o.r.vis!==0&&(!tp||o.r.type===tp)),manual=(S.planTx||[]).filter(t=>!t.hidden&&t.date===ds&&(!tp||tp==='out')&&tvis(t.tag)),pl=ds>=today&&V!=='r'?Object.entries(planParts(ds)):[];
 const row=(c,n,sub,v,t,dash)=>`<div class="ldr"><i class="dot${dash?' dash':''}" style="${dash?'border-color:'+c+';color:'+c:'background:'+c}"></i><span class="ldn"><b>${esc(n)}</b>${sub?`<span class="sm mu">${esc(sub)}</span>`:''}</span><b class="${t==='in'?'gr':'rd'}">${t==='in'?'+':'−'}${fmt(v)}</b></div>`;
 return`${lite?'':dayGoal(ds)}${sg&&!lite?(sv=>`<div class="ldsum"><span>${sv[0]}</span><b class="${sv[1]<-0.004?'rd':'gr'}">${sv[1]<-0.004?'−':''}${fmt(Math.abs(sv[1]))}</b></div>${sv[2]?`<div class="ldsum"><span>${sv[2]}</span><b class="${sv[3]<-0.004?'rd':'gr'}">${sv[3]<-0.004?'−':''}${fmt(Math.abs(sv[3]))}</b></div>`:''}`)(V==='r'?['A receber até este dia',(sr?sr.v:0)-bal(),'Saldo com as receitas',sr?sr.v:0]:V==='g'?['Gasto até este dia',-(sg.out||0),'Saldo com os gastos',sg.v]:['Saldo no fim do dia',sj.v]):''}
@@ -1151,27 +1175,27 @@ function dayGoalInfo(ds){const d=new Date(ds+'T12:00:00'),gs=(S.gl||[]).filter(g
 function dayGoal(ds){const g=dayGoalInfo(ds);return g.meta>0?`<div class="ldsum"><span>Meta do dia · ${esc(g.names)}</span><b class="${g.got>=g.meta-0.004?'gr':''}">${fmt(g.got)} de ${fmt(g.meta)}${g.got>=g.meta-0.004?' ✓':''}</b></div>`:''}
 function acc2Hero(){const g=dayGoalInfo(today);return`<div class="lhero lh1"><div><small>GUARDADO · CONTA 2</small><div class="lbig gr">${fmt(bal())}</div>${g.meta>0?`<div class="sm mu">Hoje: ${fmt(g.got)} de ${fmt(g.meta)}${g.got>=g.meta-0.004?' ✓':''}</div>`:''}</div><button class="btn p" onclick="xferOpen()">Transferir</button></div>`}
 /* troca de conta sem recarregar a página (como no Samsung Calendar): guarda a conta atual, lê a outra e redesenha */
-const ACCN={'1':'Conta 1','2':'Conta 2'};try{const o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{};if(o['1'])ACCN['1']=o['1'];if(o['2'])ACCN['2']=o['2']}catch(e){}
-function accReady(o,a){return!!o&&(o.ver||0)>=30&&!!o.fxd&&!!o.asn&&!!o.subSeeded&&(a!=='2'||(!!o.nm2&&!!o.fx2))}
-function setAcc(a,go){closeAccMenu();if(a!==ACC){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
-const k2=a==='2'?'mpf2':'mpf1';let o=null;try{o=JSON.parse(localStorage.getItem(k2)||'null')}catch(e){}
+const ACCN={'1':'Conta 1','2':'Conta 2','3':'Conta 3'};try{const o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{};['1','2','3'].forEach(a=>{if(o[a])ACCN[a]=o[a]})}catch(e){}
+function accReady(o,a){if(!o)return false;if(a==='3')return!!o.agendaProfile&&(o.ver||0)>=30;return!!(o.ver||0)>=30&&!!o.fxd&&!!o.asn&&!!o.subSeeded&&(a!=='2'||(!!o.nm2&&!!o.fx2))}
+function setAcc(a,go){a=String(a);if(!['1','2','3'].includes(a))return;closeAccMenu();if(a!==ACC){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
+const k2=a==='2'?'mpf2':a==='3'?'mpf3':'mpf1';let o=null;try{o=JSON.parse(localStorage.getItem(k2)||'null')}catch(e){}
 try{localStorage.setItem('mpf_acc',a)}catch(e){}
-if(!accReady(o,a)){/* primeira vez nesta conta: precisa preparar os dados dela uma única vez */if(go&&location.hash!=='#simples')history.replaceState(null,'','#simples');location.reload();return}
+if(!accReady(o,a)){if(go&&location.hash!=='#simples')history.replaceState(null,'','#simples');location.reload();return}
 const m=$('#main');if(m)m.classList.add('swap');
-setTimeout(()=>{ACC=a;K=k2;S=Object.assign(a==='2'?def2():def(),o);['tx','planTx','rec','tags','lim','goals','buys','caixa','cof'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=def()[k]});if(!S.skip||typeof S.skip!=='object')S.skip={};if(!S.ovr||typeof S.ovr!=='object')S.ovr={};if(!Array.isArray(S.hol))S.hol=[];S.tx=S.tx.filter(t=>t&&t.date&&typeof t.date==='string');
+setTimeout(()=>{ACC=a;K=k2;S=Object.assign(a==='2'?def2():a==='3'?def3():def(),o);['tx','planTx','rec','tags','lim','goals','buys','caixa','cof'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=a==='3'?[]:def()[k]});if(!S.skip||typeof S.skip!=='object')S.skip={};if(!S.ovr||typeof S.ovr!=='object')S.ovr={};if(!Array.isArray(S.hol))S.hol=[];if(a==='3'){S.agendaProfile=1;if(!S.memo)S.memo={notes:[],plans:[],routine:[],events:[],done:{},tab:'plans',editor:null}}S.tx=S.tx.filter(t=>t&&t.date&&typeof t.date==='string');
 try{closeM()}catch(e){}if(go&&location.hash!=='#simples'){location.hash='#simples'}else R();requestAnimationFrame(()=>{const mm=$('#main');if(mm)mm.classList.remove('swap')})},90);return}
 if(go&&location.hash!=='#simples')location.hash='#simples'}
 function closeAccMenu(){const p=document.getElementById('accPop');if(p)p.remove();document.removeEventListener('pointerdown',accOut,true)}
 function accOut(e){const p=document.getElementById('accPop');if(p&&!p.contains(e.target)&&!e.target.closest('.accsw'))closeAccMenu()}
 function accMenu(btn){if(document.getElementById('accPop')){closeAccMenu();return}const r=btn.getBoundingClientRect(),p=document.createElement('div');p.id='accPop';p.className='pop accpop';
-p.innerHTML=['1','2'].map(a=>{let v=null;try{v=balOf(a)}catch(e){}return`<button class="${a===ACC?'on':''}" onclick="setAcc('${a}')"><i class="ad ${a==='2'?'a2':''}"></i><span>${ACCN[a]}${v!=null?`<small>${fmt(v)}</small>`:''}</span>${a===ACC?'<b>✓</b>':''}</button>`}).join('');
+p.innerHTML=['1','2','3'].map(a=>{let v=a==='3'?'Agenda':null;try{if(a!=='3')v=fmt(balOf(a))}catch(e){}return`<button class="${a===ACC?'on':''} ${a==='3'?'a3':''}" onclick="setAcc('${a}')"><i class="ad ${a==='2'?'a2':a==='3'?'a3':''}"></i><span>${ACCN[a]}<small>${a==='3'?'Agenda e organização':v||''}</small></span>${a===ACC?'<b>✓</b>':''}</button>`}).join('');
 p.style.top=(r.bottom+6)+'px';p.style.left=Math.max(8,r.left-4)+'px';document.body.appendChild(p);setTimeout(()=>document.addEventListener('pointerdown',accOut,true),0)}
-const accTitle=t=>`<span class="lttl"><b>${t}</b><button class="accsw" onclick="openDrw()" aria-label="Trocar de conta"><i class="ad ${ACC==='2'?'a2':''}"></i>${ACCN[ACC]}</button></span>`;
-const accBar=()=>`<div class="accb"><button class="${ACC==='1'?'on':''}" onclick="setAcc('1')">Conta 1</button><button class="${ACC==='2'?'on':''}" onclick="setAcc('2')">Conta 2</button></div>`;
+const accTitle=t=>`<span class="lttl"><b>${t}</b><button class="accsw" onclick="openDrw()" aria-label="Trocar de conta"><i class="ad ${ACC==='2'?'a2':ACC==='3'?'a3':''}"></i>${ACCN[ACC]}</button></span>`;
+const accBar=()=>`<div class="accb"><button class="${ACC==='1'?'on':''}" onclick="setAcc('1')">Conta 1</button><button class="${ACC==='2'?'on':''}" onclick="setAcc('2')">Conta 2</button><button class="${ACC==='3'?'on':''}" onclick="setAcc('3')">Conta 3 · Organização</button></div>`;
 /* transferência entre contas: grava nas duas */
 function xferTag(st,inc){let t=st.tags.find(x=>x.n==='Transferência'&&!x.arch);if(!t){t={id:uid(),n:'Transferência',c:'#94A3B8',vis:1,arch:0};st.tags.push(t)}if(inc)t.inc=1;return t.id}
 function xferBuild(st,type,v,d,desc){return{id:uid(),type,val:v,date:d,desc,meta:'',tag:xferTag(st,type==='in'),ref:'',obs:'',internal:false,hidden:false,pool:'',xfer:1}}
-function stOf(a){if(a===ACC)return S;let o=null;try{o=JSON.parse(localStorage.getItem(a==='2'?'mpf2':'mpf1')||'null')}catch(e){}return Object.assign(a==='2'?def2():def(),o||{})}
+function stOf(a){if(a===ACC)return S;let o=null;try{o=JSON.parse(localStorage.getItem(a==='2'?'mpf2':a==='3'?'mpf3':'mpf1')||'null')}catch(e){}return Object.assign(a==='2'?def2():a==='3'?def3():def(),o||{})}
 function balOf(a){const st=stOf(a);if(st===S)return bal();const bk=S;S=st;try{return bal()}finally{S=bk}}
 function xferOpen(){const d1=ACC==='1';M(`${mh('Transferir entre contas')}<label class="l">DE → PARA</label><select class="i" id="xdir"><option value="12" ${d1?'selected':''}>Conta 1 → Conta 2 (guardar)</option><option value="21" ${d1?'':'selected'}>Conta 2 → Conta 1 (passa a contar na Conta 1)</option></select><label class="l">VALOR <i>*</i></label><input class="i lbigin" id="xv" placeholder="R$ 0,00" inputmode="numeric" oninput="mk(this)"><label class="l">DATA</label><input class="i" id="xdt" type="date" value="${today}"><div class="sm mu" style="margin-top:8px">Conta 1: ${fmt(balOf('1'))} · Conta 2: ${fmt(balOf('2'))}. A transferência não conta como gasto nem como meta.</div><div id="ferr" class="rd sm" style="margin-top:8px"></div><div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="xferSave()">Transferir</button></div>`)}
 function xferSave(){const er=m=>{$('#ferr').textContent=m},v=num($('#xv').value),d=$('#xdt').value,dir=$('#xdir').value,from=dir==='21'?'2':'1',to=dir==='21'?'1':'2';if(!(v>0)||v>=1e12)return er('Informe o valor.');if(!okDate(d))return er('Data inválida.');if(balOf(from)+0.004<v)return er('Saldo insuficiente na Conta '+from+'.');
@@ -1180,12 +1204,12 @@ try{[[from,sf],[to,st]].forEach(([k,o])=>{if(o!==S)localStorage.setItem(k==='2'?
 function V_contas(){const b1=balOf('1'),b2=balOf('2'),xs=S.tx.filter(t=>t.xfer).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12),ds=d=>d.slice(8)+'/'+d.slice(5,7);
 const card=(a,t,v,sub)=>`<div class="lhero ${ACC===a?'cur':''}" ${ACC===a?'':`onclick="setAcc('${a}',1)" style="cursor:pointer"`}><small>${t}${ACC===a?' · ABERTA AGORA':''}</small><div class="lbig ${a==='2'?'gr':''}">${fmt(v)}</div><div class="sm mu">${sub}${ACC===a?'':' · toque para abrir'}</div></div>`;
 return`<div class="lean">${accBar()}<h2 class="lh2">Contas</h2><div class="cgrid">${card('1','CONTA 1 · SALDO AGORA',b1,'Gastos, metas e calendário do dia a dia')}${card('2','CONTA 2 · GUARDADO',b2,'Dinheiro guardado e renda extra')}</div><div class="lcat"><div class="lrw"><b>Total nas duas contas</b><b>${fmt(b1+b2)}</b></div></div><button class="btn p" style="width:100%;min-height:48px;margin:6px 0 12px" onclick="xferOpen()">Transferir entre contas</button><div class="cgrid" style="margin:0 0 12px;grid-template-columns:1fr 1fr"><button class="btn" style="min-height:44px" onclick="bkOpen()">Salvar backup</button><button class="btn" style="min-height:44px" onclick="bkRestoreOpen()">Restaurar backup</button></div><h2 class="lh2">Transferências</h2>${xs.map(t=>`<div class="ldr"><i class="dot" style="background:#94A3B8"></i><span class="ldn"><b>${esc(t.desc)}</b><span class="sm mu">${ds(t.date)}</span></span><b class="${t.type==='in'?'gr':'rd'}">${t.type==='in'?'+':'−'}${fmt(t.val)}</b></div>`).join('')||'<div class="empty">Nenhuma transferência ainda.</div>'}</div>`}
-function bkData(){const o={app:'mpf',v:1,acc:ACC,d:{}};['mpf1','mpf2'].forEach(k=>{try{const x=localStorage.getItem(k);if(x)o.d[k]=JSON.parse(x)}catch(e){}});o.d[K]=S;return JSON.stringify(o)}
+function bkData(){const o={app:'mpf',v:1,acc:ACC,d:{}};['mpf1','mpf2','mpf3'].forEach(k=>{try{const x=localStorage.getItem(k);if(x)o.d[k]=JSON.parse(x)}catch(e){}});o.d[K]=S;return JSON.stringify(o)}
 function bkOpen(){const t=bkData();M(`${mh('Backup dos dados')}<p class="sm mu" style="margin:6px 0 10px">Guarda as duas contas. Baixe o arquivo ou copie o texto.</p><textarea class="i" id="bkt" rows="6" readonly style="font-size:11px;font-family:monospace" onclick="this.select()">${esc(t)}</textarea><div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn p" onclick="bkDown()">Baixar arquivo</button></div>`)}
 function bkDown(){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bkData()],{type:'application/json'}));a.download='planejamento-backup-'+today+'.json';document.body.appendChild(a);a.click();a.remove();toast('Backup baixado')}catch(e){toast('Copie o texto do backup')}}
 function bkRestoreOpen(){M(`${mh('Restaurar backup')}<p class="sm mu" style="margin:6px 0 10px">Escolha o arquivo ou cole o texto. Isso substitui os dados atuais das duas contas.</p><input type="file" id="bkf" accept=".json,application/json" class="i" onchange="bkFile(this)"><textarea class="i" id="bkr" rows="5" placeholder="Ou cole o backup aqui" style="margin-top:8px;font-size:11px;font-family:monospace"></textarea><div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="bkApply()">Restaurar</button></div>`)}
 function bkFile(i){const f=i.files&&i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('#bkr').value=r.result};r.readAsText(f)}
-function bkApply(){try{const o=JSON.parse($('#bkr').value);if(!o||o.app!=='mpf'||!o.d)throw 0;ask('Substituir os dados atuais pelo backup?','Restaurar',()=>{Object.keys(o.d).forEach(k=>{if(k==='mpf1'||k==='mpf2')localStorage.setItem(k,JSON.stringify(o.d[k]))});location.reload()})}catch(e){toast('Backup inválido')}}
+function bkApply(){try{const o=JSON.parse($('#bkr').value);if(!o||o.app!=='mpf'||!o.d)throw 0;ask('Substituir os dados atuais pelo backup?','Restaurar',()=>{Object.keys(o.d).forEach(k=>{if(k==='mpf1'||k==='mpf2'||k==='mpf3')localStorage.setItem(k,JSON.stringify(o.d[k]))});location.reload()})}catch(e){toast('Backup inválido')}}
 function goalEdit(id,kind){const t=tg(id),g0=glFor(id)[0],mv=kind==='in'?((S.ig||{})[id]||0):((S.lim.find(l=>l.tag===id&&l.ym==='*')||{}).v||0),v=g0?g0.v:mv;LGE={id,kind};M(`${mh('Meta de '+(t?t.n:''))}<label class="l">${kind==='in'?'QUANTO QUER RECEBER':'LIMITE'}</label><div class="g2f"><input class="i lbigin" id="gev" value="${v?fvx(v):''}" placeholder="R$ 0,00" inputmode="numeric" oninput="mk(this)"><select class="i" id="gep">${GPER.map(x=>`<option value="${x[0]}" ${glPk(id)===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></div><div class="sm mu" style="margin-top:8px">Por semana ou por dia útil, o valor do mês é calculado sozinho.</div><div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="goalSave()">Salvar</button></div>`)}
 let LGE={};
 function goalSave(){setGoal(LGE.id,num($('#gev').value)||0,$('#gep').value,LGE.kind);save();closeM();toast('Meta salva.')}
@@ -1870,9 +1894,9 @@ function incMetaSave(){const t=tg(IME.id),n=$('#imn').value.trim();if(!t)return 
 t.n=n;t.c=IME.c;setGoal(t.id,num($('#imv').value)||0,$('#imp').value,'in');save();closeM();toast('Meta de receita salva.')}
 function incMetaArch(id){const t=tg(id);if(!t)return;ask('Arquivar a meta de receita “'+t.n+'”? Os recebimentos continuam no histórico e no saldo.','Arquivar',()=>{t.arch=1;setGoal(id,0,'m','in');save();closeM();toast('Meta arquivada.')},true)}
 /* nomes das contas (editáveis) */
-function accNames(){let o={};try{o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{}}catch(e){}ACCN['1']=o['1']||'Conta 1';ACCN['2']=o['2']||'Conta 2'}
-function accRename(){M(`${mh('Nomes das contas')}${['1','2'].map(a=>`<label class="l">CONTA ${a}</label><input class="i" id="acn${a}" maxlength="24" value="${esc(ACCN[a])}">`).join('')}<div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="accRenameSave()">Salvar</button></div>`)}
-function accRenameSave(){const o={};['1','2'].forEach(a=>{const v=$('#acn'+a).value.trim();if(v)o[a]=v});try{localStorage.setItem('mpf_accn',JSON.stringify(o))}catch(e){}accNames();closeM();R();toast('Nomes salvos.')}
+function accNames(){let o={};try{o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{}}catch(e){}ACCN['1']=o['1']||'Conta 1';ACCN['2']=o['2']||'Conta 2';ACCN['3']=o['3']||'Conta 3'}
+function accRename(){M(`${mh('Nomes das contas')}${['1','2','3'].map(a=>`<label class="l">${a==='3'?'CONTA 3 · ORGANIZAÇÃO':'CONTA '+a}</label><input class="i" id="acn${a}" maxlength="24" value="${esc(ACCN[a])}">`).join('')}<div class="mf"><button class="btn" onclick="closeM()">Cancelar</button><button class="btn p" onclick="accRenameSave()">Salvar</button></div>`)}
+function accRenameSave(){const o={};['1','2','3'].forEach(a=>{const v=$('#acn'+a).value.trim();if(v)o[a]=v});try{localStorage.setItem('mpf_accn',JSON.stringify(o))}catch(e){}accNames();closeM();R();toast('Nomes salvos.')}
 
 /* instalar como app (tela inicial do celular ou atalho no PC) */
 let DIP=null;const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
@@ -1923,13 +1947,23 @@ async function appReload(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e
    Abre pelo ☰, tocando no nome da conta ou arrastando a alça fina da borda direita para a esquerda.
    No topo, a troca de conta (Conta 1 | Conta 2); embaixo, as páginas e a visualização do calendário. */
 let DRW=false,DRWP=null;
-function drwHTML(){const pgs=[['simples','Calendário',ICON.calendario],['limites','Limites',ICON.orcamento||ICON.metas],['contas','Contas','<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/>'],['meses','Meses',ICON.transacoes||ICON.metas],['cofrinho','Cofrinhos','<path d="M5 11a7 6 0 0 1 13-2h2v4l-2 1v3h-3v-2H9v2H6v-3a6 6 0 0 1-1-3z"/><circle cx="15" cy="10" r=".6"/>'],['anotacoes','Anotações e planos',ICON.anotacoes]];
-const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
-return`<div class="dhd"><b>Planejamento</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
-<div class="dseg" role="tablist" aria-label="Conta">${['1','2'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${ACCN[a]}</span><small>${bv(a)}</small></button>`).join('')}</div>
+function drwHTML(){
+ const is3=ACC==='3';
+ const pgs=is3?[
+  ['simples','Calendário',ICON.calendario],
+  ['anotacoes','Planos e anotações',ICON.anotacoes]
+ ]:[
+  ['simples','Calendário',ICON.calendario],['limites','Limites',ICON.orcamento||ICON.metas],['contas','Contas','<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/>'],['meses','Meses',ICON.transacoes||ICON.metas],['cofrinho','Cofrinhos','<path d="M5 11a7 6 0 0 1 13-2h2v4l-2 1v3h-3v-2H9v2H6v-3a6 6 0 0 1-1-3z"/><circle cx="15" cy="10" r=".6"/>']
+ ];
+ const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
+ const tabs=['1','2','3'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''} ${a==='3'?'a3':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${esc(ACCN[a])}</span><small>${a==='3'?'Organização':bv(a)}</small></button>`).join('');
+ const display=is3?`<div class="dgt">Exibição</div><div class="dgr"><div class="sm mu" style="padding:7px 2px">Os compromissos, tarefas e horários aparecem nas datas do calendário desta conta.</div></div>`:`<div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label><label class="dsw"><span>Saldos dos dias anteriores</span><input type="checkbox" ${S.showPast?'checked':''} onchange="pastDayToggle()"><i></i></label></div>`;
+ return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
+<div class="dseg" role="tablist" aria-label="Conta">${tabs}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
-<div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label><label class="dsw"><span>Saldos dos dias anteriores</span><input type="checkbox" ${S.showPast?'checked':''} onchange="pastDayToggle()"><i></i></label></div><div class="dgt">Aparência</div><div class="dgr"><label class="dsw"><span>Modo claro (branco e azul)</span><input type="checkbox" ${S.theme==='light'?'checked':''} onchange="themeSet(this.checked?\'light\':\'dark\')"><i></i></label></div>
-${isApp()?'':`<button class="dinst" onclick="closeDrw(()=>instApp())"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span>Instalar app</span>${DIP?'':'<small>como instalar</small>'}</button>`}<div class="dgt">Visualização do calendário</div><div class="dgr">${Object.keys(CVN).map(k=>`<button class="drow ${pg==='simples'&&CVW===k?'on':''}" onclick="drwView('${k}')"><span class="dv">${k==='g'?'≡':CVN[k].slice(0,1)}</span><span>${CVN[k]}</span>${pg==='simples'&&CVW===k?'<b>✓</b>':''}</button>`).join('')}</div>`}
+${display}<div class="dgt">Aparência</div><div class="dgr"><label class="dsw"><span>Modo claro (branco e azul)</span><input type="checkbox" ${S.theme==='light'?'checked':''} onchange="themeSet(this.checked?'light':'dark')"><i></i></label></div>
+${isApp()?'':`<button class="dinst" onclick="closeDrw(()=>instApp())"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span>Instalar app</span>${DIP?'':'<small>como instalar</small>'}</button>`}<div class="dgt">Visualização do calendário</div><div class="dgr">${Object.keys(CVN).map(k=>`<button class="drow ${pg==='simples'&&CVW===k?'on':''}" onclick="drwView('${k}')"><span class="dv">${k==='g'?'≡':CVN[k].slice(0,1)}</span><span>${CVN[k]}</span>${pg==='simples'&&CVW===k?'<b>✓</b>':''}</button>`).join('')}</div>`
+}
 function drwEls(){let d=$('#drw');if(!d){const sc=document.createElement('div');sc.id='dscrim';sc.onclick=()=>closeDrw();document.body.appendChild(sc);d=document.createElement('aside');d.id='drw';d.setAttribute('aria-hidden','true');document.body.appendChild(d);const e=document.createElement('div');e.id='edge';e.innerHTML='<i></i>';document.body.appendChild(e);edgeBind(e)}return d}
 function desktopDrawerFixed(){return document.body.classList.contains('lean')&&pcCalendar()}
 function drwSync(){requestAnimationFrame(carInit);const d=drwEls();if(DRW||desktopDrawerFixed())d.innerHTML=drwHTML();else if(!DRW)d.innerHTML='';const e=$('#edge');if(e)e.hidden=!document.body.classList.contains('lean')||desktopDrawerFixed()}
@@ -1955,14 +1989,13 @@ function edgeAt(y){const e=document.getElementById('edge');if(!e)return;const h=
 /* ===================== ROTEAMENTO ===================== */
 
 /* ===================== ANOTAÇÕES, PLANOS E ROTINA ===================== */
-const MEMO_ROUTINE_DEFAULTS = [{"id": "rot-1", "time": "05:50", "title": "Acordar, beber um copo de água e colocar música animada", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-2", "time": "06:00", "title": "5 a 10 min de luz natural e 3 min de alongamento", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-3", "time": "06:15", "title": "Café da manhã: pão integral com ricota, ovo e fruta", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-4", "time": "06:45", "title": "Se arrumar, encher a garrafa de água e pegar a marmita", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-5", "time": "07:00", "title": "Ida ao trabalho com música ou podcast", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-6", "time": "07:30", "title": "Trabalho; a cada 50–60 min, pausa curta em pé", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-7", "time": "12:00", "title": "Almoço: marmita Live Up, sem tela", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-8", "time": "12:30", "title": "5 a 10 min de luz natural depois do almoço", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-9", "time": "13:00", "title": "Trabalho; evitar cafeína depois das 14h", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-10", "time": "17:15", "title": "Volta para casa com música leve e atenção ao dirigir", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-11", "time": "17:40", "title": "Lanche rápido e água", "days": [1, 2, 3, 4, 5], "active": true}, {"id": "rot-12", "time": "18:00", "title": "Treino em casa (30–40 min)", "days": [1, 3, 5], "active": true}, {"id": "rot-13", "time": "18:00", "title": "Caminhada (30–40 min)", "days": [2, 4], "active": true}, {"id": "rot-14", "time": "09:00", "title": "Atividade ao ar livre (30–45 min)", "days": [6], "active": true}, {"id": "rot-15", "time": "19:00", "title": "Banho", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-16", "time": "19:30", "title": "Jantar sem tela", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-17", "time": "20:00", "title": "Tempo livre: família, amigos, estudo ou hobby", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-18", "time": "21:30", "title": "Desacelerar e anotar o dia por 2 minutos", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-19", "time": "21:45", "title": "Lo-fi suave, leitura leve ou respiração lenta", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-20", "time": "22:15", "title": "Deitar", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-21", "time": "22:30", "title": "Dormir", "days": [0, 1, 2, 3, 4, 5, 6], "active": true}, {"id": "rot-22", "time": "10:00", "title": "Revisar o plano e preparar a semana", "days": [0], "active": true}];
-const MEMO_PLAN12_BODY = "OBJETIVO\nPerder gordura e ter mais saúde, disposição e energia, sem transformar a rotina em algo impossível de manter.\n\nRESUMO DAS DECISÕES\n• Treino em casa 3 vezes por semana, sem equipamento obrigatório, 30 a 40 minutos: segunda, quarta e sexta, às 18h.\n• Caminhada terça e quinta, 30 a 40 minutos, ao chegar em casa.\n• Marmita Live Up baixa caloria no almoço, de segunda a sexta. Ao receber as marmitas, conferir quantidade, sabores, validade e instruções de conservação do rótulo.\n• Luz natural por 5 a 10 minutos ao acordar e por 5 a 10 minutos depois do almoço.\n• Dormir às 22h30 e acordar às 5h50 (7h20 de sono).\n• Revisão do plano no domingo.\n\nROTINA DE SEGUNDA A SEXTA\n05:50 — Acordar, beber um copo de água e colocar música animada com volume subindo devagar.\n06:00 — 5 a 10 minutos de luz natural na janela ou na porta e 3 minutos de alongamento.\n06:15 — Café: 2 fatias de pão integral com ricota, 1 ovo e 1 fruta.\n06:45 — Se arrumar, encher a garrafa de água e pegar a marmita.\n07:00 — Ida ao trabalho com música animada ou podcast.\n07:30–12:00 — Trabalho. A cada 50 a 60 minutos, pausa de 2 a 3 minutos em pé.\n12:00 — Almoço: marmita Live Up, sem tela.\n12:30 — 5 a 10 minutos na porta do prédio, ao sol.\n13:00–17:15 — Trabalho. Sem cafeína depois das 14h.\n17:15 — Volta para casa com música leve, sem dar sono ao dirigir.\n17:40 — Chegar, beber água e fazer o lanche rápido do dia.\n18:00 — Treino em casa (seg, qua e sex) ou caminhada (ter e qui).\n19:00 — Banho.\n19:30 — Jantar do dia, sem tela.\n20:00–21:30 — Tempo livre: família, amigos, estudo ou hobby.\n21:30 — Desacelerar: luz fraca, celular longe da cama e anotar o dia por 2 minutos.\n21:45 — Lo-fi suave, leitura leve ou respiração lenta.\n22:15 — Deitar.\n22:30 — Dormir.\n\nTREINO — AQUECIMENTO (5 MINUTOS)\n• 1 minuto marchando no lugar.\n• 10 rotações de ombros para trás e 10 círculos de quadril.\n• 10 agachamentos curtos, sem descer muito.\n\nTREINO A (SEGUNDA E SEXTA, ALTERNANDO COM O B)\nExercício | Semanas 1–4 | Semanas 5–8 | Semanas 9–12\nAgachamento sentando na cadeira | 2 x 8 | 3 x 10 | 3 x 12 (agachamento livre)\nFlexão inclinada (mãos no sofá ou bancada) | 2 x 6 | 3 x 8 | 3 x 10 (apoio mais baixo)\nPonte de glúteos | 2 x 10 | 3 x 12 | 3 x 12 (pausa de 2 s no alto)\nRemada com mochila (livros ou garrafas) | 2 x 8 | 3 x 10 | 3 x 12 (mochila mais pesada)\nPrancha com joelhos apoiados | 2 x 15 s | 3 x 20 s | 3 x 30 s\n\nTREINO B (QUARTA E, ALTERNANDO, SEGUNDA OU SEXTA)\nExercício | Semanas 1–4 | Semanas 5–8 | Semanas 9–12\nAfundo alternado com apoio na parede | 2 x 6 por perna | 3 x 8 | 3 x 10\nFlexão com joelhos apoiados | 2 x 5 | 3 x 8 | 3 x 10\nSuperman (extensão lombar no chão) | 2 x 8 | 3 x 10 | 3 x 12 (pausa de 2 s)\nAgachamento sumô com mochila | 2 x 8 | 3 x 10 | 3 x 12\nElevação de panturrilha | 2 x 10 | 3 x 12 | 3 x 15\n\nDescanse 60 a 90 segundos entre as séries e termine com 3 minutos de alongamento. Na semana 1, priorize aprender os movimentos e pare quando sentir que ainda conseguiria fazer mais 2 repetições.\n\nCAMINHADAS (TERÇA E QUINTA, 18:00)\nSemanas 1–4: 30 minutos em ritmo que permite conversar.\nSemanas 5–8: 35 minutos, com 3 blocos de 2 minutos em ritmo mais forte.\nSemanas 9–12: 40 minutos, alternando 2 minutos rápido e 2 minutos leve.\nSábado: 30 a 45 minutos de atividade ao ar livre. Domingo: descanso e preparo da semana.\n\nALIMENTAÇÃO\nCafé (06:15): 2 fatias de pão integral com ricota, 1 ovo e 1 fruta da estação.\nAlmoço (segunda a sexta): marmita Live Up baixa caloria. Conferir proteína, sódio, conservação e validade no rótulo. Se a refeição não sustentar, registrar e ajustar o acompanhamento alimentar com profissional.\nLanche das 17:40:\n• Segunda, quarta e sexta: banana e 1 fatia de pão integral com ricota.\n• Terça e quinta: iogurte natural com aveia.\nJantar das 19:30:\n• Segunda: omelete de 2 ovos com ricota, pão integral e salada.\n• Terça: arroz, feijão, frango sem pele e legumes.\n• Quarta: arroz, feijão, ovo e salada.\n• Quinta: sopa de legumes com frango desfiado.\n• Sexta: pão integral com ovo e ricota, salada e fruta.\n• Sábado: refeição livre planejada.\n• Domingo: arroz, feijão, proteína e salada.\nÁgua: manter uma garrafa por perto e beber ao longo do dia, respeitando a sede.\n\nSOL, SONO E PAUSAS\n06:00 — 5 a 10 minutos de luz natural.\n12:30 — 5 a 10 minutos ao ar livre depois do almoço.\n21:30 — Luz fraca, celular longe da cama e preparação para dormir.\n21:45 — Lo-fi suave ou leitura leve.\n22:15 — Deitar; 22:30 — dormir.\nNo trabalho: a cada 50 a 60 minutos, levantar por 2 a 3 minutos, alongar e olhar para longe.\n\nCRONOGRAMA DAS 12 SEMANAS\nAdaptação (semanas 1–4): 2 séries, treinos de cerca de 30 minutos, técnica e caminhadas de 30 minutos.\nConstrução (semanas 5–8): 3 séries, treinos de 35 a 40 minutos e caminhadas de 35 minutos com blocos um pouco mais rápidos.\nConsolidação (semanas 9–12): progressões mais difíceis, treinos de até 40 minutos e caminhadas de 40 minutos alternando ritmo.\nAo final da semana 12, revisar o que funcionou e ajustar o próximo ciclo.\n\nACOMPANHAMENTO\nToda noite, registrar: sono, treino ou caminhada, luz natural, água, alimentação e energia do dia.\nDomingo: revisar a semana, contar os dias realizados, anotar energia de 0 a 10 e escolher um ajuste simples.\nA cada 4 semanas: revisar medidas e disposição, sem usar um único número como avaliação total do progresso.\n\nOBSERVAÇÕES\nEste é o plano pessoal anotado pelo usuário. As refeições e os treinos podem precisar de ajustes conforme rótulos das marmitas, preferências, tolerância, condições individuais e orientação profissional. Interromper atividade e procurar avaliação se houver sintomas incomuns ou dor persistente.";
-const MEMO_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MEMO_DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function memoEnsure(){
   if(!S.memo || typeof S.memo!=='object') S.memo={};
   if(!Array.isArray(S.memo.notes)) S.memo.notes=[];
   if(!Array.isArray(S.memo.plans)) S.memo.plans=[];
-  if(!Array.isArray(S.memo.routine)) S.memo.routine=MEMO_ROUTINE_DEFAULTS.map(x=>({...x,days:x.days.slice()}));
+  if(!Array.isArray(S.memo.routine)) S.memo.routine=[];
+  if(!Array.isArray(S.memo.events)) S.memo.events=[];
   if(!S.memo.done || typeof S.memo.done!=='object') S.memo.done={};
   if(!S.memo.tab) S.memo.tab='plans';
   if(!('editor' in S.memo)) S.memo.editor=null;
@@ -1974,47 +2007,38 @@ function applyTheme(){
   const meta=document.querySelector('meta[name="theme-color"]');
   if(meta) meta.content=t==='light'?'#f4f8ff':'#000000';
 }
-function themeSet(t){memoEnsure();S.theme=t==='light'?'light':'dark';applyTheme();save()}
-function memoTab(t){memoEnsure();S.memo.tab=t;S.memo.editor=null;R()}
-function memoNew(type){
-  memoEnsure();
-  const id=uid();
-  if(type==='plan') S.memo.plans.unshift({id,title:'Novo plano',summary:'',start:today,weeks:12,body:'',created:new Date().toISOString(),updated:new Date().toISOString()});
-  else if(type==='note') S.memo.notes.unshift({id,title:'Nova anotação',body:'',created:new Date().toISOString(),updated:new Date().toISOString()});
-  else S.memo.routine.push({id,time:'18:00',title:'Novo lembrete',days:[1,2,3,4,5],active:true});
+function themeSet(t){if(ACC==='3')memoEnsure();S.theme=t==='light'?'light':'dark';applyTheme();save()}
+function memoOpenPage(){if(ACC==='3'&&pg!=='anotacoes'){pg='anotacoes';if(location.hash!=='#anotacoes')history.replaceState(null,'','#anotacoes')}}
+function memoTab(t){memoEnsure();memoOpenPage();S.memo.tab=t;S.memo.editor=null;R()}
+function memoNew(type,date){
+  memoEnsure();memoOpenPage();
+  const id=uid(),now=new Date().toISOString();
+  if(type==='plan') S.memo.plans.unshift({id,title:'Novo plano',summary:'',start:today,weeks:12,body:'',created:now,updated:now});
+  else if(type==='note') S.memo.notes.unshift({id,title:'Nova anotação',body:'',created:now,updated:now});
+  else if(type==='event') S.memo.events.unshift({id,date:date||today,time:'18:00',title:'Novo compromisso',color:'#A9D4F5',note:'',created:now,updated:now});
+  else S.memo.routine.push({id,time:'18:00',title:'Novo horário recorrente',days:[1,2,3,4,5],color:'#8BC5FF',active:true});
   S.memo.editor={type,id};S.memo.tab=type==='plan'?'plans':type==='note'?'notes':'routine';R()
 }
-function memoSeed12(){
-  memoEnsure();
-  const id=uid();
-  S.memo.plans.unshift({id,title:'Meu plano de 12 semanas: rotina, treino em casa e alimentação',summary:'Treino em casa seg/qua/sex, caminhadas ter/qui, marmita Live Up no almoço, luz natural e sono às 22h30.',start:'2026-11-11',weeks:12,body:MEMO_PLAN12_BODY,created:new Date().toISOString(),updated:new Date().toISOString()});
-  S.memo.tab='plans';S.memo.editor=null;save()
-}
-function memoEdit(type,id){memoEnsure();S.memo.editor={type,id};S.memo.tab=type==='plan'?'plans':type==='note'?'notes':'routine';R()}
+function memoEdit(type,id){memoEnsure();memoOpenPage();S.memo.editor={type,id};S.memo.tab=type==='plan'?'plans':type==='note'?'notes':'routine';R()}
 function memoSaveEditor(){
-  memoEnsure();
-  const e=S.memo.editor;if(!e)return;
-  const titleEl=document.getElementById('memo-title');
-  const bodyEl=document.getElementById('memo-body');
-  const item=e.type==='plan'?S.memo.plans.find(x=>x.id===e.id):e.type==='note'?S.memo.notes.find(x=>x.id===e.id):S.memo.routine.find(x=>x.id===e.id);
-  if(!item)return;
+  memoEnsure();const e=S.memo.editor;if(!e)return;
+  const title=(document.getElementById('memo-title')?.value||'').trim();
+  if(!title)return toast('Escreva um título.');
   if(e.type==='routine'){
+    const item=S.memo.routine.find(x=>x.id===e.id);if(!item)return;
     const time=document.getElementById('memo-time')?.value||'18:00';
-    const title=(titleEl?.value||'').trim();
     const days=[...document.querySelectorAll('[name="memo-days"]:checked')].map(x=>+x.value);
-    if(!title)return toast('Escreva o nome do lembrete.');
     if(!days.length)return toast('Selecione pelo menos um dia.');
-    item.time=time;item.title=title;item.days=days;item.active=true;
+    item.time=time;item.title=title;item.days=days;item.color=document.getElementById('memo-color')?.value||'#8BC5FF';item.active=true;
+  }else if(e.type==='event'){
+    const item=S.memo.events.find(x=>x.id===e.id);if(!item)return;
+    const date=document.getElementById('memo-event-date')?.value||today;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return toast('Escolha uma data válida.');
+    item.date=date;item.time=document.getElementById('memo-event-time')?.value||'18:00';item.title=title;item.color=document.getElementById('memo-event-color')?.value||'#A9D4F5';item.note=document.getElementById('memo-body')?.value||'';item.updated=new Date().toISOString();
   }else{
-    const title=(titleEl?.value||'').trim();
-    if(!title)return toast('Escreva um título.');
-    item.title=title;
-    item.body=bodyEl?.value||'';
-    if(e.type==='plan'){
-      item.summary=document.getElementById('memo-summary')?.value||'';
-      item.start=document.getElementById('memo-start')?.value||today;
-      item.weeks=Math.max(1,Math.min(104,+document.getElementById('memo-weeks')?.value||12));
-    }
+    const item=e.type==='plan'?S.memo.plans.find(x=>x.id===e.id):S.memo.notes.find(x=>x.id===e.id);if(!item)return;
+    item.title=title;item.body=document.getElementById('memo-body')?.value||'';
+    if(e.type==='plan'){item.summary=document.getElementById('memo-summary')?.value||'';item.start=document.getElementById('memo-start')?.value||today;item.weeks=Math.max(1,Math.min(104,+document.getElementById('memo-weeks')?.value||12));}
     item.updated=new Date().toISOString();
   }
   S.memo.editor=null;save()
@@ -2022,71 +2046,117 @@ function memoSaveEditor(){
 function memoCancelEditor(){memoEnsure();S.memo.editor=null;R()}
 function memoDelete(type,id){
   memoEnsure();
-  if(!confirm(type==='plan'?'Excluir este plano?':type==='note'?'Excluir esta anotação?':'Excluir este lembrete?'))return;
+  const label=type==='plan'?'este plano':type==='note'?'esta anotação':type==='event'?'este compromisso':'este horário recorrente';
+  if(!confirm('Excluir '+label+'?'))return;
   if(type==='plan')S.memo.plans=S.memo.plans.filter(x=>x.id!==id);
   else if(type==='note')S.memo.notes=S.memo.notes.filter(x=>x.id!==id);
+  else if(type==='event')S.memo.events=S.memo.events.filter(x=>x.id!==id);
   else {S.memo.routine=S.memo.routine.filter(x=>x.id!==id);Object.keys(S.memo.done).forEach(d=>{if(S.memo.done[d])delete S.memo.done[d][id]})}
   S.memo.editor=null;save()
 }
-function memoRoutineToggle(id){
-  memoEnsure();
-  const d=today;S.memo.done[d]=S.memo.done[d]||{};
-  S.memo.done[d][id]=!S.memo.done[d][id];
-  save()
-}
+function memoRoutineToggle(id,date){memoEnsure();const d=date||today;S.memo.done[d]=S.memo.done[d]||{};S.memo.done[d][id]=!S.memo.done[d][id];save()}
 function memoRoutineActiveDays(days){return (days||[]).map(x=>MEMO_DAYS[x]).join(', ')}
 function memoEditorHTML(){
   const e=S.memo.editor;if(!e)return '';
-  let it=e.type==='plan'?S.memo.plans.find(x=>x.id===e.id):e.type==='note'?S.memo.notes.find(x=>x.id===e.id):S.memo.routine.find(x=>x.id===e.id);
+  const it=e.type==='plan'?S.memo.plans.find(x=>x.id===e.id):e.type==='note'?S.memo.notes.find(x=>x.id===e.id):e.type==='event'?S.memo.events.find(x=>x.id===e.id):S.memo.routine.find(x=>x.id===e.id);
   if(!it)return '';
-  if(e.type==='routine'){
-    return `<div class="c memo-editor"><div class="hdr"><h3>${it.id.startsWith('rot-')?'Editar lembrete':'Lembrete da rotina'}</h3><button class="btn s" onclick="memoCancelEditor()">Fechar</button></div>
-      <label class="memo-label">Horário<input id="memo-time" class="i" type="time" value="${esc(it.time||'18:00')}"></label>
-      <label class="memo-label">O que fazer<input id="memo-title" class="i" value="${esc(it.title||'')}" maxlength="160"></label>
-      <div class="memo-days">${MEMO_DAYS.map((d,i)=>`<label><input type="checkbox" name="memo-days" value="${i}" ${(it.days||[]).includes(i)?'checked':''}> ${d}</label>`).join('')}</div>
-      <div class="mf"><button class="btn" onclick="memoCancelEditor()">Cancelar</button><button class="btn p" onclick="memoSaveEditor()">Salvar lembrete</button></div></div>`;
-  }
+  if(e.type==='routine')return `<div class="c memo-editor"><div class="hdr"><h3>Horário recorrente</h3><button class="btn s" onclick="memoCancelEditor()">Fechar</button></div>
+    <label class="memo-label">Horário<input id="memo-time" class="i" type="time" value="${esc(it.time||'18:00')}"></label>
+    <label class="memo-label">O que fazer<input id="memo-title" class="i" value="${esc(it.title||'')}" maxlength="160"></label>
+    <label class="memo-label">Cor no calendário<select id="memo-color" class="i">${[['#8BC5FF','Azul'],['#8BD6B0','Verde'],['#F1D27A','Amarelo'],['#E99A87','Coral'],['#C5A1E8','Lilás'],['#E18B9B','Rosa']].map(([c,n])=>`<option value="${c}" ${((it.color||'#8BC5FF')===c)?'selected':''}>${n}</option>`).join('')}</select></label>
+    <div class="memo-days">${MEMO_DAYS.map((d,i)=>`<label><input type="checkbox" name="memo-days" value="${i}" ${(it.days||[]).includes(i)?'checked':''}> ${d}</label>`).join('')}</div>
+    <div class="mf"><button class="btn" onclick="memoCancelEditor()">Cancelar</button><button class="btn p" onclick="memoSaveEditor()">Salvar horário</button></div></div>`;
+  if(e.type==='event')return `<div class="c memo-editor"><div class="hdr"><h3>Compromisso no calendário</h3><button class="btn s" onclick="memoCancelEditor()">Fechar</button></div>
+    <div class="memo-fields"><label class="memo-label">Data<input id="memo-event-date" class="i" type="date" value="${esc(it.date||today)}"></label><label class="memo-label">Horário<input id="memo-event-time" class="i" type="time" value="${esc(it.time||'18:00')}"></label></div>
+    <label class="memo-label">O que está marcado?<input id="memo-title" class="i" value="${esc(it.title||'')}" maxlength="160"></label>
+    <label class="memo-label">Cor no calendário<select id="memo-event-color" class="i">${[['#A9D4F5','Azul'],['#8BD6B0','Verde'],['#F1D27A','Amarelo'],['#E99A87','Coral'],['#C5A1E8','Lilás'],['#E18B9B','Rosa']].map(([c,n])=>`<option value="${c}" ${((it.color||'#A9D4F5')===c)?'selected':''}>${n}</option>`).join('')}</select></label>
+    <label class="memo-label">Observações<textarea id="memo-body" class="i memo-textarea" placeholder="Detalhes, local, materiais ou lembretes...">${esc(it.note||'')}</textarea></label>
+    <div class="mf"><button class="btn" onclick="memoCancelEditor()">Cancelar</button><button class="btn p" onclick="memoSaveEditor()">Salvar compromisso</button></div></div>`;
   const isPlan=e.type==='plan';
   return `<div class="c memo-editor"><div class="hdr"><h3>${isPlan?'Editar plano':'Editar anotação'}</h3><button class="btn s" onclick="memoCancelEditor()">Fechar</button></div>
     <label class="memo-label">Título<input id="memo-title" class="i" value="${esc(it.title||'')}" maxlength="160"></label>
     ${isPlan?`<label class="memo-label">Resumo<input id="memo-summary" class="i" value="${esc(it.summary||'')}" maxlength="240"></label><div class="memo-fields"><label class="memo-label">Início<input id="memo-start" class="i" type="date" value="${esc(it.start||today)}"></label><label class="memo-label">Duração (semanas)<input id="memo-weeks" class="i" type="number" min="1" max="104" value="${it.weeks||12}"></label></div>`:''}
-    <label class="memo-label">Conteúdo<textarea id="memo-body" class="i memo-textarea" placeholder="Escreva aqui seu plano, cronograma, ideias ou observações...">${esc(it.body||'')}</textarea></label>
+    <label class="memo-label">Conteúdo<textarea id="memo-body" class="i memo-textarea" placeholder="Escreva seu plano, cronograma, ideias ou observações...">${esc(it.body||'')}</textarea></label>
     <div class="mf"><button class="btn" onclick="memoCancelEditor()">Cancelar</button><button class="btn p" onclick="memoSaveEditor()">Salvar ${isPlan?'plano':'anotação'}</button></div></div>`;
 }
 function memoPlansHTML(){
-  const plans=S.memo.plans;
-  let h=`<div class="memo-toolbar"><div><h2>Meus planos</h2><p class="sub">Cronogramas, objetivos e etapas que você pode editar e acompanhar.</p></div><div class="ctl"><button class="btn" onclick="memoNew('plan')">+ Novo plano</button><button class="btn p" onclick="memoSeed12()">Usar meu modelo de 12 semanas</button></div></div>`;
-  if(!plans.length)h+=`<div class="c memo-empty"><div class="memo-symbol">✦</div><h3>Comece com seu primeiro cronograma</h3><p class="sub">Você pode criar um plano do zero ou carregar o modelo de 12 semanas que você descreveu.</p><button class="btn p" onclick="memoSeed12()">Criar meu plano de 12 semanas</button></div>`;
-  plans.forEach(p=>{h+=`<article class="c memo-card"><div class="hdr"><div><h3>${esc(p.title)}</h3><p class="sub">${esc(p.summary||'Sem resumo')} · ${p.weeks||12} semanas · início ${brd(p.start||today)}</p></div><div class="ctl"><button class="btn s" onclick="memoEdit('plan','${p.id}')">Editar</button><button class="btn s" onclick="memoDelete('plan','${p.id}')">Excluir</button></div></div><details><summary>Ver cronograma completo</summary><pre>${esc(p.body||'Ainda sem conteúdo.')}</pre></details></article>`});
-  return h
-}
-function memoNotesHTML(){
-  let h=`<div class="memo-toolbar"><div><h2>Minhas anotações</h2><p class="sub">Ideias, registros do dia, observações e listas rápidas.</p></div><button class="btn p" onclick="memoNew('note')">+ Nova anotação</button></div>`;
-  if(!S.memo.notes.length)h+=`<div class="c memo-empty"><div class="memo-symbol">✎</div><h3>Nenhuma anotação ainda</h3><p class="sub">Crie uma nota para guardar ideias, listas ou acompanhar o que aconteceu no dia.</p><button class="btn p" onclick="memoNew('note')">Criar anotação</button></div>`;
-  S.memo.notes.slice().sort((a,b)=>(b.updated||b.created||'').localeCompare(a.updated||a.created||'')).forEach(n=>{h+=`<article class="c memo-card"><div class="hdr"><div><h3>${esc(n.title)}</h3><p class="sub">Atualizada em ${esc(new Date(n.updated||n.created||Date.now()).toLocaleString('pt-BR'))}</p></div><div class="ctl"><button class="btn s" onclick="memoEdit('note','${n.id}')">Editar</button><button class="btn s" onclick="memoDelete('note','${n.id}')">Excluir</button></div></div><pre>${esc(n.body||'')}</pre></article>`});
-  return h
+  const plans=S.memo.plans;let h=`<div class="memo-toolbar"><div><h2>Meus planos</h2><p class="sub">Crie cronogramas, objetivos, etapas e revisões.</p></div><button class="btn p" onclick="memoNew('plan')">+ Novo plano</button></div>`;
+  if(!plans.length)h+=`<div class="c memo-empty"><div class="memo-symbol">✦</div><h3>Comece com seu primeiro plano</h3><p class="sub">Registre o objetivo, o período e o passo a passo. Depois coloque cada compromisso no calendário.</p><button class="btn p" onclick="memoNew('plan')">Criar plano</button></div>`;
+  plans.forEach(p=>{h+=`<article class="c memo-card"><div class="hdr"><div><h3>${esc(p.title)}</h3><p class="sub">${esc(p.summary||'Sem resumo')} · ${p.weeks||12} semanas · início ${brd(p.start||today)}</p></div><div class="ctl"><button class="btn s" onclick="memoEdit('plan','${p.id}')">Editar</button><button class="btn s" onclick="memoDelete('plan','${p.id}')">Excluir</button></div></div><details><summary>Ver cronograma completo</summary><pre>${esc(p.body||'Ainda sem conteúdo.')}</pre></details></article>`});return h
 }
 function memoRoutineHTML(){
   const day=new Date().getDay(),done=S.memo.done[today]||{};
-  const items=S.memo.routine.filter(x=>x.active!==false&&(x.days||[]).includes(day)).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-  const completed=items.filter(x=>done[x.id]).length,pct=items.length?Math.round(completed/items.length*100):0;
-  let h=`<div class="memo-toolbar"><div><h2>Rotina de hoje</h2><p class="sub">${brd(today)} · ${MEMO_DAYS[day]} · ${completed} de ${items.length} concluídos</p></div><button class="btn p" onclick="memoNew('routine')">+ Horário</button></div><div class="memo-progress"><span style="width:${pct}%"></span></div>`;
-  if(!items.length)h+=`<div class="c memo-empty"><h3>Sem itens para hoje</h3><p class="sub">Adicione um horário ou escolha outro dia na edição do lembrete.</p></div>`;
-  items.forEach(x=>{h+=`<div class="c memo-routine ${done[x.id]?'done':''}"><button class="memo-check" onclick="memoRoutineToggle('${x.id}')" aria-pressed="${!!done[x.id]}">${done[x.id]?'✓':''}</button><time>${esc(x.time)}</time><div class="memo-rtext"><b>${esc(x.title)}</b><small>${memoRoutineActiveDays(x.days)}</small></div><button class="btn s" onclick="memoEdit('routine','${x.id}')">Editar</button></div>`});
-  h+=`<div class="c memo-info"><b>Sobre as marmitas Live Up</b><p>O cronograma reserva o horário de 12:00 para o almoço de segunda a sexta e 06:45 para pegar a marmita. Quando a entrega chegar, registre nas anotações a data, quantidade, sabores e validade para acompanhar seu estoque.</p><button class="btn s" onclick="memoNew('note')">Registrar entrega das marmitas</button></div>`;
-  return h
+  const routines=S.memo.routine.filter(x=>x.active!==false&&(x.days||[]).includes(day)).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const events=S.memo.events.filter(x=>x.date===today).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const all=[...routines.map(x=>({...x,_type:'routine'})),...events.map(x=>({...x,_type:'event'}))].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const completed=all.filter(x=>done[x.id]).length,pct=all.length?Math.round(completed/all.length*100):0;
+  let h=`<div class="memo-toolbar"><div><h2>Rotina e compromissos de hoje</h2><p class="sub">${brd(today)} · ${MEMO_DAYS[day]} · ${completed} de ${all.length} concluídos</p></div><div class="ctl"><button class="btn" onclick="memoNew('routine')">+ Horário recorrente</button><button class="btn p" onclick="memoNew('event','${today}')">+ Compromisso</button></div></div><div class="memo-progress"><span style="width:${pct}%"></span></div>`;
+  if(!all.length)h+=`<div class="c memo-empty"><h3>Nenhum compromisso para hoje</h3><p class="sub">Crie um horário que se repete durante a semana ou marque uma tarefa em uma data específica no calendário.</p></div>`;
+  all.forEach(x=>{const isEvent=x._type==='event',isDone=!!done[x.id];h+=`<div class="c memo-routine ${isDone?'done':''}"><button class="memo-check" onclick="memoRoutineToggle('${x.id}','${today}')" aria-pressed="${isDone}">${isDone?'✓':''}</button><time>${esc(x.time||'')}</time><div class="memo-rtext"><b>${esc(x.title)}</b><small>${isEvent?'Compromisso de hoje':'Repete: '+memoRoutineActiveDays(x.days)}</small></div><button class="btn s" onclick="memoEdit('${isEvent?'event':'routine'}','${x.id}')">Editar</button></div>`});
+  h+=`<div class="c memo-info"><b>Como funciona o calendário da Conta 3</b><p>Horários recorrentes aparecem nos dias da semana escolhidos. Compromissos com data marcada aparecem somente naquele dia. Planos e anotações ficam separados dos dados financeiros.</p><button class="btn s" onclick="location.hash='#simples'">Abrir calendário</button></div>`;return h
 }
+function agendaItemsOn(ds){
+  memoEnsure();const weekday=new Date(ds+'T12:00:00').getDay(),done=S.memo.done[ds]||{};
+  const routines=S.memo.routine.filter(x=>x.active!==false&&(x.days||[]).includes(weekday)).map(x=>({...x,_type:'routine',_date:ds,_done:!!done[x.id]}));
+  const events=S.memo.events.filter(x=>x.date===ds).map(x=>({...x,_type:'event',_date:ds,_done:!!done[x.id]}));
+  return routines.concat(events).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||(a.title||'').localeCompare(b.title||''));
+}
+function agendaItemHTML(x,ds){
+  const typ=x._type||x.type||'event',done=!!(S.memo.done[ds]&&S.memo.done[ds][x.id]);
+  return `<div class="agenda-item ${done?'done':''}"><button class="agenda-tick" onclick="memoRoutineToggle('${x.id}','${ds}');agendaDay('${ds}')" aria-label="Marcar como concluído">${done?'✓':''}</button><span class="agenda-time">${esc(x.time||'—')}</span><span class="agenda-name"><b>${esc(x.title||'Sem título')}</b><small>${typ==='routine'?'Rotina recorrente':'Compromisso / tarefa'}</small></span><button class="btn s" onclick="agendaEdit('${typ==='routine'?'routine':'event'}','${x.id}')">Editar</button></div>`;
+}
+function agendaDayListHTML(ds){
+  const items=agendaItemsOn(ds);if(!items.length)return `<div class="empty">Nada marcado para este dia.</div>`;
+  return `<div class="agenda-list">${items.map(x=>agendaItemHTML(x,ds)).join('')}</div>`;
+}
+function agendaEdit(type,id){closeM();memoOpenPage();memoEdit(type,id)}
+function agendaDay(ds){
+  const d=new Date(ds+'T12:00:00'),wd=MEMO_DAYS[d.getDay()],label=`${wd}, ${ds.slice(8,10)}/${ds.slice(5,7)}/${ds.slice(0,4)}`;
+  M(`${mh(label)}${agendaDayListHTML(ds)}<div class="mf"><button class="btn" onclick="closeM()">Fechar</button><button class="btn" onclick="closeM();memoNew('routine')">+ Rotina</button><button class="btn p" onclick="closeM();memoNew('event','${ds}')">+ Tarefa / compromisso</button></div>`);
+}
+function agendaMonthGrid(ym){
+  const [y,m]=ym.split('-').map(Number),n=dim(ym),lead=new Date(y,m-1,1).getDay(),prev=new Date(y,m-1,0).getDate();
+  let html=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i===0?'wk':''}">${w}</div>`).join('');
+  for(let i=0;i<lead;i++)html+=`<div class="d d2 om agenda-day"><span class="n">${prev-lead+i+1}</span></div>`;
+  for(let d=1;d<=n;d++){
+    const ds=ym+'-'+pad(d),dt=new Date(y,m-1,d),items=agendaItemsOn(ds),weekend=dt.getDay()===0||dt.getDay()===6;
+    const visible=items.slice(0,4);
+    html+=`<button type="button" class="d d2 agenda-day ${weekend?'we':''} ${ds===today?'td':''}" onclick="agendaDay('${ds}')"><span class="n">${d}</span><span class="agenda-chips">${visible.map(x=>`<i class="agenda-chip ${x._done?'done':''}" style="--agc:${esc(x.color||'#A9D4F5')}" title="${esc(x.title)}">${esc((x.time?x.time+' · ':'')+x.title)}</i>`).join('')}${items.length>visible.length?`<b class="agenda-more">+${items.length-visible.length}</b>`:''}</span><span class="agenda-count">${items.length?items.length+' item'+(items.length>1?'s':''):''}</span></button>`;
+  }
+  const tail=(7-((lead+n)%7))%7;for(let i=1;i<=tail;i++)html+=`<div class="d d2 om agenda-day"><span class="n">${i}</span></div>`;
+  return `<div class="cal cal2 agenda-cal">${html}</div><div class="cgrab" id="cgrab" aria-label="Esticar calendário"><i></i></div>`;
+}
+function agendaMiniMonth(ym){
+  const [y,m]=ym.split('-').map(Number),n=dim(ym),lead=new Date(y,m-1,1).getDay();let dots='';
+  for(let i=0;i<lead;i++)dots+='<i></i>';
+  for(let d=1;d<=n;d++){const ds=ym+'-'+pad(d),count=agendaItemsOn(ds).length;dots+=`<i class="${ds===today?'ut':''} ${count?'has-agenda':''}">${d}</i>`}
+  return `<div class="ym ${ym===ym0?'cur':''}" onclick="cvGo('${ym}')"><b>${MS[m-1]}.</b><div class="yg">${dots}</div></div>`;
+}
+function agendaPeriodList(ym){
+  let h='';for(let d=1;d<=dim(ym);d++){const ds=ym+'-'+pad(d),items=agendaItemsOn(ds);if(!items.length)continue;const dt=new Date(ds+'T12:00:00');h+=`<section class="agenda-date-group"><button class="agenda-date-head" onclick="agendaDay('${ds}')"><b>${MEMO_DAYS[dt.getDay()]}, ${d} de ${MN[+ym.slice(5)-1]}</b><span>${items.length} item${items.length>1?'s':''}</span></button>${agendaDayListHTML(ds)}</section>`}return h||'<div class="c memo-empty"><h3>Nenhum compromisso neste mês</h3><p class="sub">Adicione uma tarefa ou horário para que apareça aqui.</p></div>';
+}
+function V_agendaAlt(){
+  const v=CVW,d=cdd(),dt=new Date(d+'T12:00:00'),wd=['Dom.','Seg.','Ter.','Qua.','Qui.','Sex.','Sáb.'];let body='';
+  if(v==='a')body=`<div class="yr">${Array.from({length:12},(_,i)=>agendaMiniMonth(cur.slice(0,4)+'-'+pad(i+1))).join('')}</div>`;
+  else if(v==='w'){const sun=addD(d,-dt.getDay());body=`<div class="wk7">${Array.from({length:7},(_,i)=>{const ds=addD(sun,i),it=agendaItemsOn(ds);return `<button class="${ds===d?'sl':''} ${ds===today?'td':''}" onclick="cvSel('${ds}')"><small>${wd[i]}</small><b>${+ds.slice(8)}</b><em>${it.length||''}</em></button>`}).join('')}</div><h2 class="lh2">${brd(d)}</h2>${agendaDayListHTML(d)}<div class="ctl"><button class="btn p" onclick="memoNew('event','${d}')">+ Tarefa / compromisso</button><button class="btn" onclick="memoNew('routine')">+ Rotina recorrente</button></div>`}
+  else if(v==='d')body=`<h2 class="lh2">${brd(d)}</h2>${agendaDayListHTML(d)}<div class="ctl"><button class="btn p" onclick="memoNew('event','${d}')">+ Tarefa / compromisso</button><button class="btn" onclick="memoNew('routine')">+ Rotina recorrente</button></div>`;
+  else body=agendaPeriodList(cur);
+  return `<div class="lean agenda-mode">${leanHead('cal')}<div class="agenda-view-actions"><button class="btn p" onclick="memoNew('event','${d}')">+ Tarefa / compromisso</button><button class="btn" onclick="memoNew('routine')">+ Rotina recorrente</button></div>${body}</div>`;
+}
+function V_agendaCalendar(){
+  if(CVW!=='m')return V_agendaAlt();
+  const total=agendaItemsOn(today).length;
+  return `<div class="lean agenda-mode">${leanHead('cal')}<div class="agenda-view-actions"><span class="sub">Compromissos, tarefas e horários no mesmo calendário.</span><div class="ctl"><button class="btn" onclick="memoNew('routine')">+ Rotina recorrente</button><button class="btn p" onclick="memoNew('event',today)">+ Tarefa / compromisso</button></div></div>${agendaMonthGrid(cur)}<div class="agenda-today"><div><b>Hoje</b><span class="sub">${brd(today)} · ${total} item${total===1?'':'s'}</span></div>${agendaDayListHTML(today)}</div></div>`;
+}
+
 function V_anotacoes(){
-  memoEnsure();
-  const t=S.memo.tab||'plans';
-  let h=`<div class="top memo-top"><div><div class="eb">ESPAÇO PESSOAL</div><h1>Anotações e planos</h1><p class="sub">Um espaço para seus cronogramas, rotina e anotações, separado dos lançamentos financeiros.</p></div></div>
-  <div class="seg memo-tabs"><button class="${t==='plans'?'on':''}" onclick="memoTab('plans')">Planos</button><button class="${t==='routine'?'on':''}" onclick="memoTab('routine')">Rotina diária</button><button class="${t==='notes'?'on':''}" onclick="memoTab('notes')">Anotações</button></div>`;
-  h+=memoEditorHTML();
-  h+=t==='plans'?memoPlansHTML():t==='routine'?memoRoutineHTML():memoNotesHTML();
-  h+=`<p class="memo-foot">Suas anotações e rotinas são salvas junto aos dados desta conta no aplicativo e acompanham a sincronização quando ela estiver conectada.</p>`;
-  return h;
+  memoEnsure();const t=S.memo.tab||'plans';
+  let h=`<div class="top memo-top"><div><div class="eb">CONTA 3 · ORGANIZAÇÃO PESSOAL</div><h1>Planos e anotações</h1><p class="sub">Organize cronogramas, rotinas, compromissos e ideias no mesmo calendário do aplicativo.</p></div></div>
+  <div class="seg memo-tabs"><button class="${t==='plans'?'on':''}" onclick="memoTab('plans')">Planos</button><button class="${t==='routine'?'on':''}" onclick="memoTab('routine')">Rotina e horários</button><button class="${t==='notes'?'on':''}" onclick="memoTab('notes')">Anotações</button></div>`;
+  h+=memoEditorHTML();h+=t==='plans'?memoPlansHTML():t==='routine'?memoRoutineHTML():memoNotesHTML();
+  h+=`<p class="memo-foot">A Conta 3 tem dados próprios. Ela não altera receitas, despesas, metas ou saldos das Contas 1 e 2.</p>`;return h;
 }
-function R(){try{memoEnsure();applyTheme();if(!Array.isArray(S.planTx))S.planTx=[];if(!S.plan)S.plan={on:0,tr:0,alm:0,jan:0,laz:0};if(!/^(simples|limites|meses|contas|cofrinho|anotacoes)$/.test(pg)){pg='simples';if(location.hash!=='#simples')history.replaceState(null,'','#simples')}const LN=pg==='simples'||pg==='limites'||pg==='meses'||pg==='contas'||pg==='cofrinho'||pg==='anotacoes';document.body.classList.toggle('lean',LN);document.body.classList.toggle('acc2',ACC==='2');try{localStorage.setItem('mpf_mode',LN?'lean':'full')}catch(e){}if(pg==='metas'&&window._lp!=='metas'){CF.scope='*';CF.extra=[];cfLoad()}window._lp=pg;nav();leanBar(false);drwSync();$('#main').innerHTML=pg==='inicio'?V_inicio():pg==='calendario'?V_calendario():pg==='transacoes'?V_transacoes():pg==='orcamento'?V_orc():pg==='metas'?V_metaTab():pg==='tags'?V_tags():pg==='cofrinhos'?V_cof():pg==='simples'?V_lean():pg==='limites'?V_lim():pg==='meses'?V_mes():pg==='contas'?V_contas():pg==='cofrinho'?V_cofL():pg==='perfil'?V_perfil():pg==='anotacoes'?V_anotacoes():`<div class="ph"><div><h2>${NAV.find(p=>p&&p[0]===pg)[1]}</h2><p>Esta aba será desenvolvida na próxima etapa,<br>depois da sua aprovação da aba Início.</p><a class="btn p" href="#inicio" style="display:inline-block;text-decoration:none;margin-top:10px">Voltar ao Início</a></div></div>`}catch(e){showErr(e)}}
+function R(){try{if(ACC==='3'){memoEnsure();S.agendaProfile=1;if(!['simples','anotacoes'].includes(pg)){pg='simples';if(location.hash!=='#simples')history.replaceState(null,'','#simples')}}else{if(pg==='anotacoes'){pg='simples';if(location.hash!=='#simples')history.replaceState(null,'','#simples')}if(!Array.isArray(S.planTx))S.planTx=[];if(!S.plan)S.plan={on:0,tr:0,alm:0,jan:0,laz:0}}applyTheme();const LN=ACC==='3'||pg==='simples'||pg==='limites'||pg==='meses'||pg==='contas'||pg==='cofrinho';document.body.classList.toggle('lean',LN);document.body.classList.toggle('acc2',ACC==='2');document.body.classList.toggle('acc3',ACC==='3');try{localStorage.setItem('mpf_mode',LN?'lean':'full')}catch(e){}if(pg==='metas'&&window._lp!=='metas'){CF.scope='*';CF.extra=[];cfLoad()}window._lp=pg;nav();leanBar(false);drwSync();$('#main').innerHTML=pg==='inicio'?V_inicio():pg==='calendario'?V_calendario():pg==='transacoes'?V_transacoes():pg==='orcamento'?V_orc():pg==='metas'?V_metaTab():pg==='tags'?V_tags():pg==='cofrinhos'?V_cof():pg==='simples'?V_lean():pg==='limites'?V_lim():pg==='meses'?V_mes():pg==='contas'?V_contas():pg==='cofrinho'?V_cofL():pg==='perfil'?V_perfil():pg==='anotacoes'?V_anotacoes():`<div class="ph"><div><h2>${NAV.find(p=>p&&p[0]===pg)?.[1]||'Calendário'}</h2><p>Esta área não está disponível nesta conta.</p><a class="btn p" href="#simples" style="display:inline-block;text-decoration:none;margin-top:10px">Voltar ao Calendário</a></div></div>`}catch(e){showErr(e)}}
 function showErr(e){try{const m=$('#main');if(m)m.innerHTML=`<div class="c" style="max-width:640px;margin:40px auto"><h3>Algo deu errado ao abrir esta página</h3><p class="mu" style="margin:10px 0">Seus dados continuam salvos neste navegador. Detalhe técnico:</p><pre style="white-space:pre-wrap;background:#141415;padding:12px;border-radius:10px;font-size:12px">${esc(e&&e.stack?e.stack.split('\n').slice(0,4).join('\n'):String(e))}</pre><div class="mf" style="border:0"><button class="btn" onclick="OM.cfg=false;location.hash='#inicio';R()">Ir para o Início</button><button class="btn p" onclick="location.reload()">Recarregar</button></div></div>`}catch(x){}}
 window.addEventListener('error',ev=>{const m=document.querySelector('#main');if(m&&!m.innerHTML.trim())showErr(ev.error||ev.message)});
 if(S.ver<25){/* correção única: saldo R$ 378,36, Recebimento 1 recebido em 30/10 (sem previsto no dia 3/11), R$ 100 extra, cores por categoria */

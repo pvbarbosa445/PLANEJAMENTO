@@ -1,0 +1,38 @@
+CONTA 3 — ORGANIZAÇÃO PESSOAL NO MESMO CALENDÁRIO
+
+Esta atualização acrescenta a Conta 3 ao aplicativo atual. Não é um segundo aplicativo.
+
+O que você terá:
+- Seletor de contas com Conta 1, Conta 2 e Conta 3 · Organização.
+- O mesmo calendário mensal, semanal e diário do aplicativo.
+- Tarefas e compromissos vinculados a uma data.
+- Horários recorrentes que aparecem nos dias da semana escolhidos.
+- Planos com título, resumo, início, duração e texto livre para cronogramas.
+- Anotações livres.
+- Marcação de tarefas concluídas.
+
+A Conta 3 começa vazia. O plano de 12 semanas enviado foi usado apenas como referência para a estrutura; nenhum compromisso, treino ou alimentação foi pré-cadastrado. Você cria e edita seus próprios planos e eventos.
+
+ISOLAMENTO:
+- Conta 1 continua com os dados financeiros atuais.
+- Conta 2 continua com os dados financeiros atuais.
+- Conta 3 grava separadamente em mpf3 / profile_id 3.
+- Não transfere nem mistura receitas, despesas, metas, saldos ou cofrinhos.
+
+INSTALAÇÃO NO SUPABASE:
+1. Abra o projeto Supabase existente.
+2. SQL Editor > New query.
+3. Abra supabase/add_profile3.sql, copie tudo e cole no editor.
+4. Clique Run uma vez.
+5. Esse SQL altera apenas a restrição para aceitar profile_id 3; não apaga dados.
+6. Não execute schema.sql nem realtime.sql novamente. A tabela e o Realtime já foram configurados anteriormente.
+
+INSTALAÇÃO NO GITHUB:
+1. Faça backup do repositório atual.
+2. Extraia o ZIP.
+3. Envie o conteúdo da pasta do pacote para a raiz do repositório PLANEJAMENTO, substituindo arquivos iguais.
+4. Não envie a pasta account3_work ou qualquer pasta externa; index.html, sync.js e sw.js precisam ficar diretamente na raiz.
+5. Commit changes e aguarde o deploy.
+6. Abra o site e atualize com Ctrl+Shift+R.
+
+Após o deploy, abra o seletor de contas e escolha Conta 3 · Organização.
