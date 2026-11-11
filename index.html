@@ -1291,6 +1291,82 @@ html[data-theme="light"] .lg .bt i,
 html[data-theme="light"] .memo-progress span {
   background-color:var(--ac)!important;
 }
+
+/* Ajustes visuais finais solicitados pelo usuário */
+html[data-theme="light"] .mod .mf {
+  background: #FFFFFF !important;
+}
+
+/* Aplica o estilo translúcido e arredondado (estilo Apple) nas tags da versão escura */
+body.lean .cal2.xl .cb {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 18px !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  padding: 3px 5px !important;
+  border: 0 !important;
+  border-left: 3px solid var(--cb-color, #8E8E93) !important;
+  border-radius: 5px !important;
+  background: color-mix(in srgb, var(--cb-color, #8E8E93) 25%, transparent) !important;
+  color: #F5F5F5 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  font-family: inherit !important;
+  font-size: 10.5px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+body.lean .cal2.xl .cb.pv {
+  border: 1px dashed var(--cb-color, #8E8E93) !important;
+  border-left: 3px dashed var(--cb-color, #8E8E93) !important;
+  background: color-mix(in srgb, var(--cb-color, #8E8E93) 12%, transparent) !important;
+  opacity: .9 !important;
+  box-shadow: none !important;
+}
+
+/* Ajuste de proporção das tags esticadas no celular (Z Flip 6) */
+@media (max-width: 760px) {
+  body.lean .cal2.xl .cb {
+    font-size: 10px !important;
+    min-height: 16px !important;
+    padding: 2px 4px !important;
+  }
+}
+
+/* Mantém as cores de texto e fundo exclusivas da versão clara na proporção correta */
+html[data-theme="light"] body.lean .cal.cal2.xl .cb {
+  background: color-mix(in srgb, var(--cb-color, #8E8E93) 19%, #FFFFFF) !important;
+  color: color-mix(in srgb, var(--cb-color, #8E8E93) 62%, #252525) !important;
+}
+html[data-theme="light"] body.lean .cal.cal2.xl .cb.pv {
+  background: color-mix(in srgb, var(--cb-color, #8E8E93) 10%, #FFFFFF) !important;
+}
+
+/* Centraliza perfeitamente o número do dia e o valor na base da célula (Versão PC) */
+@media (min-width: 761px) {
+  /* Centraliza o saldo no tema escuro */
+  body.lean .cal2 .d2 .sb {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* Centraliza o número do dia e o saldo no tema claro */
+html[data-theme="light"] body.lean .cal.cal2 > .d2 .n {
+  align-self: center !important;
+}
+html[data-theme="light"] body.lean .cal.cal2 > .d2 .sb {
+  text-align: center !important;
+  justify-content: center !important;
+}
 </style>
 
 </head><body>
