@@ -2499,4 +2499,32 @@ body.acc3 .mf .btn {
   };
   try{ if(typeof R==='function') R(); }catch(e){}
 })();
-</script><!-- [FIX-AGENDA-OK] --></body></html>
+</script><!-- [FIX-AGENDA-OK] --><style id="fix-cal-layout">
+/* Número no canto superior esquerdo */
+body.lean .cal2 .d2 .n,
+body.acc3 .agenda-cal .d2 .n {
+  align-self: flex-start !important;
+  justify-self: flex-start !important;
+  margin-left: 6px !important;
+  margin-right: auto !important;
+  text-align: left !important;
+}
+
+/* Remove a coloração de fundo do dia selecionado (.sl) e do dia atual (.td) */
+body.lean .cal2 .d.sl,
+body.lean .cal2 .d2.sl,
+body.lean .cal2 .d.td,
+body.lean .cal2 .d2.td {
+  background-color: #141416 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Ajuste do valor (saldo) para ficar embaixo e alinhado à esquerda */
+body.lean .cal2 .d2 .sb {
+  align-self: flex-start !important;
+  text-align: left !important;
+  padding-left: 6px !important;
+  margin-top: auto !important;
+}
+</style><!-- [FIX-CAL-OK] --></body></html>
