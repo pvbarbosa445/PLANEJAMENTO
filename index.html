@@ -582,863 +582,197 @@ body.lean .dm.sel,.dm.sel{display:block;border:0;margin:0;padding:7px 4px 6px;bo
   body.lean .pc-month-arrows button:focus-visible{outline:2px solid #A9D4F5!important;outline-offset:2px}
 }
 
-/* Modo claro branco + azul, aplicado ao app inteiro sem alterar o tema escuro padrão. */
-html[data-theme="light"]{
-  color-scheme:light;
-  --bg:#F4F8FF;--sb:#FFFFFF;--cd:#FFFFFF;--in:#F0F5FC;--bd:#D7E2F0;
-  --tx:#17263D;--t2:#60728A;--ac:#2B78D6;--gr:#169B54;--rd:#DE414B;--nt:#718096;
-}
-html[data-theme="light"] body{background:var(--bg)!important;color:var(--tx)!important}
-html[data-theme="light"] nav,html[data-theme="light"] #drw{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] main,html[data-theme="light"] #main,html[data-theme="light"] .app{background:var(--bg)!important;color:var(--tx)!important}
-html[data-theme="light"] .c,html[data-theme="light"] .kpi,html[data-theme="light"] .cofi,html[data-theme="light"] .dcard,html[data-theme="light"] .sim-note,html[data-theme="light"] .sim-ef,html[data-theme="light"] .tpv,html[data-theme="light"] .oes label,html[data-theme="light"] .memo-card,html[data-theme="light"] .memo-routine,html[data-theme="light"] .memo-info{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .d,html[data-theme="light"] .d2,html[data-theme="light"] .cal2 .d2,html[data-theme="light"] .ltri>div{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .d .n,html[data-theme="light"] .d2 .n,html[data-theme="light"] .cal2 .d2 .n{color:var(--tx)!important}
-html[data-theme="light"] .d .tot,html[data-theme="light"] .d2 .sb{color:var(--gr)!important}
-html[data-theme="light"] .btn,html[data-theme="light"] .seg,html[data-theme="light"] .seg.r button,html[data-theme="light"] .msel,html[data-theme="light"] .mbox,html[data-theme="light"] .pill,html[data-theme="light"] .ib{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .btn.p,html[data-theme="light"] .seg button.on,html[data-theme="light"] .seg.r button.on,html[data-theme="light"] nav a.on{background:var(--ac)!important;color:#FFFFFF!important;border-color:var(--ac)!important}
-html[data-theme="light"] .i,html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .dgt,html[data-theme="light"] .tgh{background:#EEF4FC!important;color:var(--t2)!important}
-html[data-theme="light"] .dgr .drow,html[data-theme="light"] #drw .drow{color:var(--tx)!important}
-html[data-theme="light"] .dinst{color:#10213D!important}
-html[data-theme="light"] .mod,html[data-theme="light"] .modal,html[data-theme="light"] .pop{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .ov{background:rgba(25,45,75,.35)!important}
-html[data-theme="light"] .tip{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] .act .ic{background:#EAF2FC!important;color:var(--tx)!important}
-html[data-theme="light"] .pb,html[data-theme="light"] .lg .bt{background:#E5EDF7!important}
-html[data-theme="light"] .ch,html[data-theme="light"] .cal2 .cb{color:#111!important}
-html[data-theme="light"] .dc{fill:var(--tx)!important}
-html[data-theme="light"] #cloud-sync-root{color:var(--tx)!important}
-html[data-theme="light"] #cloud-sync-open{background:#EEF5FF!important;color:#1B5FAE!important;border-color:#CBDCF2!important}
-html[data-theme="light"] #cloud-sync-panel{background:#FFFFFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] #cloud-sync-panel p{color:var(--t2)!important}
-html[data-theme="light"] #cloud-sync-panel input{background:#F7FAFF!important;color:var(--tx)!important;border-color:var(--bd)!important}
-html[data-theme="light"] #cloud-sync-panel button.alt{background:#EEF4FC!important;color:var(--tx)!important;border-color:var(--bd)!important}
+/* ==========================================================================
+   AJUSTES FINAIS:
+   1. Centralização do número do dia e do valor embaixo com o cabeçalho (PC e Z Flip 6).
+   2. Tags no tema escuro e no tema cinza sem bordas extras (exatamente como era no original).
+   3. Segundo tema (data-theme="light") IDÊNTICO ao tema escuro em tudo (mesma estrutura,
+      mesmos cartões arredondados Samsung, mesmas tags sólidas), trocando apenas o preto
+      principal por cinza escuro e os números/cabeçalhos de fins de semana/feriados por azul.
+   ========================================================================== */
 
-/* Espaço de planos, anotações e rotina: usa as cores adaptáveis do tema. */
-.memo-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0 16px}
-.memo-toolbar h2{font-size:20px;margin:0}.memo-toolbar .sub{max-width:760px}
-.memo-tabs{margin:0 0 16px}
-.memo-card{margin:10px 0;padding:16px 18px}
-.memo-card .hdr{align-items:flex-start}
-.memo-card pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 system-ui,sans-serif;color:var(--tx);margin:12px 0 0}
-.memo-card details{border-top:1px solid var(--bd);margin-top:12px;padding-top:10px}
-.memo-card summary{cursor:pointer;color:var(--ac);font-weight:700}
-.memo-empty{text-align:center;padding:34px 18px;margin-top:10px}
-.memo-symbol{font-size:30px;color:var(--ac);margin-bottom:8px}
-.memo-empty p{margin:8px auto 16px;max-width:560px}
-.memo-editor{margin:10px 0 18px;border-color:var(--ac)!important}
-.memo-label{display:flex;flex-direction:column;gap:6px;margin:10px 0;font-size:13px;font-weight:700}
-.memo-label .i{width:100%}
-.memo-textarea{width:100%;min-height:260px;resize:vertical;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace!important}
-.memo-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
-.memo-days{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
-.memo-days label{display:flex;align-items:center;gap:5px;border:1px solid var(--bd);border-radius:9px;padding:7px 9px;background:var(--in);cursor:pointer}
-.memo-progress{height:7px;background:var(--bd);border-radius:20px;overflow:hidden;margin:0 0 12px}
-.memo-progress span{height:100%;display:block;background:var(--ac);border-radius:20px}
-.memo-routine{display:grid;grid-template-columns:34px 62px minmax(0,1fr) auto;gap:10px;align-items:center;margin:7px 0;padding:11px 13px}
-.memo-routine.done{opacity:.65}
-.memo-routine time{font-variant-numeric:tabular-nums;font-weight:800;color:var(--ac)}
-.memo-rtext{min-width:0}.memo-rtext b{display:block}.memo-rtext small{display:block;color:var(--t2);font-size:11px;margin-top:3px}
-.memo-check{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ac);background:transparent;color:var(--ac);font-weight:800;cursor:pointer}
-.memo-routine.done .memo-check{background:var(--ac);color:#fff}
-.memo-info{margin-top:14px;padding:15px 17px}.memo-info p{color:var(--t2);line-height:1.5}
-.memo-foot{color:var(--t2);font-size:12px;margin:16px 0}
-@media(max-width:760px){
- .memo-toolbar{display:block}.memo-toolbar .ctl{margin-top:10px}.memo-toolbar .ctl .btn{flex:1}
- .memo-routine{grid-template-columns:32px 52px minmax(0,1fr);}.memo-routine>.btn{grid-column:3;justify-self:start}
- .memo-fields{grid-template-columns:1fr}
- .memo-card .hdr{flex-direction:column}
-}
-
-/* Conta 3: agenda usa o mesmo calendário, sem indicadores ou valores financeiros. */
-body.acc3 .agenda-view-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 10px}
-body.acc3 .agenda-cal .agenda-day{cursor:pointer;min-width:0}
-body.acc3 .agenda-cal .agenda-chips{display:flex;flex-direction:column;gap:3px;width:100%;min-width:0;margin-top:3px}
-body.acc3 .agenda-cal .agenda-chip{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:4px;padding:2px 4px;background:var(--agc);color:#13202c;font-size:10px;font-style:normal;font-weight:700;line-height:1.25}
-body.acc3 .agenda-cal .agenda-chip.done{text-decoration:line-through;opacity:.55}
-body.acc3 .agenda-cal .agenda-more,body.acc3 .agenda-cal .agenda-count{font-size:10px;color:var(--t2);font-weight:700}
-body.acc3 .agenda-today{margin-top:14px;padding-bottom:72px}
-body.acc3 .agenda-today>div:first-child{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
-body.acc3 .agenda-item{display:grid;grid-template-columns:28px 56px minmax(0,1fr) auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
-body.acc3 .agenda-tick{width:26px;height:26px;border-radius:50%;border:1px solid var(--ac);background:transparent;color:var(--ac);font-weight:800;cursor:pointer}
-body.acc3 .agenda-time{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ac)}
-body.acc3 .agenda-name{min-width:0}.agenda-name b{display:block;overflow-wrap:anywhere}.agenda-name small{display:block;color:var(--t2);font-size:11px;margin-top:2px}
-body.acc3 .agenda-item.done .agenda-name{text-decoration:line-through;opacity:.55}
-body.acc3 .agenda-date-group{margin:12px 0 18px}
-body.acc3 .agenda-date-head{width:100%;display:flex;justify-content:space-between;background:none;border:0;border-bottom:1px solid var(--bd);padding:8px 2px;text-align:left;cursor:pointer;color:var(--tx)}
-body.acc3 .agenda-date-head span{color:var(--t2);font-size:12px}
-body.acc3 .agenda-cal .d2.td .n{background:var(--ac);color:#101820}
-body.acc3 .agenda-cal .d2.om{opacity:.35}
-body.acc3 .agenda-cal .d2{min-width:0}
-@media(max-width:760px){body.acc3 .agenda-view-actions{display:block}body.acc3 .agenda-view-actions .ctl{margin-top:8px}body.acc3 .agenda-view-actions .btn{flex:1}body.acc3 .agenda-cal .agenda-chip{font-size:8px;line-height:1.15;padding:2px 3px}body.acc3 .agenda-cal .agenda-count{font-size:8px}body.acc3 .agenda-item{grid-template-columns:27px 46px minmax(0,1fr);gap:6px}body.acc3 .agenda-item>.btn{grid-column:3;justify-self:start}}
-@media(min-width:761px){body.acc3 .agenda-cal .d2{min-height:max(110px,calc((100vh - 330px)/6))}body.acc3 .agenda-cal .agenda-chip{font-size:11px;line-height:1.25;padding:3px 5px}body.acc3 .agenda-today{max-width:900px}}
-
-
-/* MODO CLARO — inspirado no Calendário da Apple (grade contínua e sidebar suave).
-   As regras são finais de propósito: neutralizam estilos escuros antigos sem tocar no modo escuro. */
-html[data-theme="light"]{
-  color-scheme:light;
-  --bg:#FFFFFF;--sb:#F5F5F7;--cd:#FFFFFF;--in:#F5F5F7;--bd:#D8D8DC;
-  --tx:#1D1D1F;--t2:#6E6E73;--ac:#007AFF;--gr:#248A3D;--rd:#D70015;--nt:#8E8E93;
-}
-html[data-theme="light"] body,
-html[data-theme="light"] #app,
-html[data-theme="light"] main,
-html[data-theme="light"] #main{background:#FFFFFF!important;color:#1D1D1F!important}
-html[data-theme="light"] nav{background:#F5F5F7!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
-html[data-theme="light"] nav a{color:#6E6E73!important}
-html[data-theme="light"] nav a:hover{background:#E8E8ED!important;color:#1D1D1F!important}
-html[data-theme="light"] nav a.on{background:#DCEBFF!important;color:#0066CC!important}
-html[data-theme="light"] h1,html[data-theme="light"] h2,html[data-theme="light"] h3,
-html[data-theme="light"] .lhd b,html[data-theme="light"] .dch b{color:#1D1D1F!important}
-html[data-theme="light"] .sub,html[data-theme="light"] .mu{color:#6E6E73}
-html[data-theme="light"] .c,html[data-theme="light"] .kpi,html[data-theme="light"] .cofi,
-html[data-theme="light"] .dcard,html[data-theme="light"] .sim-note,html[data-theme="light"] .sim-ef,
-html[data-theme="light"] .tpv,html[data-theme="light"] .oes label,html[data-theme="light"] .memo-card,
-html[data-theme="light"] .memo-routine,html[data-theme="light"] .memo-info,
-html[data-theme="light"] .lhero,html[data-theme="light"] .lrow>div,html[data-theme="light"] .lcat,
-html[data-theme="light"] .mcard,html[data-theme="light"] .cofl,html[data-theme="light"] .lpg{
-  background:#FFFFFF!important;color:#1D1D1F!important;border-color:#E5E5EA!important;box-shadow:none!important;
-}
-html[data-theme="light"] .lhero.bad{border-color:#D70015!important}
-html[data-theme="light"] .lhero.warn{border-color:#FF9F0A!important}
-html[data-theme="light"] .lhero small,html[data-theme="light"] .lrow small,
-html[data-theme="light"] .ltri small,html[data-theme="light"] .pst small{color:#6E6E73!important}
-html[data-theme="light"] .btn,html[data-theme="light"] .seg,html[data-theme="light"] .seg.r button,
-html[data-theme="light"] .msel,html[data-theme="light"] .mbox,html[data-theme="light"] .pill,
-html[data-theme="light"] .ib,html[data-theme="light"] .ltog,html[data-theme="light"] .accb,
-html[data-theme="light"] .dtg{background:#F5F5F7!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
-html[data-theme="light"] .btn.p,html[data-theme="light"] .seg button.on,
-html[data-theme="light"] .seg.r button.on,html[data-theme="light"] nav a.on,
-html[data-theme="light"] .ltog button.on,html[data-theme="light"] .accb button.on,
-html[data-theme="light"] .dtg button.on{background:#007AFF!important;color:#FFFFFF!important;border-color:#007AFF!important}
-html[data-theme="light"] .i,html[data-theme="light"] input,html[data-theme="light"] select,
-html[data-theme="light"] textarea{background:#FFFFFF!important;color:#1D1D1F!important;border-color:#C7C7CC!important}
-html[data-theme="light"] input:focus,html[data-theme="light"] select:focus,
-html[data-theme="light"] textarea:focus{outline:2px solid rgba(0,122,255,.28)!important;border-color:#007AFF!important}
-html[data-theme="light"] .dgt,html[data-theme="light"] .tgh{background:transparent!important;color:#6E6E73!important}
-html[data-theme="light"] .mod,html[data-theme="light"] .modal,html[data-theme="light"] .pop,
-html[data-theme="light"] .tip{background:#FFFFFF!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
-html[data-theme="light"] .ov{background:rgba(29,29,31,.22)!important}
-html[data-theme="light"] .act .ic{background:#EAF2FF!important;color:#0066CC!important}
-html[data-theme="light"] .pb,html[data-theme="light"] .lg .bt{background:#E5E5EA!important}
-html[data-theme="light"] .dinst{background:#007AFF!important;color:#FFFFFF!important}
-html[data-theme="light"] .lbr,html[data-theme="light"] .dr2 .db{background:#E5E5EA!important}
-html[data-theme="light"] .dm.sel{background:#F2F7FF!important}
-html[data-theme="light"] .dr2.sel{background:#EAF2FF!important}
-html[data-theme="light"] .dm .dsub b,html[data-theme="light"] .dr2 b{color:#1D1D1F!important}
-html[data-theme="light"] .dfo{color:#0066CC!important}
-html[data-theme="light"] .dfo .bd{background:#EAF2FF!important;color:#0066CC!important}
-html[data-theme="light"] .empty{color:#6E6E73!important}
-html[data-theme="light"] .fab{background:#007AFF!important;color:#FFFFFF!important;box-shadow:0 3px 12px rgba(0,0,0,.16)!important}
-
-/* Painel lateral: cinza Apple, grupos brancos e controles azuis. */
-html[data-theme="light"] body.lean #drw{
-  background:#F5F5F7!important;color:#1D1D1F!important;border-left:1px solid #D8D8DC!important;
-  box-shadow:-8px 0 24px rgba(0,0,0,.06)!important;
-}
-html[data-theme="light"] #drw .dhd b{color:#1D1D1F!important}
-html[data-theme="light"] #drw .dx{color:#6E6E73!important}
-html[data-theme="light"] #drw .dseg{background:#E5E5EA!important}
-html[data-theme="light"] #drw .dseg button{color:#4B4B50!important}
-html[data-theme="light"] #drw .dseg button.on,
-html[data-theme="light"] #drw .dseg button.on.a2,
-html[data-theme="light"] #drw .dseg button.on.a3{background:#007AFF!important;color:#FFFFFF!important}
-html[data-theme="light"] #drw .dgr{background:#FFFFFF!important;border:1px solid #E5E5EA!important;border-radius:12px!important;box-shadow:none!important}
-html[data-theme="light"] #drw .drow{background:transparent!important;color:#1D1D1F!important}
-html[data-theme="light"] #drw .drow.on{background:#EAF2FF!important;color:#0066CC!important}
-html[data-theme="light"] #drw .drow svg,html[data-theme="light"] #drw .dv{color:#6E6E73!important}
-html[data-theme="light"] #drw .drow.on svg,html[data-theme="light"] #drw .drow.on b{color:#0066CC!important}
-html[data-theme="light"] #drw .dsw{color:#1D1D1F!important}
-html[data-theme="light"] #drw .dsw+.dsw{border-top:1px solid #E5E5EA!important}
-html[data-theme="light"] #drw .dsw i{background:#D1D1D6!important}
-html[data-theme="light"] #drw .dsw input:checked+i{background:#007AFF!important}
-html[data-theme="light"] #drw .dsw i::after{background:#FFFFFF!important;box-shadow:0 1px 2px rgba(0,0,0,.16)}
-html[data-theme="light"] #drw .dgt{color:#6E6E73!important}
-html[data-theme="light"] #drw .dinst{background:#007AFF!important;color:#FFFFFF!important}
-html[data-theme="light"] #drw .dinst small{color:#FFFFFF!important;opacity:.8}
-html[data-theme="light"] #drw .dren a{color:#0066CC!important}
-
-/* Grade mensal contínua, sem cartões pretos ou espaços entre dias (desktop). */
-@media(min-width:761px) and (hover:hover) and (pointer:fine){
-  html[data-theme="light"] body.lean .lhd{margin:2px 0 12px!important;min-height:48px!important}
-  html[data-theme="light"] body.lean .lhd b{font-size:29px!important;font-weight:700!important;letter-spacing:-.6px!important;color:#1D1D1F!important}
-  html[data-theme="light"] body.lean .lhd button,
-  html[data-theme="light"] body.lean .pc-month-arrows button{
-    background:#F2F2F7!important;color:#007AFF!important;border:1px solid #E5E5EA!important;
-    border-radius:50%!important;width:38px!important;height:38px!important;font-size:25px!important;
-  }
-  html[data-theme="light"] body.lean .lhd button:hover,
-  html[data-theme="light"] body.lean .pc-month-arrows button:hover{background:#E5E5EA!important}
-  html[data-theme="light"] body.lean .cal.cal2{
-    display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:0!important;
-    margin-top:8px!important;background:#FFFFFF!important;border:1px solid #D8D8DC!important;
-    border-radius:12px!important;overflow:hidden!important;box-shadow:none!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .w{
-    display:flex!important;align-items:center!important;justify-content:center!important;
-    min-height:32px!important;padding:6px 2px!important;background:#F5F5F7!important;
-    color:#6E6E73!important;font-size:12px!important;font-weight:600!important;
-    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #D8D8DC!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .w.wk,
-  html[data-theme="light"] body.lean .cal2>.w:nth-child(1){color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2 .d2{
-    display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;
-    gap:4px!important;min-height:clamp(112px,calc((100vh - 390px)/5),168px)!important;
-    padding:8px 8px 7px!important;background:#FFFFFF!important;color:#1D1D1F!important;
-    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #E5E5EA!important;
-    border-radius:0!important;box-shadow:none!important;
-  }
-  html[data-theme="light"] body.lean .cal2>.w:nth-child(7n),
-  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n){border-right:0!important}
-  html[data-theme="light"] body.lean .cal2 .d2 .n{
-    align-self:flex-start!important;justify-self:auto!important;margin:0 0 3px!important;
-    width:27px!important;height:27px!important;line-height:27px!important;border-radius:50%!important;
-    background:transparent!important;color:#1D1D1F!important;font-size:14px!important;font-weight:600!important;text-align:center!important;
-  }
-  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n+1) .n,
-  html[data-theme="light"] body.lean .cal2 .d2.ho .n{color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2 .d2.td .n{
-    background:#FF3B30!important;color:#FFFFFF!important;font-weight:700!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .d2.om{background:#FAFAFC!important;cursor:default!important}
-  html[data-theme="light"] body.lean .cal2 .d2.om .n{color:#C7C7CC!important;background:transparent!important;font-weight:500!important}
-  html[data-theme="light"] body.lean .cal2 .d2.sl{background:#EEF5FF!important;box-shadow:inset 0 0 0 2px #007AFF!important}
-  html[data-theme="light"] body.lean .cal2 .d2 .sb{margin:auto 0 0!important;padding-top:4px!important;text-align:left!important;color:#248A3D!important;font-size:15px!important;font-weight:700!important;letter-spacing:-.2px!important}
-  html[data-theme="light"] body.lean .cal2 .d2 .sb.neg{color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2.xl .cb{
-    display:block!important;width:100%!important;min-height:18px!important;height:auto!important;
-    padding:3px 6px!important;border:0!important;border-radius:5px!important;
-    color:#1D1D1F!important;text-shadow:none!important;font-size:11px!important;line-height:1.2!important;
-    font-weight:600!important;text-align:left!important;letter-spacing:0!important;
-    box-shadow:none!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
-  }
-  html[data-theme="light"] body.lean .cal2.xl .cb,html[data-theme="light"] body.lean .cal2.xl .cb *{color:#1D1D1F!important;text-shadow:none!important}
-  html[data-theme="light"] body.lean .cal2.xl .cb.pv{opacity:.62!important;outline:1px dashed rgba(29,29,31,.25)!important;outline-offset:-1px!important}
-  html[data-theme="light"] body.lean .cal2 .cdm{color:#6E6E73!important}
-}
-html[data-theme="light"] body.lean .lleg{color:#6E6E73!important}
-html[data-theme="light"] body.lean .lleg span:first-child i{background:#D1D1D6!important}
-html[data-theme="light"] body.lean .lleg span:nth-child(2) i{background:#FF9F0A!important}
-html[data-theme="light"] body.lean .dcard{border:1px solid #E5E5EA!important;border-radius:12px!important;background:#FFFFFF!important}
-html[data-theme="light"] body.lean .dcard .dch{border-bottom:1px solid #E5E5EA!important;padding-bottom:10px!important}
-html[data-theme="light"] body.lean .dcard .ldwrap{margin:8px 0 12px!important}
-html[data-theme="light"] body.lean .dcard .ldlist .dr2{border-radius:8px!important}
-html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border:1px solid #E5E5EA!important}
-html[data-theme="light"] body.lean .lhd button:focus-visible,
-html[data-theme="light"] body.lean .pc-month-arrows button:focus-visible{outline:2px solid #007AFF!important;outline-offset:2px}
-
-
-
-/* CORREÇÃO MOBILE — modo claro também no Galaxy Z Flip 6.
-   Regras no final para neutralizar os antigos estilos escuros de celular. */
-@media (max-width:760px){
-  html[data-theme="light"] body.lean .cal.cal2,
-  html[data-theme="light"] body.acc3 .agenda-cal{
-    display:grid!important;
-    grid-template-columns:repeat(7,minmax(0,1fr))!important;
-    column-gap:0!important;row-gap:0!important;gap:0!important;
-    margin:8px 0 0!important;
-    width:100%!important;max-width:100%!important;min-width:0!important;
-    border:1px solid #D8D8DC!important;border-radius:12px!important;
-    overflow:hidden!important;background:#FFFFFF!important;
-    box-shadow:none!important;
-  }
-
-  html[data-theme="light"] body.lean .cal2 .w,
-  html[data-theme="light"] body.acc3 .agenda-cal .w{
-    display:flex!important;align-items:center!important;justify-content:center!important;
-    min-width:0!important;min-height:32px!important;height:32px!important;
-    margin:0!important;padding:4px 0!important;
-    background:#F5F5F7!important;color:#6E6E73!important;opacity:1!important;
-    font-size:12px!important;line-height:1!important;font-weight:650!important;
-    letter-spacing:0!important;text-align:center!important;
-    border:0!important;border-right:1px solid #E5E5EA!important;
-    border-bottom:1px solid #D8D8DC!important;
-  }
-  html[data-theme="light"] body.lean .cal2>.w:nth-child(1),
-  html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(1){color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2>.w:nth-child(7),
-  html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(7){border-right:0!important}
-
-  html[data-theme="light"] body.lean .cal2 .d2,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2{
-    display:flex!important;flex-direction:column!important;align-items:stretch!important;
-    justify-content:flex-start!important;gap:3px!important;
-    box-sizing:border-box!important;min-width:0!important;
-    min-height:max(96px,var(--ch,96px))!important;height:auto!important;max-height:none!important;
-    margin:0!important;padding:6px 3px 5px!important;
-    background:#FFFFFF!important;background-image:none!important;
-    color:#1D1D1F!important;opacity:1!important;
-    border:0!important;border-right:1px solid #E5E5EA!important;
-    border-bottom:1px solid #E5E5EA!important;border-radius:0!important;
-    box-shadow:none!important;overflow:hidden!important;
-  }
-  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n),
-  html[data-theme="light"] body.acc3 .agenda-cal>.d2:nth-child(7n){border-right:0!important}
-
-  html[data-theme="light"] body.lean .cal2 .d2 .n,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2 .n{
-    display:block!important;align-self:center!important;justify-self:auto!important;
-    width:26px!important;height:26px!important;min-width:26px!important;
-    margin:0 auto 2px!important;padding:0!important;
-    border:0!important;border-radius:50%!important;
-    background:transparent!important;color:#1D1D1F!important;
-    font-size:15px!important;line-height:26px!important;font-weight:600!important;
-    text-align:center!important;opacity:1!important;
-  }
-  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n+1):not(.om) .n,
-  html[data-theme="light"] body.acc3 .agenda-cal>.d2:nth-child(7n+1):not(.om) .n,
-  html[data-theme="light"] body.lean .cal2 .d2.ho .n{color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2 .d2.td .n,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.td .n{
-    background:#FF3B30!important;color:#FFFFFF!important;font-weight:700!important;
-  }
-
-  /* Dias do mês anterior/próximo: cinza muito claro, nunca cartões pretos. */
-  html[data-theme="light"] body.lean .cal2 .d2.om,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.om{
-    background:#F5F5F7!important;background-image:none!important;
-    color:#B8BBC2!important;opacity:1!important;cursor:default!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .d2.om .n,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.om .n{
-    background:transparent!important;color:#B8BBC2!important;font-weight:500!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .d2.om .sb,
-  html[data-theme="light"] body.acc3 .agenda-cal .d2.om .agenda-count{display:none!important}
-
-  html[data-theme="light"] body.lean .cal2 .d2 .sb{
-    color:#248A3D!important;font-size:11px!important;font-weight:700!important;
-    text-align:center!important;margin:1px 0 0!important;padding:0!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .d2 .sb.neg{color:#D70015!important}
-  html[data-theme="light"] body.lean .cal2 .d2 .cdm{color:#6E6E73!important}
-  html[data-theme="light"] body.lean .cal2 .d2 .cb{
-    color:#1D1D1F!important;text-shadow:none!important;
-  }
-  html[data-theme="light"] body.lean .cal2 .d2 .cb.pv{
-    opacity:.72!important;box-shadow:inset 0 0 0 1px rgba(29,29,31,.18)!important;
-  }
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{
-    color:#1D1D1F!important;text-shadow:none!important;
-  }
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-count,
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-more{color:#6E6E73!important}
-}
-
-</style>
-<style id="apple-calendar-light-refinement">
-/* Modo claro: grade mensal mais limpa, contínua e compacta, sem alterar o tema escuro. */
-html[data-theme="light"] #drw .dhd{gap:6px}
-html[data-theme="light"] #drw .dhd b{flex:1;min-width:0}
-#drw .dtheme{display:grid;place-items:center;flex:none}
-#drw .dtheme svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-html[data-theme="light"] #drw .dx.drl{background:#F5F5F7;border:1px solid #E5E5EA;color:#007AFF}
-html:not([data-theme="light"]) #drw .dx.dtheme{background:#1C1C1E;border:1px solid #38383A;color:#F5F5F7}
-
-@media (min-width:761px) and (hover:hover) and (pointer:fine){
-  /* Mantém título da conta discreto e os controles do mês com acabamento iOS. */
-  html[data-theme="light"] body.lean .lhd .lttl{gap:1px}
-  html[data-theme="light"] body.lean .lhd .lttl>b{font-size:27px!important;font-weight:700!important;letter-spacing:-.65px!important;color:#1D1D1F!important;line-height:1.15}
-  html[data-theme="light"] body.lean .lhd .accsw{display:inline-flex!important;align-items:center!important;gap:7px!important;width:auto!important;height:auto!important;min-height:0!important;margin:2px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#6E6E73!important;font:600 13px/1.25 -apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;box-shadow:none!important}
-  html[data-theme="light"] body.lean .lhd .accsw .ad{width:7px;height:7px}
-  html[data-theme="light"] body.lean .pc-month-arrows{gap:7px}
-  html[data-theme="light"] body.lean .pc-month-arrows button{width:38px;height:38px;border:1px solid #E5E5EA!important;border-radius:50%!important;background:#F5F5F7!important;color:#007AFF!important;font-size:25px!important;font-weight:400!important}
-  html[data-theme="light"] body.lean .pc-month-arrows button:hover{background:#EAF2FF!important;border-color:#C8DDFB!important}
-
-  /* Grade contínua em vez de sete colunas de cartões separados. */
-  html[data-theme="light"] body.lean .cal.cal2{
-    display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
-    gap:0!important;row-gap:0!important;margin-top:10px!important;
-    overflow:hidden!important;border:1px solid #E5E5EA!important;border-radius:13px!important;
-    background:#FFFFFF!important;box-shadow:0 1px 2px rgba(0,0,0,.035)!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2>.w{
-    display:flex!important;align-items:center!important;justify-content:center!important;
-    min-width:0!important;height:31px!important;padding:0 4px!important;margin:0!important;
-    background:#F5F5F7!important;color:#6E6E73!important;
-    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #E5E5EA!important;
-    font-size:11px!important;font-weight:650!important;letter-spacing:.45px!important;text-transform:uppercase!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2>.w:nth-child(7){border-right:0!important}
-  html[data-theme="light"] body.lean .cal.cal2>.w.wk{color:#FF453A!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2{
-    display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;
-    box-sizing:border-box!important;min-width:0!important;min-height:clamp(116px,calc((100vh - 260px)/5),148px)!important;
-    height:auto!important;padding:7px 8px 7px!important;margin:0!important;gap:3px!important;
-    background:#FFFFFF!important;color:#1D1D1F!important;border:0!important;border-right:1px solid #ECECF0!important;
-    border-bottom:1px solid #ECECF0!important;border-radius:0!important;box-shadow:none!important;opacity:1!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2>.d2:nth-child(7n){border-right:0!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2:nth-child(7n+1){background:#FCFCFD!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2.om{background:#FAFAFB!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2.om .n{color:#C7C7CC!important;font-weight:500!important;background:transparent!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2 .n{
-    display:flex!important;align-items:center!important;justify-content:center!important;align-self:flex-start!important;
-    width:25px!important;height:25px!important;min-width:25px!important;line-height:25px!important;
-    margin:0 0 3px 0!important;padding:0!important;border-radius:50%!important;
-    background:transparent!important;color:#1D1D1F!important;font-size:13px!important;font-weight:600!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2>.d2.td .n{background:#007AFF!important;color:#FFFFFF!important;font-weight:700!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2.sl{background:#F1F7FF!important;box-shadow:inset 0 0 0 2px #B9D8FF!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2 .cbw{
-    display:flex!important;flex-direction:column!important;align-self:stretch!important;justify-content:flex-start!important;
-    order:1!important;grid-area:auto!important;gap:3px!important;width:100%!important;min-width:0!important;
-    margin:0!important;overflow:hidden!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2.xl .cb{
-    display:block!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;
-    min-height:18px!important;height:auto!important;line-height:1.2!important;padding:3px 5px!important;
-    border:0!important;border-left:3px solid var(--cb-color,#8E8E93)!important;border-radius:5px!important;
-    background:color-mix(in srgb,var(--cb-color,#8E8E93) 19%,#FFFFFF)!important;
-    color:color-mix(in srgb,var(--cb-color,#8E8E93) 62%,#252525)!important;
-    box-shadow:none!important;text-shadow:none!important;font-family:inherit!important;font-size:10.5px!important;
-    font-style:normal!important;font-weight:600!important;text-align:left!important;letter-spacing:0!important;
-    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2.xl .cb.pv{
-    border:1px dashed var(--cb-color,#8E8E93)!important;border-left:3px dashed var(--cb-color,#8E8E93)!important;
-    background:color-mix(in srgb,var(--cb-color,#8E8E93) 10%,#FFFFFF)!important;opacity:.9!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2 .cdm{display:block!important;padding:1px 4px!important;color:#8E8E93!important;font-size:10px!important;line-height:12px!important;font-weight:600!important;text-align:left!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb{
-    order:2!important;align-self:stretch!important;margin:auto 0 0!important;padding:5px 0 0!important;
-    color:#24834A!important;font-size:14px!important;line-height:1.15!important;font-weight:700!important;
-    letter-spacing:-.15px!important;text-align:left!important;font-variant-numeric:tabular-nums!important;
-  }
-  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb.neg{color:#D70015!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb small{font-size:.65em!important;font-weight:600!important;opacity:.72!important}
-  html[data-theme="light"] body.lean .cal.cal2>.d2:not(.om):hover{background:#F7FAFF!important}
-  html[data-theme="light"] body.lean .cgrab i{background:#D1D1D6!important}
-  html[data-theme="light"] body.lean .lleg{color:#6E6E73!important}
-  html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border:1px solid #E5E5EA!important;border-radius:13px!important;box-shadow:none!important}
-  html[data-theme="light"] body.lean .apill{background:#007AFF!important;border:0!important;color:#FFFFFF!important;box-shadow:0 4px 14px rgba(0,122,255,.22)!important}
-  html[data-theme="light"] body.lean .apill b{color:#FFFFFF!important}
-}
-
-/* A visualização de organização (Conta 3) usa as mesmas divisórias do mês. */
-@media (min-width:761px) and (hover:hover) and (pointer:fine){
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day{background:#FFFFFF!important}
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day .n{color:#1D1D1F!important}
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day.td .n{background:#007AFF!important;color:#FFFFFF!important}
-  html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{background:color-mix(in srgb,var(--agc) 18%,#FFFFFF)!important;color:#33343A!important;border-left:3px solid var(--agc)!important;border-radius:5px!important;padding:3px 5px!important}
-}
-</style><script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
-
-<style id="weekends-holidays-app-blue">
-/* Tema claro: sábados, domingos e feriados azuis. Tema escuro tradicional: vermelho. */
-html[data-theme="light"] body.lean .cal2 .w.wk,
-html[data-theme="light"] body.acc3 .agenda-cal .w.wk { color:#007AFF!important; opacity:1!important; }
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n { color:#007AFF!important; opacity:1!important; }
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl) { background-color:rgba(0,122,255,.055)!important; }
-
-html:not([data-theme="light"]) body.lean .cal2 .w.wk,
-html:not([data-theme="light"]) body.acc3 .agenda-cal .w.wk { color:#FF453A!important; opacity:1!important; }
-html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td) .n,
-html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n { color:#FF453A!important; opacity:1!important; }
-html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl) {
-  background:#141416!important; border-color:#38383A!important;
-}
-</style>
-
-<style id="single-gray-light-theme">
-/*
-  Modo claro cinza único:
-  mesma hierarquia do modo escuro, mas substituindo as superfícies brancas
-  por um único cinza (#E5E5EA). Não alterna entre cartões claros e escuros.
-  Sábados, domingos e feriados ficam azuis; modo escuro continua vermelho.
-*/
-html[data-theme="light"] {
-  color-scheme: light;
-  --bg: #E5E5EA;
-  --sb: #E5E5EA;
-  --cd: #E5E5EA;
-  --in: #E5E5EA;
-  --bd: #C7C7CC;
-  --tx: #1D1D1F;
-  --t2: #636366;
-  --ac: #007AFF;
-  --gr: #248A3D;
-  --rd: #D70015;
-  --nt: #8E8E93;
-}
-
-/* Fundo e superfícies: exatamente o mesmo cinza em toda a interface. */
-html[data-theme="light"] body,
-html[data-theme="light"] #app,
-html[data-theme="light"] main,
-html[data-theme="light"] #main,
-html[data-theme="light"] .wrap,
-html[data-theme="light"] nav,
-html[data-theme="light"] #drw,
-html[data-theme="light"] .c,
-html[data-theme="light"] .kpi,
-html[data-theme="light"] .cofi,
-html[data-theme="light"] .dcard,
-html[data-theme="light"] .sim-note,
-html[data-theme="light"] .sim-ef,
-html[data-theme="light"] .tpv,
-html[data-theme="light"] .oes label,
-html[data-theme="light"] .memo-card,
-html[data-theme="light"] .memo-routine,
-html[data-theme="light"] .memo-info,
-html[data-theme="light"] .lhero,
-html[data-theme="light"] .lrow > div,
-html[data-theme="light"] .lcat,
-html[data-theme="light"] .mcard,
-html[data-theme="light"] .cofl,
-html[data-theme="light"] .lpg,
-html[data-theme="light"] .ltri > div,
-html[data-theme="light"] .mod,
-html[data-theme="light"] .modal,
-html[data-theme="light"] .pop,
-html[data-theme="light"] .tip,
-html[data-theme="light"] .dpanel,
-html[data-theme="light"] .ldr,
-html[data-theme="light"] .ldp,
-html[data-theme="light"] .tgi,
-html[data-theme="light"] .rc2,
-html[data-theme="light"] .rc .row,
-html[data-theme="light"] .cal.cal2,
-html[data-theme="light"] .cal2 > .w,
-html[data-theme="light"] .cal2 > .d2,
-html[data-theme="light"] .agenda-cal,
-html[data-theme="light"] .agenda-cal .agenda-day,
-html[data-theme="light"] .d,
-html[data-theme="light"] .d2,
-html[data-theme="light"] #drw .dgr,
-html[data-theme="light"] #drw .dseg {
-  background-color: #E5E5EA !important;
-  color: #1D1D1F !important;
-  border-color: #C7C7CC !important;
-  box-shadow: none !important;
-}
-
-/* Botões, campos e seletores mantêm a mesma superfície cinza. */
-html[data-theme="light"] .btn,
-html[data-theme="light"] .seg,
-html[data-theme="light"] .seg.r button,
-html[data-theme="light"] .msel,
-html[data-theme="light"] .mbox,
-html[data-theme="light"] .pill,
-html[data-theme="light"] .ib,
-html[data-theme="light"] .ltog,
-html[data-theme="light"] .accb,
-html[data-theme="light"] .dtg,
-html[data-theme="light"] input,
-html[data-theme="light"] select,
-html[data-theme="light"] textarea,
-html[data-theme="light"] .i,
-html[data-theme="light"] #drw .dx,
-html[data-theme="light"] #drw .drow:not(.on) {
-  background-color: #E5E5EA !important;
-  color: #1D1D1F !important;
-  border-color: #C7C7CC !important;
-}
-
-/* O azul fica reservado aos controles ativos e à identidade do aplicativo. */
-html[data-theme="light"] .btn.p,
-html[data-theme="light"] .seg button.on,
-html[data-theme="light"] .seg.r button.on,
-html[data-theme="light"] nav a.on,
-html[data-theme="light"] #drw .dseg button.on,
-html[data-theme="light"] #drw .drow.on,
-html[data-theme="light"] .fab {
-  background-color: #007AFF !important;
-  border-color: #007AFF !important;
-  color: #FFFFFF !important;
-}
-html[data-theme="light"] #drw .dtheme,
-html[data-theme="light"] .lnk,
-html[data-theme="light"] .dfo,
-html[data-theme="light"] .ac {
-  color: #007AFF !important;
-}
-
-/* Textos neutros e valores financeiros com contraste preservado. */
-html[data-theme="light"] h1,
-html[data-theme="light"] h2,
-html[data-theme="light"] h3,
-html[data-theme="light"] .dch b,
-html[data-theme="light"] .d2 .n,
-html[data-theme="light"] .cal2 .d2 .n,
-html[data-theme="light"] .agenda-cal .d2 .n,
-html[data-theme="light"] .drow span,
-html[data-theme="light"] .drow svg {
-  color: #1D1D1F !important;
-}
-html[data-theme="light"] .sub,
-html[data-theme="light"] .mu,
-html[data-theme="light"] .dgt,
-html[data-theme="light"] .tgh,
-html[data-theme="light"] .empty,
-html[data-theme="light"] .memo-foot,
-html[data-theme="light"] .memo-info p {
-  color: #636366 !important;
-}
-html[data-theme="light"] .d .tot,
-html[data-theme="light"] .d2 .sb,
-html[data-theme="light"] .gr {
-  color: #248A3D !important;
-}
-html[data-theme="light"] .rd,
-html[data-theme="light"] .d2 .sb.neg {
-  color: #D70015 !important;
-}
-
-/* Grade contínua, dias vizinhos também no mesmo cinza. */
-html[data-theme="light"] body.lean .cal.cal2,
-html[data-theme="light"] body.acc3 .agenda-cal {
-  background: #E5E5EA !important;
-  border-color: #C7C7CC !important;
-}
-html[data-theme="light"] body.lean .cal.cal2 > .w,
-html[data-theme="light"] body.acc3 .agenda-cal > .w {
-  background: #E5E5EA !important;
-  color: #636366 !important;
-  border-color: #C7C7CC !important;
-}
-html[data-theme="light"] body.lean .cal.cal2 > .d2,
-html[data-theme="light"] body.acc3 .agenda-cal > .d2,
-html[data-theme="light"] body.lean .cal.cal2 > .d2:nth-child(7n+1),
-html[data-theme="light"] body.lean .cal.cal2 > .d2.om,
-html[data-theme="light"] body.acc3 .agenda-cal > .d2.om {
-  background: #E5E5EA !important;
-  color: #1D1D1F !important;
-  border-color: #C7C7CC !important;
-  opacity: 1 !important;
-}
-html[data-theme="light"] body.lean .cal.cal2 > .d2.om .n,
-html[data-theme="light"] body.acc3 .agenda-cal > .d2.om .n {
-  color: #8E8E93 !important;
-}
-
-/* Fins de semana e feriados: somente os nomes/números em azul, sem fundo azul extra. */
-html[data-theme="light"] body.lean .cal2 .w.wk,
-html[data-theme="light"] body.acc3 .agenda-cal .w.wk {
-  color: #007AFF !important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om) .n,
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om) .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om) .n {
-  color: #007AFF !important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
-html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl) {
-  background: #E5E5EA !important;
-}
-html[data-theme="light"] body.lean .cal2 .d2.td .n,
-html[data-theme="light"] body.acc3 .agenda-cal .d2.td .n {
-  background: #007AFF !important;
-  color: #FFFFFF !important;
-}
-
-/* As etiquetas de lançamentos conservam as cores próprias definidas no calendário. */
-html[data-theme="light"] .cal2 .cb,
-html[data-theme="light"] .cal2 .cb * {
-  text-shadow: none !important;
-}
-</style>
-
-
-<style id="flatten-dark-utility-surfaces-light">
-html[data-theme="light"] .lg .bt,
-html[data-theme="light"] .pb,
-html[data-theme="light"] .pb.pov,
-html[data-theme="light"] .bar2,
-html[data-theme="light"] .tgi,
-html[data-theme="light"] .ldsum,
-html[data-theme="light"] .dpanel .ldr,
-html[data-theme="light"] .dpanel .ldp,
-html[data-theme="light"] .rc2,
-html[data-theme="light"] .rc .row,
-html[data-theme="light"] .dgr,
-html[data-theme="light"] .dseg,
-html[data-theme="light"] .cfsl,
-html[data-theme="light"] .tbl th,
-html[data-theme="light"] .tbl td {
-  background-color:#E5E5EA!important;
-  color:#1D1D1F!important;
-  border-color:#C7C7CC!important;
-}
-html[data-theme="light"] .tgi.sel,
-html[data-theme="light"] .tgi.on,
-html[data-theme="light"] .dm.sel,
-html[data-theme="light"] .dr2.sel {
-  background-color:#E5E5EA!important;
-  border-color:#007AFF!important;
-}
-html[data-theme="light"] .pb i,
-html[data-theme="light"] .bar2 i,
-html[data-theme="light"] .lg .bt i,
-html[data-theme="light"] .memo-progress span {
-  background-color:var(--ac)!important;
-}
-
-/* Ajustes visuais finais — Correção completa modo claro, formato das tags e alinhamento */
-
-/* 1. Limpa TODOS os resquícios de preto e fundo branco destoante nos modais e painéis do modo claro (#E5E5EA) */
-html[data-theme="light"] .mod .mf,
-html[data-theme="light"] .mf {
-  background-color: #E5E5EA !important;
-  border-top-color: #C7C7CC !important;
-}
-html[data-theme="light"] .tp,
-html[data-theme="light"] .box,
-html[data-theme="light"] .fp,
-html[data-theme="light"] .fp .ck,
-html[data-theme="light"] .srow,
-html[data-theme="light"] .ht .gh td,
-html[data-theme="light"] .ht tr.xr td,
-html[data-theme="light"] .tbl tr.pr td,
-html[data-theme="light"] .bx,
-html[data-theme="light"] .dpanel .empty,
-html[data-theme="light"] .lsw.mini,
-html[data-theme="light"] .wk7 button,
-html[data-theme="light"] .yg i:not(.ut):not(.w),
-html[data-theme="light"] .addpill {
-  background-color: #D8D8DC !important;
-  color: #1D1D1F !important;
-  border-color: #C7C7CC !important;
-}
-html[data-theme="light"] .tp button {
-  background: transparent !important;
-  color: #636366 !important;
-}
-html[data-theme="light"] .tp button.in.on {
-  background: rgba(36, 138, 61, 0.18) !important;
-  color: #248A3D !important;
-}
-html[data-theme="light"] .tp button.out.on {
-  background: rgba(215, 0, 21, 0.15) !important;
-  color: #D70015 !important;
-}
-html[data-theme="light"] .pl button {
-  background-color: #D8D8DC !important;
-  border: 1px solid #B8B8BF !important;
-  color: #1D1D1F !important;
-}
-html[data-theme="light"] .pl button.on {
-  background-color: rgba(0, 122, 255, 0.16) !important;
-  border-color: #007AFF !important;
-  color: #007AFF !important;
-}
-html[data-theme="light"] .refb,
-html[data-theme="light"] .mgrid button,
-html[data-theme="light"] .tb,
-html[data-theme="light"] .tgb.add,
-html[data-theme="light"] .tagc,
-html[data-theme="light"] .lnk b,
-html[data-theme="light"] .dfo .bd,
-html[data-theme="light"] .ch.more,
-html[data-theme="light"] .d2 .ch.more {
-  background-color: #D8D8DC !important;
-  border-color: #B8B8BF !important;
-  color: #1D1D1F !important;
-}
-html[data-theme="light"] .mgrid button.on,
-html[data-theme="light"] .pg .pn button.on {
-  background-color: #007AFF !important;
-  border-color: #007AFF !important;
-  color: #FFFFFF !important;
-}
-html[data-theme="light"] .tl .it:hover,
-html[data-theme="light"] .tl .it.hv,
-html[data-theme="light"] .pop button:hover,
-html[data-theme="light"] .mh .x:hover,
-html[data-theme="light"] .ib:hover,
-html[data-theme="light"] .mc:hover,
-html[data-theme="light"] .fp label.cb:hover,
-html[data-theme="light"] .accpop button.on {
-  background-color: #D1D1D6 !important;
-  color: #1D1D1F !important;
-}
-html[data-theme="light"] .sel,
-html[data-theme="light"] .fchip {
-  background-color: rgba(0, 122, 255, 0.12) !important;
-  border-color: rgba(0, 122, 255, 0.35) !important;
-  color: #1D1D1F !important;
-}
-html[data-theme="light"] .st.r {
-  background-color: rgba(36, 138, 61, 0.16) !important;
-  color: #248A3D !important;
-}
-html[data-theme="light"] #toast {
-  background-color: #1D1D1F !important;
-  color: #FFFFFF !important;
-}
-@media (max-width: 760px) {
-  html[data-theme="light"] table.tbl tr {
-    background-color: #D8D8DC !important;
-    border-color: #C7C7CC !important;
-  }
-}
-
-/* 2. Tags no modo escuro: mantém A COR EXATA que era antes (fundo sólido colorido e texto #111),
-      aplicando apenas o formato/layout da versão clara (borda lateral 3px, raio 5px, tracejado nas previstas) */
-html:not([data-theme="light"]) body.lean .cal2.xl .cb {
-  border: 0 !important;
-  border-left: 3px solid rgba(0, 0, 0, 0.28) !important;
-  border-radius: 5px !important;
-  padding: 3px 5px !important;
-  min-height: 18px !important;
-  line-height: 1.2 !important;
-  font-size: 10.5px !important;
-  font-weight: 700 !important;
-  color: #111111 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-}
-html:not([data-theme="light"]) body.lean .cal2.xl .cb.pv {
-  border: 1px dashed rgba(0, 0, 0, 0.38) !important;
-  border-left: 3px dashed rgba(0, 0, 0, 0.48) !important;
-  opacity: 0.85 !important;
-  box-shadow: none !important;
-}
-@media (max-width: 760px) {
-  html:not([data-theme="light"]) body.lean .cal2.xl .cb {
-    font-size: 10px !important;
-    min-height: 16px !important;
-    padding: 2px 4px !important;
-  }
-}
-
-/* 3. Centraliza perfeitamente o número do dia (ex: 5) e o saldo embaixo com a letra da coluna (ex: Q) no PC e no Z Flip 6 */
+/* 1. Centralização perfeita do número do dia e do valor na base da célula */
 body.lean .cal.cal2 > .d2 .n,
-html[data-theme="light"] body.lean .cal.cal2 > .d2 .n,
-body.acc3 .agenda-cal > .d2 .n,
-html[data-theme="light"] body.acc3 .agenda-cal > .d2 .n {
+body.acc3 .agenda-cal > .d2 .n {
   align-self: center !important;
   justify-self: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
   text-align: center !important;
 }
-body.lean .cal.cal2 > .d2 .sb,
-html[data-theme="light"] body.lean .cal.cal2 > .d2 .sb {
+body.lean .cal.cal2 > .d2 .sb {
   align-self: stretch !important;
   text-align: center !important;
   justify-content: center !important;
 }
-</style>
 
+/* 2. Botão de alternância de tema no painel lateral */
+#drw .dtheme {
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--cd);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+}
+#drw .dtheme svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 3. Tema Cinza Escuro (substitui o antigo modo claro mantendo 100% da estrutura do escuro) */
+html[data-theme="light"] {
+  color-scheme: dark;
+  --bg: #222327;
+  --sb: #2B2D32;
+  --cd: #2B2D32;
+  --in: #34373D;
+  --bd: #434750;
+  --tx: #F5F5F7;
+  --t2: #A5ACB8;
+  --ac: #0A84FF;
+  --gr: #30D158;
+  --rd: #FF453A;
+  --nt: #8E8E93;
+}
+
+/* Troca apenas os pretos fixos (#000, #141416, #1C1C1E, etc.) pelos tons de cinza escuro */
+html[data-theme="light"] body,
+html[data-theme="light"] #app,
+html[data-theme="light"] main,
+html[data-theme="light"] #main {
+  background: var(--bg) !important;
+  color: var(--tx) !important;
+}
+
+html[data-theme="light"] nav,
+html[data-theme="light"] #drw,
+html[data-theme="light"] body.lean #drw,
+html[data-theme="light"] .mod,
+html[data-theme="light"] .mod .mf,
+html[data-theme="light"] .pop,
+html[data-theme="light"] .tip,
+html[data-theme="light"] .apill,
+html[data-theme="light"] .addpill {
+  background: #2B2D32 !important;
+  border-color: var(--bd) !important;
+}
+
+html[data-theme="light"] body.lean .cal2 .d,
+html[data-theme="light"] body.lean .cal2 .d.e,
+html[data-theme="light"] body.acc3 .agenda-cal .d2,
+html[data-theme="light"] body.lean .lhero.lh1,
+html[data-theme="light"] body.lean .lhero:not(.lh1),
+html[data-theme="light"] body.lean .ltog,
+html[data-theme="light"] body.lean .lrow > div,
+html[data-theme="light"] body.lean .lcat,
+html[data-theme="light"] body.lean .mcard,
+html[data-theme="light"] body.lean .accb,
+html[data-theme="light"] body.lean .dcard,
+html[data-theme="light"] body.lean .ldsum,
+html[data-theme="light"] body.lean .ldr,
+html[data-theme="light"] body.lean .ldp,
+html[data-theme="light"] body.lean .wk7 button,
+html[data-theme="light"] .dpanel .ldr,
+html[data-theme="light"] .dpanel .ldp,
+html[data-theme="light"] .dpanel .empty,
+html[data-theme="light"] .lsw.mini,
+html[data-theme="light"] #drw .dseg,
+html[data-theme="light"] #drw .dgr,
+html[data-theme="light"] .cofl,
+html[data-theme="light"] .lpg,
+html[data-theme="light"] .ltri > div,
+html[data-theme="light"] .c,
+html[data-theme="light"] .kpi,
+html[data-theme="light"] .d,
+html[data-theme="light"] .tgi,
+html[data-theme="light"] .fp,
+html[data-theme="light"] .srow,
+html[data-theme="light"] .ht .gh td,
+html[data-theme="light"] .rc2,
+html[data-theme="light"] .sim-note,
+html[data-theme="light"] .sim-ef {
+  background: #2C2E33 !important;
+}
+
+html[data-theme="light"] body.lean .cal2 .d.om,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.om {
+  background: #1D1E22 !important;
+}
+html[data-theme="light"] body.lean .cal2 .d.om .n,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.om .n {
+  color: #63666E !important;
+}
+
+html[data-theme="light"] body.lean .cal2 .d.sl,
+html[data-theme="light"] body.lean .cal2 .d2.sl {
+  background-color: #2C2E33 !important;
+  box-shadow: inset 0 0 0 1.5px var(--ac) !important;
+}
+
+html[data-theme="light"] input.i,
+html[data-theme="light"] select.i,
+html[data-theme="light"] textarea.i,
+html[data-theme="light"] .btn:not(.p),
+html[data-theme="light"] .seg,
+html[data-theme="light"] .seg.r button:not(.on),
+html[data-theme="light"] .msel,
+html[data-theme="light"] .mbox,
+html[data-theme="light"] .pill,
+html[data-theme="light"] .tp,
+html[data-theme="light"] .box,
+html[data-theme="light"] .fp .ck,
+html[data-theme="light"] .bx,
+html[data-theme="light"] .pl button:not(.on),
+html[data-theme="light"] .refb,
+html[data-theme="light"] .mgrid button:not(.on),
+html[data-theme="light"] .tb,
+html[data-theme="light"] .tgb.add,
+html[data-theme="light"] .dtg,
+html[data-theme="light"] .vt {
+  background: #34373D !important;
+  border-color: var(--bd) !important;
+}
+html[data-theme="light"] .pl button.on {
+  background: #1F2125 !important;
+  border-color: #FFFFFF !important;
+}
+@media (max-width: 760px) {
+  html[data-theme="light"] table.tbl tr {
+    background: #2C2E33 !important;
+    border-color: var(--bd) !important;
+  }
+}
+
+/* 4. No tema cinza, sábados, domingos, feriados e o dia de hoje usam AZUL em vez de vermelho */
+html[data-theme="light"] body.lean .cal2 > .w:nth-child(1),
+html[data-theme="light"] body.lean .cal2 .w.wk,
+html[data-theme="light"] body.lean .cal2 .d.we:not(.om) .n,
+html[data-theme="light"] body.lean .cal2 .d.ho:not(.om) .n,
+html[data-theme="light"] body.lean .cal2 .d:not(.om):nth-child(7n+1) .n,
+html[data-theme="light"] body.lean .yg i.hr,
+html[data-theme="light"] body.lean .wk7 button.hr small,
+html[data-theme="light"] body.lean .wk7 button.hr b,
+html[data-theme="light"] body.acc3 .agenda-cal > .w:nth-child(1),
+html[data-theme="light"] body.acc3 .agenda-cal .w.wk,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om) .n,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om) .n {
+  color: var(--ac) !important;
+}
+html[data-theme="light"] body.lean .cal2 .d2.td .n,
+html[data-theme="light"] body.lean .yg i.ut,
+html[data-theme="light"] body.lean .wk7 button.td b,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.td .n {
+  background: var(--ac) !important;
+  color: #FFFFFF !important;
+}
+</style>
+<script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
