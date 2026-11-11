@@ -1,0 +1,6 @@
+ATUALIZAÇÃO VISUAL — FINS DE SEMANA E FERIADOS EM AZUL
+
+Esta atualização deixa sábados, domingos e feriados em azul (tom de destaque do próprio aplicativo) no modo claro e no modo escuro, tanto no PC quanto no celular Galaxy Z Flip 6.
+A Conta 3 também identifica feriados na grade mensal. O destaque do dia atual e as cores dos lançamentos continuam independentes.
+
+Para publicar: faça backup e substitua index.html e sw.js na raiz do repositório GitHub Pages. Não apague o repositório. Não execute SQL nem limpe os dados do navegador.

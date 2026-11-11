@@ -1,7 +1,7 @@
-# Migração da Conta 3
+# Arquivos SQL de referência
 
-No projeto Supabase já utilizado pelo Calendário Financeiro, execute somente `add_profile3.sql` no SQL Editor.
+A Conta 3 já foi configurada no projeto Supabase utilizado pelo Calendário Financeiro.
 
-A migração remove a antiga restrição `finance_state_profile_id_check` (que aceitava apenas perfis 1 e 2) e cria a mesma restrição aceitando 1, 2 e 3. Nenhum registro é apagado.
+**Não execute nenhum arquivo SQL desta pasta para aplicar a correção atual de Anotações e aparência.** Esta atualização não altera tabelas, restrições ou a publicação Realtime.
 
-Não execute `schema.sql` novamente. A tabela `finance_state` já existe. Não execute `realtime.sql` novamente se `finance_state` já aparece como tabela na publicação `supabase_realtime`.
+O arquivo `add_profile3.sql` foi mantido apenas como referência para uma instalação inicial nova; não o execute novamente no projeto existente. Também não execute `schema.sql` ou `realtime.sql` novamente.

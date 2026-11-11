@@ -1027,6 +1027,42 @@ html:not([data-theme="light"]) #drw .dx.dtheme{background:#1C1C1E;border:1px sol
   html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{background:color-mix(in srgb,var(--agc) 18%,#FFFFFF)!important;color:#33343A!important;border-left:3px solid var(--agc)!important;border-radius:5px!important;padding:3px 5px!important}
 }
 </style><script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
+
+<style id="weekends-holidays-app-blue">
+/* Identidade do aplicativo: sábados, domingos e feriados em azul em todos os dispositivos e temas.
+   As regras usam as classes reais .we e .ho, sem depender da posição do dia na grade. */
+html[data-theme="light"] body.lean .cal2 .w.wk,
+html[data-theme="light"] body.acc3 .agenda-cal .w.wk,
+html:not([data-theme="light"]) body.lean .cal2 .w.wk,
+html:not([data-theme="light"]) body.acc3 .agenda-cal .w.wk{
+  color:var(--ac)!important;opacity:1!important;
+}
+
+html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td) .n,
+html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
+html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n,
+html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td) .n,
+html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td) .n,
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td) .n,
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td) .n{
+  color:var(--ac)!important;opacity:1!important;
+}
+
+/* Fundo azulado quase imperceptível, mantendo o branco no tema claro e o preto no escuro. */
+html[data-theme="light"] body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
+html[data-theme="light"] body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
+  background-color:rgba(43,120,214,.055)!important;
+}
+html:not([data-theme="light"]) body.lean .cal2 .d2.we:not(.om):not(.td):not(.sl),
+html:not([data-theme="light"]) body.lean .cal2 .d2.ho:not(.om):not(.td):not(.sl),
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.we:not(.om):not(.td):not(.sl),
+html:not([data-theme="light"]) body.acc3 .agenda-cal .d2.ho:not(.om):not(.td):not(.sl){
+  background-color:rgba(10,132,255,.095)!important;
+}
+</style>
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -2504,12 +2540,12 @@ function agendaDay(ds){
 }
 function agendaMonthGrid(ym){
   const [y,m]=ym.split('-').map(Number),n=dim(ym),lead=new Date(y,m-1,1).getDay(),prev=new Date(y,m-1,0).getDate();
-  let html=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i===0?'wk':''}">${w}</div>`).join('');
+  let html=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i===0||i===6?'wk':''}">${w}</div>`).join('');
   for(let i=0;i<lead;i++)html+=`<div class="d d2 om agenda-day"><span class="n">${prev-lead+i+1}</span></div>`;
   for(let d=1;d<=n;d++){
-    const ds=ym+'-'+pad(d),dt=new Date(y,m-1,d),items=agendaItemsOn(ds),weekend=dt.getDay()===0||dt.getDay()===6;
+    const ds=ym+'-'+pad(d),dt=new Date(y,m-1,d),items=agendaItemsOn(ds),weekend=dt.getDay()===0||dt.getDay()===6,holiday=!weekend&&!!holName(ds);
     const visible=items.slice(0,4);
-    html+=`<button type="button" class="d d2 agenda-day ${weekend?'we':''} ${ds===today?'td':''}" onclick="agendaDay('${ds}')"><span class="n">${d}</span><span class="agenda-chips">${visible.map(x=>`<i class="agenda-chip ${x._done?'done':''}" style="--agc:${esc(x.color||'#A9D4F5')}" title="${esc(x.title)}">${esc((x.time?x.time+' · ':'')+x.title)}</i>`).join('')}${items.length>visible.length?`<b class="agenda-more">+${items.length-visible.length}</b>`:''}</span><span class="agenda-count">${items.length?items.length+' item'+(items.length>1?'s':''):''}</span></button>`;
+    html+=`<button type="button" class="d d2 agenda-day ${weekend?'we':holiday?'ho':''} ${ds===today?'td':''}" onclick="agendaDay('${ds}')"><span class="n">${d}</span><span class="agenda-chips">${visible.map(x=>`<i class="agenda-chip ${x._done?'done':''}" style="--agc:${esc(x.color||'#A9D4F5')}" title="${esc(x.title)}">${esc((x.time?x.time+' · ':'')+x.title)}</i>`).join('')}${items.length>visible.length?`<b class="agenda-more">+${items.length-visible.length}</b>`:''}</span><span class="agenda-count">${items.length?items.length+' item'+(items.length>1?'s':''):''}</span></button>`;
   }
   const tail=(7-((lead+n)%7))%7;for(let i=1;i<=tail;i++)html+=`<div class="d d2 om agenda-day"><span class="n">${i}</span></div>`;
   return `<div class="cal cal2 agenda-cal">${html}</div><div class="cgrab" id="cgrab" aria-label="Esticar calendário"><i></i></div>`;
