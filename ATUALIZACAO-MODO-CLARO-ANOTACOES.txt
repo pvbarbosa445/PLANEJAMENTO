@@ -1,0 +1,10 @@
+Atualização do Calendário Financeiro
+
+1) Tema claro: Planejamento > Aparência > Modo claro (branco e azul).
+2) Nova página: Anotações e planos.
+3) Planos: crie planos livres ou carregue o modelo editável de 12 semanas.
+4) Rotina diária: marque tarefas concluídas, edite e adicione horários.
+5) Anotações: crie, edite e exclua notas.
+
+Os dados são armazenados no estado dos perfis mpf1/mpf2, para participarem da mesma sincronização do app.
+Não execute novamente o SQL já aplicado ao Supabase.

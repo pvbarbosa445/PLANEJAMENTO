@@ -1,32 +1,15 @@
-CALENDARIO FINANCEIRO - SINCRONIZACAO AUTOMATICA BIDIRECIONAL
+CALENDARIO FINANCEIRO — INSTRUCOES CORRETAS DA SINCRONIZACAO AUTOMATICA
 
-Este pacote substitui a versao web completa atual. O layout exclusivo de PC esta preservado; o layout celular continua vindo do index responsivo.
+Este pacote implementa sincronizacao automatica bidirecional. Nao e um fluxo de backup manual.
 
-SINCRONIZACAO
-- Login com o mesmo e-mail nos dois aparelhos.
-- Primeira conexao em um banco ainda vazio: o primeiro aparelho conectado envia automaticamente seus dados locais para a nuvem.
-- Nos aparelhos seguintes, os dados existentes na nuvem sao aplicados automaticamente; uma copia local anterior diferente e preservada no armazenamento daquele navegador antes da substituicao.
-- Depois, cada gravacao local de mpf1/mpf2 e enviada automaticamente.
-- Alteracoes remotas chegam por Supabase Realtime; ha verificacao periodica de contingencia a cada 12 segundos.
-- Nao existem botoes manuais de enviar/baixar. O controle na aba apenas abre o painel de conta/status.
+1) Publique os arquivos deste pacote na raiz do repositorio GitHub Pages. O index.html, sync.js, sw.js e manifest.webmanifest devem ficar lado a lado na raiz.
+2) No Supabase, a tabela finance_state ja foi criada anteriormente com schema.sql. NAO execute schema.sql novamente.
+3) Para ativar eventos em tempo real, execute uma vez o arquivo supabase/realtime.sql no SQL Editor. Ele apenas adiciona finance_state a publicacao supabase_realtime. A consulta de contingencia do app roda a cada 12 segundos mesmo sem Realtime.
+4) Confira Authentication > URL Configuration: Site URL e Redirect URLs devem incluir https://pvbarbosa445.github.io/PLANEJAMENTO/.
+5) Primeiro abra o app no aparelho que possui os dados mais completos e entre com a conta existente. Se a nuvem ainda nao tiver dados desse perfil, esse aparelho envia automaticamente a copia local inicial.
+6) Depois abra o app no segundo aparelho e entre com o mesmo e-mail e senha. O segundo aparelho recebe automaticamente os dados ja existentes na nuvem. Antes de substituir uma copia local diferente, o aplicativo tenta guardar uma copia de seguranca naquele navegador.
+7) Apos a inicializacao, cada salvamento local e enviado automaticamente. Alteracoes remotas chegam via Supabase Realtime; se ele nao estiver ativo, ha verificacao a cada 12 segundos. O botao Sincronizar apenas abre o painel de login/status; nao e necessario apertar enviar/baixar.
 
-IMPORTANTE: antes de atualizar, abra primeiro o site no aparelho que contem os dados mais completos. Esse primeiro aparelho estabelecera a copia inicial da nuvem. Depois abra o site no segundo aparelho e entre com a mesma conta.
+IMPORTANTE: nao conecte primeiro o aparelho que tem dados incompletos se a nuvem estiver vazia. O primeiro aparelho conectado inicializa a nuvem. Nao apague sua conta, o projeto ou a tabela. Nao compartilhe chaves secretas.
 
-SUPABASE - ATIVAR EVENTOS INSTANTANEOS (UMA VEZ)
-1. Abra Supabase > projeto calendario > SQL Editor > New.
-2. Abra supabase/realtime.sql, copie todo o conteudo e cole no editor.
-3. Clique Run. O SQL so inclui a tabela finance_state na publicacao realtime; nao apaga dados nem recria a tabela.
-A sincronizacao automatica tem polling de contingencia mesmo antes dessa etapa, mas o Realtime reduz o atraso.
-
-GITHUB
-1. Faca backup do repositorio atual.
-2. Extraia este ZIP.
-3. Substitua os arquivos do repositorio pelos arquivos extraidos, mantendo index.html, sync.js, sw.js e manifest.webmanifest na raiz.
-4. Mantenha a pasta supabase com schema.sql e realtime.sql.
-5. Commit na branch main.
-6. Aguarde GitHub Pages concluir a publicacao.
-
-NAO EXCLUA O PROJETO SUPABASE. NAO EXECUTE NOVAMENTE schema.sql.
-
-CONFLITOS
-A sincronizacao e automatica, mas duas edicoes simultaneas/offline no mesmo perfil podem conflitar. A versao mais recente prevalece; antes de substituir uma copia divergente, o app guarda uma copia local de seguranca (mpf_pre_sync_backup_<usuario>_<perfil>) naquele navegador.
+Conflitos: duas alteracoes offline ou simultaneas do mesmo perfil nao sao mescladas campo a campo. A versao mais recente prevalece e o app tenta preservar uma copia local anterior antes de substituir.
