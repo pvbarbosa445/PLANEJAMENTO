@@ -1,0 +1,12 @@
+CORREÇÃO DO MODO CLARO NO CELULAR — GALAXY Z FLIP 6
+
+Esta atualização corrige a grade do calendário em telas de até 760 px, sem alterar o tema escuro:
+- Mostra todas as siglas dos dias da semana em cinza, com domingo em vermelho.
+- Aplica divisórias verticais e horizontais finas entre as datas.
+- Substitui os dias do mês anterior/próximo pretos por células cinza muito claro com números discretos.
+- Mantém as cores suaves dos lançamentos, valores em verde/vermelho e o destaque do dia atual.
+- Aplica o mesmo tratamento ao calendário de organização da Conta 3.
+
+Arquivos principais atualizados: index.html e sw.js.
+Não requer SQL nem alteração no Supabase.
+Antes de enviar ao GitHub, faça backup do repositório. Extraia o ZIP e substitua os arquivos na raiz; não apague o repositório.

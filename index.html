@@ -830,6 +830,105 @@ html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border
 html[data-theme="light"] body.lean .lhd button:focus-visible,
 html[data-theme="light"] body.lean .pc-month-arrows button:focus-visible{outline:2px solid #007AFF!important;outline-offset:2px}
 
+
+
+/* CORREÇÃO MOBILE — modo claro também no Galaxy Z Flip 6.
+   Regras no final para neutralizar os antigos estilos escuros de celular. */
+@media (max-width:760px){
+  html[data-theme="light"] body.lean .cal.cal2,
+  html[data-theme="light"] body.acc3 .agenda-cal{
+    display:grid!important;
+    grid-template-columns:repeat(7,minmax(0,1fr))!important;
+    column-gap:0!important;row-gap:0!important;gap:0!important;
+    margin:8px 0 0!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    border:1px solid #D8D8DC!important;border-radius:12px!important;
+    overflow:hidden!important;background:#FFFFFF!important;
+    box-shadow:none!important;
+  }
+
+  html[data-theme="light"] body.lean .cal2 .w,
+  html[data-theme="light"] body.acc3 .agenda-cal .w{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-width:0!important;min-height:32px!important;height:32px!important;
+    margin:0!important;padding:4px 0!important;
+    background:#F5F5F7!important;color:#6E6E73!important;opacity:1!important;
+    font-size:12px!important;line-height:1!important;font-weight:650!important;
+    letter-spacing:0!important;text-align:center!important;
+    border:0!important;border-right:1px solid #E5E5EA!important;
+    border-bottom:1px solid #D8D8DC!important;
+  }
+  html[data-theme="light"] body.lean .cal2>.w:nth-child(1),
+  html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(1){color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2>.w:nth-child(7),
+  html[data-theme="light"] body.acc3 .agenda-cal>.w:nth-child(7){border-right:0!important}
+
+  html[data-theme="light"] body.lean .cal2 .d2,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    justify-content:flex-start!important;gap:3px!important;
+    box-sizing:border-box!important;min-width:0!important;
+    min-height:max(96px,var(--ch,96px))!important;height:auto!important;max-height:none!important;
+    margin:0!important;padding:6px 3px 5px!important;
+    background:#FFFFFF!important;background-image:none!important;
+    color:#1D1D1F!important;opacity:1!important;
+    border:0!important;border-right:1px solid #E5E5EA!important;
+    border-bottom:1px solid #E5E5EA!important;border-radius:0!important;
+    box-shadow:none!important;overflow:hidden!important;
+  }
+  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n),
+  html[data-theme="light"] body.acc3 .agenda-cal>.d2:nth-child(7n){border-right:0!important}
+
+  html[data-theme="light"] body.lean .cal2 .d2 .n,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2 .n{
+    display:block!important;align-self:center!important;justify-self:auto!important;
+    width:26px!important;height:26px!important;min-width:26px!important;
+    margin:0 auto 2px!important;padding:0!important;
+    border:0!important;border-radius:50%!important;
+    background:transparent!important;color:#1D1D1F!important;
+    font-size:15px!important;line-height:26px!important;font-weight:600!important;
+    text-align:center!important;opacity:1!important;
+  }
+  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n+1):not(.om) .n,
+  html[data-theme="light"] body.acc3 .agenda-cal>.d2:nth-child(7n+1):not(.om) .n,
+  html[data-theme="light"] body.lean .cal2 .d2.ho .n{color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2 .d2.td .n,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.td .n{
+    background:#FF3B30!important;color:#FFFFFF!important;font-weight:700!important;
+  }
+
+  /* Dias do mês anterior/próximo: cinza muito claro, nunca cartões pretos. */
+  html[data-theme="light"] body.lean .cal2 .d2.om,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.om{
+    background:#F5F5F7!important;background-image:none!important;
+    color:#B8BBC2!important;opacity:1!important;cursor:default!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .d2.om .n,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.om .n{
+    background:transparent!important;color:#B8BBC2!important;font-weight:500!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .d2.om .sb,
+  html[data-theme="light"] body.acc3 .agenda-cal .d2.om .agenda-count{display:none!important}
+
+  html[data-theme="light"] body.lean .cal2 .d2 .sb{
+    color:#248A3D!important;font-size:11px!important;font-weight:700!important;
+    text-align:center!important;margin:1px 0 0!important;padding:0!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .d2 .sb.neg{color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2 .d2 .cdm{color:#6E6E73!important}
+  html[data-theme="light"] body.lean .cal2 .d2 .cb{
+    color:#1D1D1F!important;text-shadow:none!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .d2 .cb.pv{
+    opacity:.72!important;box-shadow:inset 0 0 0 1px rgba(29,29,31,.18)!important;
+  }
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{
+    color:#1D1D1F!important;text-shadow:none!important;
+  }
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-count,
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-more{color:#6E6E73!important}
+}
+
 </style>
 <style id="apple-calendar-light-refinement">
 /* Modo claro: grade mensal mais limpa, contínua e compacta, sem alterar o tema escuro. */
