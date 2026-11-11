@@ -673,6 +673,163 @@ body.acc3 .agenda-cal .d2.om{opacity:.35}
 body.acc3 .agenda-cal .d2{min-width:0}
 @media(max-width:760px){body.acc3 .agenda-view-actions{display:block}body.acc3 .agenda-view-actions .ctl{margin-top:8px}body.acc3 .agenda-view-actions .btn{flex:1}body.acc3 .agenda-cal .agenda-chip{font-size:8px;line-height:1.15;padding:2px 3px}body.acc3 .agenda-cal .agenda-count{font-size:8px}body.acc3 .agenda-item{grid-template-columns:27px 46px minmax(0,1fr);gap:6px}body.acc3 .agenda-item>.btn{grid-column:3;justify-self:start}}
 @media(min-width:761px){body.acc3 .agenda-cal .d2{min-height:max(110px,calc((100vh - 330px)/6))}body.acc3 .agenda-cal .agenda-chip{font-size:11px;line-height:1.25;padding:3px 5px}body.acc3 .agenda-today{max-width:900px}}
+
+
+/* MODO CLARO — inspirado no Calendário da Apple (grade contínua e sidebar suave).
+   As regras são finais de propósito: neutralizam estilos escuros antigos sem tocar no modo escuro. */
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#FFFFFF;--sb:#F5F5F7;--cd:#FFFFFF;--in:#F5F5F7;--bd:#D8D8DC;
+  --tx:#1D1D1F;--t2:#6E6E73;--ac:#007AFF;--gr:#248A3D;--rd:#D70015;--nt:#8E8E93;
+}
+html[data-theme="light"] body,
+html[data-theme="light"] #app,
+html[data-theme="light"] main,
+html[data-theme="light"] #main{background:#FFFFFF!important;color:#1D1D1F!important}
+html[data-theme="light"] nav{background:#F5F5F7!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
+html[data-theme="light"] nav a{color:#6E6E73!important}
+html[data-theme="light"] nav a:hover{background:#E8E8ED!important;color:#1D1D1F!important}
+html[data-theme="light"] nav a.on{background:#DCEBFF!important;color:#0066CC!important}
+html[data-theme="light"] h1,html[data-theme="light"] h2,html[data-theme="light"] h3,
+html[data-theme="light"] .lhd b,html[data-theme="light"] .dch b{color:#1D1D1F!important}
+html[data-theme="light"] .sub,html[data-theme="light"] .mu{color:#6E6E73}
+html[data-theme="light"] .c,html[data-theme="light"] .kpi,html[data-theme="light"] .cofi,
+html[data-theme="light"] .dcard,html[data-theme="light"] .sim-note,html[data-theme="light"] .sim-ef,
+html[data-theme="light"] .tpv,html[data-theme="light"] .oes label,html[data-theme="light"] .memo-card,
+html[data-theme="light"] .memo-routine,html[data-theme="light"] .memo-info,
+html[data-theme="light"] .lhero,html[data-theme="light"] .lrow>div,html[data-theme="light"] .lcat,
+html[data-theme="light"] .mcard,html[data-theme="light"] .cofl,html[data-theme="light"] .lpg{
+  background:#FFFFFF!important;color:#1D1D1F!important;border-color:#E5E5EA!important;box-shadow:none!important;
+}
+html[data-theme="light"] .lhero.bad{border-color:#D70015!important}
+html[data-theme="light"] .lhero.warn{border-color:#FF9F0A!important}
+html[data-theme="light"] .lhero small,html[data-theme="light"] .lrow small,
+html[data-theme="light"] .ltri small,html[data-theme="light"] .pst small{color:#6E6E73!important}
+html[data-theme="light"] .btn,html[data-theme="light"] .seg,html[data-theme="light"] .seg.r button,
+html[data-theme="light"] .msel,html[data-theme="light"] .mbox,html[data-theme="light"] .pill,
+html[data-theme="light"] .ib,html[data-theme="light"] .ltog,html[data-theme="light"] .accb,
+html[data-theme="light"] .dtg{background:#F5F5F7!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
+html[data-theme="light"] .btn.p,html[data-theme="light"] .seg button.on,
+html[data-theme="light"] .seg.r button.on,html[data-theme="light"] nav a.on,
+html[data-theme="light"] .ltog button.on,html[data-theme="light"] .accb button.on,
+html[data-theme="light"] .dtg button.on{background:#007AFF!important;color:#FFFFFF!important;border-color:#007AFF!important}
+html[data-theme="light"] .i,html[data-theme="light"] input,html[data-theme="light"] select,
+html[data-theme="light"] textarea{background:#FFFFFF!important;color:#1D1D1F!important;border-color:#C7C7CC!important}
+html[data-theme="light"] input:focus,html[data-theme="light"] select:focus,
+html[data-theme="light"] textarea:focus{outline:2px solid rgba(0,122,255,.28)!important;border-color:#007AFF!important}
+html[data-theme="light"] .dgt,html[data-theme="light"] .tgh{background:transparent!important;color:#6E6E73!important}
+html[data-theme="light"] .mod,html[data-theme="light"] .modal,html[data-theme="light"] .pop,
+html[data-theme="light"] .tip{background:#FFFFFF!important;color:#1D1D1F!important;border-color:#D8D8DC!important}
+html[data-theme="light"] .ov{background:rgba(29,29,31,.22)!important}
+html[data-theme="light"] .act .ic{background:#EAF2FF!important;color:#0066CC!important}
+html[data-theme="light"] .pb,html[data-theme="light"] .lg .bt{background:#E5E5EA!important}
+html[data-theme="light"] .dinst{background:#007AFF!important;color:#FFFFFF!important}
+html[data-theme="light"] .lbr,html[data-theme="light"] .dr2 .db{background:#E5E5EA!important}
+html[data-theme="light"] .dm.sel{background:#F2F7FF!important}
+html[data-theme="light"] .dr2.sel{background:#EAF2FF!important}
+html[data-theme="light"] .dm .dsub b,html[data-theme="light"] .dr2 b{color:#1D1D1F!important}
+html[data-theme="light"] .dfo{color:#0066CC!important}
+html[data-theme="light"] .dfo .bd{background:#EAF2FF!important;color:#0066CC!important}
+html[data-theme="light"] .empty{color:#6E6E73!important}
+html[data-theme="light"] .fab{background:#007AFF!important;color:#FFFFFF!important;box-shadow:0 3px 12px rgba(0,0,0,.16)!important}
+
+/* Painel lateral: cinza Apple, grupos brancos e controles azuis. */
+html[data-theme="light"] body.lean #drw{
+  background:#F5F5F7!important;color:#1D1D1F!important;border-left:1px solid #D8D8DC!important;
+  box-shadow:-8px 0 24px rgba(0,0,0,.06)!important;
+}
+html[data-theme="light"] #drw .dhd b{color:#1D1D1F!important}
+html[data-theme="light"] #drw .dx{color:#6E6E73!important}
+html[data-theme="light"] #drw .dseg{background:#E5E5EA!important}
+html[data-theme="light"] #drw .dseg button{color:#4B4B50!important}
+html[data-theme="light"] #drw .dseg button.on,
+html[data-theme="light"] #drw .dseg button.on.a2,
+html[data-theme="light"] #drw .dseg button.on.a3{background:#007AFF!important;color:#FFFFFF!important}
+html[data-theme="light"] #drw .dgr{background:#FFFFFF!important;border:1px solid #E5E5EA!important;border-radius:12px!important;box-shadow:none!important}
+html[data-theme="light"] #drw .drow{background:transparent!important;color:#1D1D1F!important}
+html[data-theme="light"] #drw .drow.on{background:#EAF2FF!important;color:#0066CC!important}
+html[data-theme="light"] #drw .drow svg,html[data-theme="light"] #drw .dv{color:#6E6E73!important}
+html[data-theme="light"] #drw .drow.on svg,html[data-theme="light"] #drw .drow.on b{color:#0066CC!important}
+html[data-theme="light"] #drw .dsw{color:#1D1D1F!important}
+html[data-theme="light"] #drw .dsw+.dsw{border-top:1px solid #E5E5EA!important}
+html[data-theme="light"] #drw .dsw i{background:#D1D1D6!important}
+html[data-theme="light"] #drw .dsw input:checked+i{background:#007AFF!important}
+html[data-theme="light"] #drw .dsw i::after{background:#FFFFFF!important;box-shadow:0 1px 2px rgba(0,0,0,.16)}
+html[data-theme="light"] #drw .dgt{color:#6E6E73!important}
+html[data-theme="light"] #drw .dinst{background:#007AFF!important;color:#FFFFFF!important}
+html[data-theme="light"] #drw .dinst small{color:#FFFFFF!important;opacity:.8}
+html[data-theme="light"] #drw .dren a{color:#0066CC!important}
+
+/* Grade mensal contínua, sem cartões pretos ou espaços entre dias (desktop). */
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+  html[data-theme="light"] body.lean .lhd{margin:2px 0 12px!important;min-height:48px!important}
+  html[data-theme="light"] body.lean .lhd b{font-size:29px!important;font-weight:700!important;letter-spacing:-.6px!important;color:#1D1D1F!important}
+  html[data-theme="light"] body.lean .lhd button,
+  html[data-theme="light"] body.lean .pc-month-arrows button{
+    background:#F2F2F7!important;color:#007AFF!important;border:1px solid #E5E5EA!important;
+    border-radius:50%!important;width:38px!important;height:38px!important;font-size:25px!important;
+  }
+  html[data-theme="light"] body.lean .lhd button:hover,
+  html[data-theme="light"] body.lean .pc-month-arrows button:hover{background:#E5E5EA!important}
+  html[data-theme="light"] body.lean .cal.cal2{
+    display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:0!important;
+    margin-top:8px!important;background:#FFFFFF!important;border:1px solid #D8D8DC!important;
+    border-radius:12px!important;overflow:hidden!important;box-shadow:none!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .w{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-height:32px!important;padding:6px 2px!important;background:#F5F5F7!important;
+    color:#6E6E73!important;font-size:12px!important;font-weight:600!important;
+    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #D8D8DC!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .w.wk,
+  html[data-theme="light"] body.lean .cal2>.w:nth-child(1){color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2 .d2{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;
+    gap:4px!important;min-height:clamp(112px,calc((100vh - 390px)/5),168px)!important;
+    padding:8px 8px 7px!important;background:#FFFFFF!important;color:#1D1D1F!important;
+    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #E5E5EA!important;
+    border-radius:0!important;box-shadow:none!important;
+  }
+  html[data-theme="light"] body.lean .cal2>.w:nth-child(7n),
+  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n){border-right:0!important}
+  html[data-theme="light"] body.lean .cal2 .d2 .n{
+    align-self:flex-start!important;justify-self:auto!important;margin:0 0 3px!important;
+    width:27px!important;height:27px!important;line-height:27px!important;border-radius:50%!important;
+    background:transparent!important;color:#1D1D1F!important;font-size:14px!important;font-weight:600!important;text-align:center!important;
+  }
+  html[data-theme="light"] body.lean .cal2>.d2:nth-child(7n+1) .n,
+  html[data-theme="light"] body.lean .cal2 .d2.ho .n{color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2 .d2.td .n{
+    background:#FF3B30!important;color:#FFFFFF!important;font-weight:700!important;
+  }
+  html[data-theme="light"] body.lean .cal2 .d2.om{background:#FAFAFC!important;cursor:default!important}
+  html[data-theme="light"] body.lean .cal2 .d2.om .n{color:#C7C7CC!important;background:transparent!important;font-weight:500!important}
+  html[data-theme="light"] body.lean .cal2 .d2.sl{background:#EEF5FF!important;box-shadow:inset 0 0 0 2px #007AFF!important}
+  html[data-theme="light"] body.lean .cal2 .d2 .sb{margin:auto 0 0!important;padding-top:4px!important;text-align:left!important;color:#248A3D!important;font-size:15px!important;font-weight:700!important;letter-spacing:-.2px!important}
+  html[data-theme="light"] body.lean .cal2 .d2 .sb.neg{color:#D70015!important}
+  html[data-theme="light"] body.lean .cal2.xl .cb{
+    display:block!important;width:100%!important;min-height:18px!important;height:auto!important;
+    padding:3px 6px!important;border:0!important;border-radius:5px!important;
+    color:#1D1D1F!important;text-shadow:none!important;font-size:11px!important;line-height:1.2!important;
+    font-weight:600!important;text-align:left!important;letter-spacing:0!important;
+    box-shadow:none!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  html[data-theme="light"] body.lean .cal2.xl .cb,html[data-theme="light"] body.lean .cal2.xl .cb *{color:#1D1D1F!important;text-shadow:none!important}
+  html[data-theme="light"] body.lean .cal2.xl .cb.pv{opacity:.62!important;outline:1px dashed rgba(29,29,31,.25)!important;outline-offset:-1px!important}
+  html[data-theme="light"] body.lean .cal2 .cdm{color:#6E6E73!important}
+}
+html[data-theme="light"] body.lean .lleg{color:#6E6E73!important}
+html[data-theme="light"] body.lean .lleg span:first-child i{background:#D1D1D6!important}
+html[data-theme="light"] body.lean .lleg span:nth-child(2) i{background:#FF9F0A!important}
+html[data-theme="light"] body.lean .dcard{border:1px solid #E5E5EA!important;border-radius:12px!important;background:#FFFFFF!important}
+html[data-theme="light"] body.lean .dcard .dch{border-bottom:1px solid #E5E5EA!important;padding-bottom:10px!important}
+html[data-theme="light"] body.lean .dcard .ldwrap{margin:8px 0 12px!important}
+html[data-theme="light"] body.lean .dcard .ldlist .dr2{border-radius:8px!important}
+html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border:1px solid #E5E5EA!important}
+html[data-theme="light"] body.lean .lhd button:focus-visible,
+html[data-theme="light"] body.lean .pc-month-arrows button:focus-visible{outline:2px solid #007AFF!important;outline-offset:2px}
+
 </style></head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -1058,7 +1215,7 @@ function leanDonSvg(it,T,sel,cn,cs,k){const r=78,C=2*Math.PI*r,n=it.length;let o
 it.forEach((x,i)=>{const len=x.size/T*C,L=Math.max(0,len-(n>1?1.6:0)),f=Math.min(L,L*(x.fill/x.size)),dim=sel>=0&&sel!==i?.3:1,sw=sel===i?32:26;
 segs+=`<circle cx="110" cy="110" r="${r}" fill="none" stroke="${x.c}" stroke-width="${sw}" stroke-dasharray="${Math.max(0,L-f)} ${C-Math.max(0,L-f)}" stroke-dashoffset="${-(off+f)}" transform="rotate(-90 110 110)" opacity="${.28*dim}" style="cursor:pointer" onclick="leanDonSel('${k}',${i})"/>`;
 if(f>0)segs+=`<circle cx="110" cy="110" r="${r}" fill="none" stroke="${x.c}" stroke-width="${sw}" stroke-dasharray="${f} ${C-f}" stroke-dashoffset="${-off}" transform="rotate(-90 110 110)" opacity="${dim}" style="cursor:pointer" onclick="leanDonSel('${k}',${i})"/>`;off+=len});
-return`<svg viewBox="0 0 220 220" style="width:230px;height:230px;overflow:visible"><circle cx="110" cy="110" r="${r}" fill="none" stroke="#2a2a2e" stroke-width="26"/>${segs}<text x="110" y="107" text-anchor="middle" fill="#F5F5F5" font-size="${cn.length>11?15:18}" font-weight="700">${esc(cn)}</text><text x="110" y="128" text-anchor="middle" fill="#A5ACB8" font-size="11">${esc(cs.length>20?cs.slice(0,19)+'…':cs)}</text></svg>`}
+return`<svg viewBox="0 0 220 220" style="width:230px;height:230px;overflow:visible"><circle cx="110" cy="110" r="${r}" fill="none" stroke="var(--bd)" stroke-width="26"/>${segs}<text x="110" y="107" text-anchor="middle" fill="var(--tx)" font-size="${cn.length>11?15:18}" font-weight="700">${esc(cn)}</text><text x="110" y="128" text-anchor="middle" fill="var(--t2)" font-size="11">${esc(cs.length>20?cs.slice(0,19)+'…':cs)}</text></svg>`}
 function leanDonItems(k){if(k==='r'){const ig=S.ig||{},ids=new Set(),L=incTags().map(t=>({id:t.id,n:t.n,c:t.c,g:sum(cur,'in',x=>x.tag===t.id),l:glMonth(t.id,cur)??(ig[t.id]||0),gl:glLbl(t.id)})).filter(x=>x.l>0||x.g>0);L.forEach(x=>ids.add(x.id));const oth=sum(cur,'in',x=>!ids.has(x.tag)&&!x.xfer);if(oth>0)L.push({id:'',n:'Outras receitas',c:'#8B95A5',g:oth,l:0});return L.sort((a,b)=>Math.max(b.g,b.l)-Math.max(a.g,a.l))}
 const D=leanData(),L=D.rows.map(x=>({id:x.id,n:x.n,c:x.c,g:x.g,l:x.l,gl:glLbl(x.id)})),ids=new Set(L.map(x=>x.id)),oth=sum(cur,'out',x=>!ids.has(x.meta||'')&&!x.xfer);if(oth>0)L.push({id:'',n:'Sem meta',c:'#8B95A5',g:oth,l:0});return L.filter(x=>x.l>0||x.g>0)}
 function leanDon(k){k=k||LD.k;if(k==='m')return leanDonMix();const sel=LD.s[k],rc=k==='r',L=leanDonItems(k),it=L.map(x=>({n:x.n,c:x.c,size:Math.max(x.l,x.g),fill:x.g})),T=it.reduce((a,x)=>a+x.size,0),G=L.reduce((a,x)=>a+x.g,0),M0=L.reduce((a,x)=>a+x.l,0),o=L[sel];
@@ -2005,7 +2162,7 @@ function applyTheme(){
   const t=S.theme==='light'?'light':'dark';
   document.documentElement.setAttribute('data-theme',t);
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.content=t==='light'?'#f4f8ff':'#000000';
+  if(meta) meta.content=t==='light'?'#FFFFFF':'#000000';
 }
 function themeSet(t){if(ACC==='3')memoEnsure();S.theme=t==='light'?'light':'dark';applyTheme();save()}
 function memoOpenPage(){if(ACC==='3'&&pg!=='anotacoes'){pg='anotacoes';if(location.hash!=='#anotacoes')history.replaceState(null,'','#anotacoes')}}

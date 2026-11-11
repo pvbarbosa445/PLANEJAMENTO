@@ -2,6 +2,13 @@
 
 Este pacote acrescenta uma terceira conta/perfil dentro do MESMO Calendário Financeiro. Não é um aplicativo separado. A Conta 3 usa o calendário mensal, semanal e diário já existente, mas guarda apenas tarefas, compromissos, horários recorrentes, planos e anotações.
 
+## Modo claro — referência visual Apple Calendar
+- Fundo principal branco e painel lateral em cinza-claro, com texto escuro de alto contraste.
+- Grade mensal contínua, com divisórias finas no lugar dos cartões escuros arredondados.
+- Dia atual destacado em vermelho, fins de semana discretos e eventos em faixas suaves.
+- Controles, seletores, campos e gráficos adaptados ao tema claro; o texto central do gráfico acompanha as cores do tema.
+- O modo escuro foi mantido. A mudança na grade contínua é aplicada no layout desktop; no celular, a estrutura responsiva original é preservada.
+
 ## O que muda
 - O seletor de contas passa a mostrar Conta 1, Conta 2 e Conta 3 · Organização.
 - A Conta 3 começa vazia e isolada; não copia nem altera receitas, despesas, saldos, metas ou cofrinhos das Contas 1 e 2.
