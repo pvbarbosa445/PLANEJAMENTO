@@ -927,7 +927,7 @@ html:not([data-theme="light"]) #drw .dx.dtheme{background:#1C1C1E;border:1px sol
   html[data-theme="light"] body.acc3 .agenda-cal .agenda-day.td .n{background:#007AFF!important;color:#FFFFFF!important}
   html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{background:color-mix(in srgb,var(--agc) 18%,#FFFFFF)!important;color:#33343A!important;border-left:3px solid var(--agc)!important;border-radius:5px!important;padding:3px 5px!important}
 }
-</style>
+</style><script>(()=>{try{const t=localStorage.getItem('mpf_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
 </head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
@@ -1431,7 +1431,7 @@ function dayGoal(ds){const g=dayGoalInfo(ds);return g.meta>0?`<div class="ldsum"
 function acc2Hero(){const g=dayGoalInfo(today);return`<div class="lhero lh1"><div><small>GUARDADO · CONTA 2</small><div class="lbig gr">${fmt(bal())}</div>${g.meta>0?`<div class="sm mu">Hoje: ${fmt(g.got)} de ${fmt(g.meta)}${g.got>=g.meta-0.004?' ✓':''}</div>`:''}</div><button class="btn p" onclick="xferOpen()">Transferir</button></div>`}
 /* troca de conta sem recarregar a página (como no Samsung Calendar): guarda a conta atual, lê a outra e redesenha */
 const ACCN={'1':'Conta 1','2':'Conta 2','3':'Conta 3'};try{const o=JSON.parse(localStorage.getItem('mpf_accn')||'{}')||{};['1','2','3'].forEach(a=>{if(o[a])ACCN[a]=o[a]})}catch(e){}
-function accReady(o,a){if(!o)return false;if(a==='3')return!!o.agendaProfile&&(o.ver||0)>=30;return!!(o.ver||0)>=30&&!!o.fxd&&!!o.asn&&!!o.subSeeded&&(a!=='2'||(!!o.nm2&&!!o.fx2))}
+function accReady(o,a){if(!o)return false;if(a==='3')return!!o.agendaProfile&&(o.ver||0)>=30;return (Number(o.ver)||0)>=30&&!!o.fxd&&!!o.asn&&!!o.subSeeded&&(a!=='2'||(!!o.nm2&&!!o.fx2))}
 function setAcc(a,go){a=String(a);if(!['1','2','3'].includes(a))return;closeAccMenu();if(a!==ACC){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
 const k2=a==='2'?'mpf2':a==='3'?'mpf3':'mpf1';let o=null;try{o=JSON.parse(localStorage.getItem(k2)||'null')}catch(e){}
 try{localStorage.setItem('mpf_acc',a)}catch(e){}
@@ -2256,13 +2256,36 @@ function memoEnsure(){
   if(!('editor' in S.memo)) S.memo.editor=null;
   if(!S.theme) S.theme='dark';
 }
+const THEME_KEY='mpf_theme';
+function readGlobalTheme(){
+  try{
+    const saved=localStorage.getItem(THEME_KEY);
+    if(saved==='light'||saved==='dark')return saved;
+    const legacy=S&&S.theme==='light'?'light':'dark';
+    localStorage.setItem(THEME_KEY,legacy);
+    return legacy;
+  }catch(e){return S&&S.theme==='light'?'light':'dark'}
+}
 function applyTheme(){
-  const t=S.theme==='light'?'light':'dark';
+  const t=readGlobalTheme();
+  S.theme=t;
   document.documentElement.setAttribute('data-theme',t);
   const meta=document.querySelector('meta[name="theme-color"]');
   if(meta) meta.content=t==='light'?'#FFFFFF':'#000000';
 }
-function themeSet(t){if(ACC==='3')memoEnsure();S.theme=t==='light'?'light':'dark';applyTheme();save()}
+function themeSet(t){
+  const next=t==='light'?'light':'dark';
+  S.theme=next;
+  try{localStorage.setItem(THEME_KEY,next)}catch(e){}
+  applyTheme();
+  save();
+}
+window.addEventListener('storage',e=>{
+  if(e.key===THEME_KEY&&(e.newValue==='light'||e.newValue==='dark')){
+    applyTheme();
+    if(typeof drwSync==='function')try{drwSync()}catch(x){}
+  }
+});
 function memoOpenPage(){if(ACC==='3'&&pg!=='anotacoes'){pg='anotacoes';if(location.hash!=='#anotacoes')history.replaceState(null,'','#anotacoes')}}
 function memoTab(t){memoEnsure();memoOpenPage();S.memo.tab=t;S.memo.editor=null;R()}
 function memoNew(type,date){
@@ -2338,6 +2361,17 @@ function memoPlansHTML(){
   const plans=S.memo.plans;let h=`<div class="memo-toolbar"><div><h2>Meus planos</h2><p class="sub">Crie cronogramas, objetivos, etapas e revisões.</p></div><button class="btn p" onclick="memoNew('plan')">+ Novo plano</button></div>`;
   if(!plans.length)h+=`<div class="c memo-empty"><div class="memo-symbol">✦</div><h3>Comece com seu primeiro plano</h3><p class="sub">Registre o objetivo, o período e o passo a passo. Depois coloque cada compromisso no calendário.</p><button class="btn p" onclick="memoNew('plan')">Criar plano</button></div>`;
   plans.forEach(p=>{h+=`<article class="c memo-card"><div class="hdr"><div><h3>${esc(p.title)}</h3><p class="sub">${esc(p.summary||'Sem resumo')} · ${p.weeks||12} semanas · início ${brd(p.start||today)}</p></div><div class="ctl"><button class="btn s" onclick="memoEdit('plan','${p.id}')">Editar</button><button class="btn s" onclick="memoDelete('plan','${p.id}')">Excluir</button></div></div><details><summary>Ver cronograma completo</summary><pre>${esc(p.body||'Ainda sem conteúdo.')}</pre></details></article>`});return h
+}
+function memoNotesHTML(){
+  const notes=Array.isArray(S.memo.notes)?S.memo.notes:[];
+  let h=`<div class="memo-toolbar"><div><h2>Minhas anotações</h2><p class="sub">Ideias, registros do dia, observações e listas rápidas.</p></div><button class="btn p" onclick="memoNew('note')">+ Nova anotação</button></div>`;
+  if(!notes.length)h+=`<div class="c memo-empty"><div class="memo-symbol">✎</div><h3>Nenhuma anotação ainda</h3><p class="sub">Crie uma nota para guardar ideias, listas ou acompanhar o que aconteceu no dia.</p><button class="btn p" onclick="memoNew('note')">Criar anotação</button></div>`;
+  notes.slice().sort((a,b)=>(b.updated||b.created||'').localeCompare(a.updated||a.created||'')).forEach(n=>{
+    const stamp=n.updated||n.created;
+    const dateLabel=stamp?new Date(stamp).toLocaleString('pt-BR'):'Sem data';
+    h+=`<article class="c memo-card"><div class="hdr"><div><h3>${esc(n.title||'Sem título')}</h3><p class="sub">Atualizada em ${esc(dateLabel)}</p></div><div class="ctl"><button class="btn s" onclick="memoEdit('note','${esc(n.id)}')">Editar</button><button class="btn s" onclick="memoDelete('note','${esc(n.id)}')">Excluir</button></div></div><pre>${esc(n.body||'')}</pre></article>`;
+  });
+  return h;
 }
 function memoRoutineHTML(){
   const day=new Date().getDay(),done=S.memo.done[today]||{};

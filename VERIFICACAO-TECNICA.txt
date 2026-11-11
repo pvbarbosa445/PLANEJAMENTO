@@ -1,0 +1,17 @@
+VERIFICAÇÃO TÉCNICA — CORREÇÃO DE 11/11/2026
+
+Verificações automatizadas executadas:
+- 14 de 14 testes direcionados passaram.
+- A página completa Planos e anotações renderiza sem a chamada ausente.
+- A aba Anotações mostra estado vazio e notas já salvas.
+- Criar e salvar anotação grava título e conteúdo corretamente.
+- Tema claro/escuro persiste ao trocar de página e de perfil.
+- Alteração de tema recebida por outra aba do navegador é aplicada.
+- A validação de prontidão das Contas 1, 2 e 3 foi testada.
+- A nova versão do cache offline foi conferida.
+- Sintaxe JavaScript validada em index.html, sync.js e sw.js com Node.js.
+
+Limitação do teste:
+O navegador Chromium headless disponível neste ambiente não conseguiu iniciar nem mesmo uma página HTML vazia. Por isso, não foi possível concluir um teste visual end-to-end aqui. Os testes acima validam a lógica corrigida e a sintaxe, mas a conferência final da tela publicada deve ser feita após o deploy.
+
+A atualização não executa SQL, não apaga dados locais e não reinicializa os perfis.

@@ -1,0 +1,8 @@
+ATUALIZAÇÃO DE CORREÇÃO — LEIA ANTES DE ENVIAR AO GITHUB
+
+1. Faça backup do repositório atual.
+2. Extraia este ZIP e envie os arquivos da raiz à raiz do repositório PLANEJAMENTO, substituindo arquivos de mesmo nome.
+3. Não apague o repositório e não execute SQL no Supabase.
+4. Depois do deploy, abra o site e use Ctrl+Shift+R.
+
+Esta versão corrige o erro ao abrir Anotações, faz a aparência escolhida permanecer entre páginas/contas/abas e atualiza o cache offline. Os dados do navegador e do Supabase não são reinicializados.

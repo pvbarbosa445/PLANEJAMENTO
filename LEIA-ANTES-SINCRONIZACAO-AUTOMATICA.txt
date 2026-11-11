@@ -2,10 +2,6 @@ CALENDÁRIO FINANCEIRO — SINCRONIZAÇÃO AUTOMÁTICA
 
 O app usa o mesmo login Supabase nos aparelhos. Depois da conexão inicial, salvamentos são enviados automaticamente e alterações remotas são recebidas via Supabase Realtime, com consulta de contingência a cada 12 segundos.
 
-A Conta 1, Conta 2 e Conta 3 são perfis distintos na tabela finance_state (profile_id 1, 2 e 3). A Conta 3 não mistura dados financeiros com as outras contas.
+A Conta 1, Conta 2 e Conta 3 são perfis distintos na tabela finance_state (profile_id 1, 2 e 3). Os dados de cada perfil permanecem separados.
 
-O usuário deve preservar os dados locais dos dois aparelhos antes da primeira conexão. O primeiro aparelho autenticado com dados locais inicia a cópia remota se o perfil ainda não tiver registro na nuvem. No segundo aparelho, o conteúdo remoto passa a ser aplicado automaticamente. Antes de uma substituição, o app tenta guardar um backup local de segurança.
-
-Conflitos de alterações simultâneas/offline não são mesclados campo a campo; a versão mais recente pode prevalecer. O app mantém cópia local prévia antes de substituir o payload remoto.
-
-Supabase já configurado neste projeto: não executar schema.sql nem realtime.sql novamente. Para acrescentar a Conta 3, execute somente supabase/add_profile3.sql uma vez.
+A correção atual de Anotações/aparência altera somente index.html e sw.js; não modifica a sincronização nem exige SQL. Não execute schema.sql, realtime.sql ou add_profile3.sql nesta atualização.
