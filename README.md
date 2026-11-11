@@ -5,7 +5,7 @@ Este pacote acrescenta uma terceira conta/perfil dentro do MESMO Calendário Fin
 ## Modo claro — referência visual Apple Calendar
 - Fundo principal branco e painel lateral em cinza-claro, com texto escuro de alto contraste.
 - Grade mensal contínua, com divisórias finas no lugar dos cartões escuros arredondados.
-- Dia atual destacado em vermelho, fins de semana discretos e eventos em faixas suaves.
+- Dia atual destacado em azul, fins de semana discretos e eventos em faixas suaves com marcadores laterais coloridos.
 - Controles, seletores, campos e gráficos adaptados ao tema claro; o texto central do gráfico acompanha as cores do tema.
 - O modo escuro foi mantido. A mudança na grade contínua é aplicada no layout desktop; no celular, a estrutura responsiva original é preservada.
 
@@ -14,7 +14,7 @@ Este pacote acrescenta uma terceira conta/perfil dentro do MESMO Calendário Fin
 - A Conta 3 começa vazia e isolada; não copia nem altera receitas, despesas, saldos, metas ou cofrinhos das Contas 1 e 2.
 - O calendário da Conta 3 mostra tarefas/compromissos com data e horários recorrentes nos dias da semana escolhidos.
 - A área Planos e anotações permite criar planos livres (com título, resumo, data inicial, duração em semanas e texto), rotinas recorrentes, compromissos e notas.
-- O tema claro (branco e azul) continua disponível no menu de Aparência.
+- O botão de aparência fica no cabeçalho da aba lateral, imediatamente ao lado do botão de recarregar, com o mesmo tamanho.
 - A sincronização Supabase inclui o perfil 3, separado dos perfis 1 e 2.
 
 ## Arquivos do site

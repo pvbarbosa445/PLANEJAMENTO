@@ -830,7 +830,105 @@ html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border
 html[data-theme="light"] body.lean .lhd button:focus-visible,
 html[data-theme="light"] body.lean .pc-month-arrows button:focus-visible{outline:2px solid #007AFF!important;outline-offset:2px}
 
-</style></head><body>
+</style>
+<style id="apple-calendar-light-refinement">
+/* Modo claro: grade mensal mais limpa, contínua e compacta, sem alterar o tema escuro. */
+html[data-theme="light"] #drw .dhd{gap:6px}
+html[data-theme="light"] #drw .dhd b{flex:1;min-width:0}
+#drw .dtheme{display:grid;place-items:center;flex:none}
+#drw .dtheme svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html[data-theme="light"] #drw .dx.drl{background:#F5F5F7;border:1px solid #E5E5EA;color:#007AFF}
+html:not([data-theme="light"]) #drw .dx.dtheme{background:#1C1C1E;border:1px solid #38383A;color:#F5F5F7}
+
+@media (min-width:761px) and (hover:hover) and (pointer:fine){
+  /* Mantém título da conta discreto e os controles do mês com acabamento iOS. */
+  html[data-theme="light"] body.lean .lhd .lttl{gap:1px}
+  html[data-theme="light"] body.lean .lhd .lttl>b{font-size:27px!important;font-weight:700!important;letter-spacing:-.65px!important;color:#1D1D1F!important;line-height:1.15}
+  html[data-theme="light"] body.lean .lhd .accsw{display:inline-flex!important;align-items:center!important;gap:7px!important;width:auto!important;height:auto!important;min-height:0!important;margin:2px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#6E6E73!important;font:600 13px/1.25 -apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;box-shadow:none!important}
+  html[data-theme="light"] body.lean .lhd .accsw .ad{width:7px;height:7px}
+  html[data-theme="light"] body.lean .pc-month-arrows{gap:7px}
+  html[data-theme="light"] body.lean .pc-month-arrows button{width:38px;height:38px;border:1px solid #E5E5EA!important;border-radius:50%!important;background:#F5F5F7!important;color:#007AFF!important;font-size:25px!important;font-weight:400!important}
+  html[data-theme="light"] body.lean .pc-month-arrows button:hover{background:#EAF2FF!important;border-color:#C8DDFB!important}
+
+  /* Grade contínua em vez de sete colunas de cartões separados. */
+  html[data-theme="light"] body.lean .cal.cal2{
+    display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+    gap:0!important;row-gap:0!important;margin-top:10px!important;
+    overflow:hidden!important;border:1px solid #E5E5EA!important;border-radius:13px!important;
+    background:#FFFFFF!important;box-shadow:0 1px 2px rgba(0,0,0,.035)!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2>.w{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-width:0!important;height:31px!important;padding:0 4px!important;margin:0!important;
+    background:#F5F5F7!important;color:#6E6E73!important;
+    border:0!important;border-right:1px solid #E5E5EA!important;border-bottom:1px solid #E5E5EA!important;
+    font-size:11px!important;font-weight:650!important;letter-spacing:.45px!important;text-transform:uppercase!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2>.w:nth-child(7){border-right:0!important}
+  html[data-theme="light"] body.lean .cal.cal2>.w.wk{color:#FF453A!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;
+    box-sizing:border-box!important;min-width:0!important;min-height:clamp(116px,calc((100vh - 260px)/5),148px)!important;
+    height:auto!important;padding:7px 8px 7px!important;margin:0!important;gap:3px!important;
+    background:#FFFFFF!important;color:#1D1D1F!important;border:0!important;border-right:1px solid #ECECF0!important;
+    border-bottom:1px solid #ECECF0!important;border-radius:0!important;box-shadow:none!important;opacity:1!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2>.d2:nth-child(7n){border-right:0!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2:nth-child(7n+1){background:#FCFCFD!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2.om{background:#FAFAFB!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2.om .n{color:#C7C7CC!important;font-weight:500!important;background:transparent!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2 .n{
+    display:flex!important;align-items:center!important;justify-content:center!important;align-self:flex-start!important;
+    width:25px!important;height:25px!important;min-width:25px!important;line-height:25px!important;
+    margin:0 0 3px 0!important;padding:0!important;border-radius:50%!important;
+    background:transparent!important;color:#1D1D1F!important;font-size:13px!important;font-weight:600!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2>.d2.td .n{background:#007AFF!important;color:#FFFFFF!important;font-weight:700!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2.sl{background:#F1F7FF!important;box-shadow:inset 0 0 0 2px #B9D8FF!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2 .cbw{
+    display:flex!important;flex-direction:column!important;align-self:stretch!important;justify-content:flex-start!important;
+    order:1!important;grid-area:auto!important;gap:3px!important;width:100%!important;min-width:0!important;
+    margin:0!important;overflow:hidden!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2.xl .cb{
+    display:block!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;
+    min-height:18px!important;height:auto!important;line-height:1.2!important;padding:3px 5px!important;
+    border:0!important;border-left:3px solid var(--cb-color,#8E8E93)!important;border-radius:5px!important;
+    background:color-mix(in srgb,var(--cb-color,#8E8E93) 19%,#FFFFFF)!important;
+    color:color-mix(in srgb,var(--cb-color,#8E8E93) 62%,#252525)!important;
+    box-shadow:none!important;text-shadow:none!important;font-family:inherit!important;font-size:10.5px!important;
+    font-style:normal!important;font-weight:600!important;text-align:left!important;letter-spacing:0!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2.xl .cb.pv{
+    border:1px dashed var(--cb-color,#8E8E93)!important;border-left:3px dashed var(--cb-color,#8E8E93)!important;
+    background:color-mix(in srgb,var(--cb-color,#8E8E93) 10%,#FFFFFF)!important;opacity:.9!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2 .cdm{display:block!important;padding:1px 4px!important;color:#8E8E93!important;font-size:10px!important;line-height:12px!important;font-weight:600!important;text-align:left!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb{
+    order:2!important;align-self:stretch!important;margin:auto 0 0!important;padding:5px 0 0!important;
+    color:#24834A!important;font-size:14px!important;line-height:1.15!important;font-weight:700!important;
+    letter-spacing:-.15px!important;text-align:left!important;font-variant-numeric:tabular-nums!important;
+  }
+  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb.neg{color:#D70015!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2 .sb small{font-size:.65em!important;font-weight:600!important;opacity:.72!important}
+  html[data-theme="light"] body.lean .cal.cal2>.d2:not(.om):hover{background:#F7FAFF!important}
+  html[data-theme="light"] body.lean .cgrab i{background:#D1D1D6!important}
+  html[data-theme="light"] body.lean .lleg{color:#6E6E73!important}
+  html[data-theme="light"] body.lean .ltri>div{background:#F5F5F7!important;border:1px solid #E5E5EA!important;border-radius:13px!important;box-shadow:none!important}
+  html[data-theme="light"] body.lean .apill{background:#007AFF!important;border:0!important;color:#FFFFFF!important;box-shadow:0 4px 14px rgba(0,122,255,.22)!important}
+  html[data-theme="light"] body.lean .apill b{color:#FFFFFF!important}
+}
+
+/* A visualização de organização (Conta 3) usa as mesmas divisórias do mês. */
+@media (min-width:761px) and (hover:hover) and (pointer:fine){
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day{background:#FFFFFF!important}
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day .n{color:#1D1D1F!important}
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-day.td .n{background:#007AFF!important;color:#FFFFFF!important}
+  html[data-theme="light"] body.acc3 .agenda-cal .agenda-chip{background:color-mix(in srgb,var(--agc) 18%,#FFFFFF)!important;color:#33343A!important;border-left:3px solid var(--agc)!important;border-radius:5px!important;padding:3px 5px!important}
+}
+</style>
+</head><body>
 <div class="app" id="app"><nav id="nav"></nav><main><div class="wrap" id="main"></div></main></div>
 <div id="m1"></div><div id="m2"></div>
 <script>
@@ -1152,7 +1250,7 @@ const mnyH=v=>{const t=v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximum
 function leanCal(){const[y,m]=cur.split('-').map(Number),N=dim(cur),v=lview(),SR=v==='s'?leanSeries('s',cur):leanSeries(v,cur),by={},X=dsp(),showPast=!!S.showPast&&(X.in||X.out);if(!X.in&&!X.out){for(const k in SR)delete SR[k]}calGrid(cur,'all',null,null).forEach(e=>{if(v==='r'&&e.type!=='in')return;if(v==='g'&&e.type!=='out')return;if(!dspOk(e,X))return;(by[e.date]=by[e.date]||[]).push(e)});if(X.tr&&X.tags)S.tx.filter(t=>t.internal&&!t.hidden&&t.date.slice(0,7)===cur).forEach(t=>(by[t.date]=by[t.date]||[]).push({k:'r',type:'tr',val:t.val,tag:'',desc:t.desc||'Transferência',date:t.date,trc:1}));
 let c=['D','S','T','Q','Q','S','S'].map((w,i)=>`<div class="w ${i%6===0?'wk':''}">${w}</div>`).join('')+(()=>{const lead=new Date(y,m-1,1).getDay(),pm=new Date(y,m-1,0).getDate();return Array.from({length:lead},(_,i)=>`<div class="d d2 om"><span class="n">${pm-lead+1+i}</span></div>`).join('')})();
 for(let d=1;d<=N;d++){const ds=cur+'-'+pad(d),dw=new Date(y,m-1,d),dk=dw.getDay()===0||dw.getDay()===6?'we':isOff(dw)?'ho':'',l=(by[ds]||[]).concat(v!=='r'&&ds>=today&&X.out&&X.tags?Object.entries(planParts(ds)).map(([k,x])=>({k:'p',type:'out',val:x,tag:ptag(k),desc:'Previsto de '+pnm(k)})):[]),past=ds<today&&showPast&&ds>=(S.start||BASE_DATE),p=past?{v:poolBal('Livre',null,ds),actual:1}:SR[ds],has=!!p&&(past||ds>=today),neg=p&&p.v<-0.004;
-c+=`<div class="d d2 ${dk} ${ds===today?'td':''}" onclick="leanDay('${ds}')"><span class="n">${d}${(g=>g.meta>0&&g.got>=g.meta-0.004?'<i class="gck">✓</i>':'')(dayGoalInfo(ds))}</span>${l.length?(CALH>=100||pcCalendar()?(k=>`<span class="cdw cbw">${l.slice(0,k).map(e=>`<i class="cb ${e.k==='p'||e.k==='q'||e.k==='r'?'pv':''}" style="background:${e.trc?'#5a5a60':toneC(tcl(e.tag))}">${esc((e.desc||tnm(e.tag)||'').replace(/^Previsto de /,''))}</i>`).join('')}${l.length>k?`<b class="cdm">+${l.length-k}</b>`:''}</span>`)(pcCalendar()?5:Math.max(1,Math.floor((CALH-58)/17))):`<span class="cdw">${l.slice(0,6).map(cdot).join('')}${l.length>6?`<b class="cdm">+${l.length-6}</b>`:''}</span>`):''}${has?`<span class="sb ${neg?'neg':''} ${v==='s'?'':'pj'}"><span class="sbf">${mnyH(Math.abs(p.v))}</span><span class="sbs">${neg&&Math.abs(p.v)>=1000?(Math.abs(p.v)/1000).toFixed(1).replace('.',',')+'k':Math.round(Math.abs(p.v)).toLocaleString('pt-BR')}</span></span>`:''}</div>`}
+c+=`<div class="d d2 ${dk} ${ds===today?'td':''}" onclick="leanDay('${ds}')"><span class="n">${d}${(g=>g.meta>0&&g.got>=g.meta-0.004?'<i class="gck">✓</i>':'')(dayGoalInfo(ds))}</span>${l.length?(CALH>=100||pcCalendar()?(k=>`<span class="cdw cbw">${l.slice(0,k).map(e=>`<i class="cb ${e.k==='p'||e.k==='q'?'pv':''}" style="background:${e.trc?'#5a5a60':toneC(tcl(e.tag))};--cb-color:${e.trc?'#8E8E93':toneC(tcl(e.tag))}">${esc((e.desc||tnm(e.tag)||'').replace(/^Previsto de /,''))}</i>`).join('')}${l.length>k?`<b class="cdm">+${l.length-k}</b>`:''}</span>`)(pcCalendar()?5:Math.max(1,Math.floor((CALH-58)/17))):`<span class="cdw">${l.slice(0,6).map(cdot).join('')}${l.length>6?`<b class="cdm">+${l.length-6}</b>`:''}</span>`):''}${has?`<span class="sb ${neg?'neg':''} ${v==='s'?'':'pj'}"><span class="sbf">${mnyH(Math.abs(p.v))}</span><span class="sbs">${neg&&Math.abs(p.v)>=1000?(Math.abs(p.v)/1000).toFixed(1).replace('.',',')+'k':Math.round(Math.abs(p.v)).toLocaleString('pt-BR')}</span></span>`:''}</div>`}
 {const tail=(7-((new Date(y,m-1,1).getDay()+N)%7))%7;for(let i=1;i<=tail;i++)c+=`<div class="d d2 om"><span class="n">${i}</span></div>`}
 return`<div class="cal cal2 ${(CALH>=100||pcCalendar())?'xl':''}" style="--ch:${CALH}px">${c}</div><div class="cgrab" id="cgrab" aria-label="Esticar calendário"><i></i></div>`}
 function pcCalendar(){return window.matchMedia('(min-width:761px) and (hover:hover) and (pointer:fine)').matches}
@@ -2115,10 +2213,10 @@ function drwHTML(){
  const bv=a=>{try{return fmt(balOf(a))}catch(e){return''}};
  const tabs=['1','2','3'].map(a=>`<button class="${ACC===a?'on':''} ${a==='2'?'a2':''} ${a==='3'?'a3':''}" onclick="drwAcc('${a}')" role="tab" aria-selected="${ACC===a}"><span>${esc(ACCN[a])}</span><small>${a==='3'?'Organização':bv(a)}</small></button>`).join('');
  const display=is3?`<div class="dgt">Exibição</div><div class="dgr"><div class="sm mu" style="padding:7px 2px">Os compromissos, tarefas e horários aparecem nas datas do calendário desta conta.</div></div>`:`<div class="dgt">Exibição</div><div class="dgr">${[['in','Receitas'],['out','Despesas'],['tags','Tags'],['tr','Transferências e cofrinhos']].map(([k,n])=>`<label class="dsw"><span>${n}</span><input type="checkbox" ${dsp()[k]?'checked':''} onchange="dspSet('${k}',this.checked)"><i></i></label>`).join('')}<label class="dsw"><span>Bolacha das metas</span><input type="checkbox" ${S.donHide?'':'checked'} onchange="donHide(!this.checked)"><i></i></label><label class="dsw"><span>Saldos dos dias anteriores</span><input type="checkbox" ${S.showPast?'checked':''} onchange="pastDayToggle()"><i></i></label></div>`;
- return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
+ return `<div class="dhd"><b>${is3?'Organização':'Planejamento'}</b><button class="dx drl" onclick="appReload()" aria-label="Recarregar" title="Recarregar a página"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button><button class="dx drl dtheme" onclick="themeSet(S.theme==='light'?'dark':'light');drwSync()" aria-label="Alternar aparência" title="Alternar aparência"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><button class="dx" onclick="closeDrw()" aria-label="Fechar">✕</button></div>
 <div class="dseg" role="tablist" aria-label="Conta">${tabs}</div>
 <div class="dren"><a onclick="closeDrw(()=>accRename())">✎ Renomear contas</a></div><div class="dgt">Páginas</div><div class="dgr">${pgs.map(([k,n,ic])=>`<button class="drow ${pg===k?'on':''}" onclick="drwGo('${k}')"><svg viewBox="0 0 24 24">${ic}</svg><span>${n}</span></button>`).join('')}</div>
-${display}<div class="dgt">Aparência</div><div class="dgr"><label class="dsw"><span>Modo claro (branco e azul)</span><input type="checkbox" ${S.theme==='light'?'checked':''} onchange="themeSet(this.checked?'light':'dark')"><i></i></label></div>
+${display}
 ${isApp()?'':`<button class="dinst" onclick="closeDrw(()=>instApp())"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span>Instalar app</span>${DIP?'':'<small>como instalar</small>'}</button>`}<div class="dgt">Visualização do calendário</div><div class="dgr">${Object.keys(CVN).map(k=>`<button class="drow ${pg==='simples'&&CVW===k?'on':''}" onclick="drwView('${k}')"><span class="dv">${k==='g'?'≡':CVN[k].slice(0,1)}</span><span>${CVN[k]}</span>${pg==='simples'&&CVW===k?'<b>✓</b>':''}</button>`).join('')}</div>`
 }
 function drwEls(){let d=$('#drw');if(!d){const sc=document.createElement('div');sc.id='dscrim';sc.onclick=()=>closeDrw();document.body.appendChild(sc);d=document.createElement('aside');d.id='drw';d.setAttribute('aria-hidden','true');document.body.appendChild(d);const e=document.createElement('div');e.id='edge';e.innerHTML='<i></i>';document.body.appendChild(e);edgeBind(e)}return d}
