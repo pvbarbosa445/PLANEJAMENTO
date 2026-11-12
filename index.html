@@ -253,8 +253,8 @@ html,body,button,input,select,textarea{font-family:-apple-system,BlinkMacSystemF
 input.i,select.i,textarea.i{background:#2C2C2E;border-color:#38383A}
 .ltog,.ldsum{background:#1C1C1E}
 body.lean .cal2 .d.we .n,body.lean .cal2 .d.we{color:#0A84FF}body.lean .cal2 .d.we .n{color:#0A84FF}body.lean .cal2 .w.wk{color:#0A84FF}
-body.lean .cal2 .d2.td .n{background:#FF453A;color:#fff!important}
-body.lean .cal2 .d.ho .n{color:#FF453A}
+body.lean .cal2 .d2.td .n{background:#A9D4F5;color:#101820!important}
+body.lean .cal2 .d.ho .n{color:#A9D4F5}
 body.lean .cal2 .d,body.lean .cal2 .w{border-color:#38383A!important}
 body.lean .cal2 .d.om{cursor:default}body.lean .cal2 .d.om .n{color:#3A3A3C!important;background:none!important;font-weight:500}body.lean .cal2 .d.om:hover{border-color:#38383A}
 /* Calendário Samsung: blocos arredondados, dias vizinhos apagados, painel do dia embaixo */
@@ -263,13 +263,13 @@ body.lean .lhd b{order:0;flex:1;text-align:left;font-size:28px;font-weight:800;l
 body.lean .lhd button{order:1;background:none!important;border:0!important;width:40px;height:40px;min-height:0;padding:0;font-size:30px;line-height:1;color:#fff;border-radius:50%}
 body.lean .cal.cal2{gap:6px;margin-top:6px}
 body.lean .cal2 .w{border:0!important;padding:6px 0 4px;font-size:14px;font-weight:700;color:#fff;margin:0}
-body.lean .cal2 .w.wk{color:#fff}body.lean .cal2>.w:nth-child(1){color:#FF6B6B}
+body.lean .cal2 .w.wk{color:#fff}body.lean .cal2>.w:nth-child(1){color:#A9D4F5}
 body.lean .cal2 .d,body.lean .cal2 .d.e{background:#141416!important;border:0!important;border-radius:10px;box-shadow:none;padding:6px 3px 5px;min-height:62px}
 body.lean .cal2 .d.om{background:#0b0b0c!important}
 body.lean .cal2 .d.om .n{color:#555!important;font-weight:600}
 body.lean .cal2 .d2 .n,body.lean .cal2 .d.we .n{color:#fff;font-weight:700}
-body.lean .cal2 .d.ho .n,body.lean .cal2 .d:not(.om):nth-child(7n+1) .n{color:#FF6B6B}
-body.lean .cal2 .d2.td .n{background:#FF453A;color:#fff!important}
+body.lean .cal2 .d.ho .n,body.lean .cal2 .d:not(.om):nth-child(7n+1) .n{color:#A9D4F5}
+body.lean .cal2 .d2.td .n{background:#A9D4F5;color:#101820!important}
 body.lean .cal2 .d.sl,body.lean .cal2 .d2.sl{box-shadow:inset 0 0 0 1.5px #8E8E93!important;background-color:#141416!important;background-image:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,.07))!important}
 body.lean .cal2 .d:hover{border:0!important}
 @media(max-width:760px){
@@ -2527,113 +2527,37 @@ body.lean .cal2 .d2 .sb {
   padding-left: 6px !important;
   margin-top: auto !important;
 }
-</style><!-- [FIX-CAL-OK] --><style id="fix-cal-samsung">
-/* --- CONTAINER E DIAS --- */
+</style><!-- [FIX-CAL-OK] --><!-- [FIX-AZUL-DEFINITIVO] --><style id="fix-cal-azul-definitivo">
+body.lean .cal2 .d2 .n { font-size: 12px !important; font-weight: 500 !important; color: #FFF !important; align-self: flex-start !important; justify-self: flex-start !important; margin: 0 !important; padding: 0 0 0 4px !important; width: 24px !important; height: 24px !important; line-height: 24px !important; text-align: center !important; border-radius: 50% !important; display: block !important; }
+body.lean .cal2 .d:not(.om):nth-child(7n+1) .n, body.lean .cal2 .d:not(.om):nth-child(7n) .n, body.lean .cal2 .d.ho .n, body.lean .cal2 .d2.ho .n { color: #A9D4F5 !important; }
+body.lean .cal2 .d2.td .n { background: #A9D4F5 !important; color: #101820 !important; font-weight: 700 !important; }
 body.lean .cal.cal2 { gap: 4px !important; }
-body.lean .cal2 .d, body.lean .cal2 .d2 {
-    background: #1C1C1E !important;
-    border-radius: 10px !important;
-    border: 1px solid #2C2C2E !important;
-    padding: 4px 5px !important;
-    min-height: 82px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-}
-
-/* Remove fundo de hoje e de selecionado */
-body.lean .cal2 .d.sl, body.lean .cal2 .d.td, body.lean .cal2 .d2.sl, body.lean .cal2 .d2.td, body.lean .cal2 .d.we, body.lean .cal2 .d.ho {
-    background: #1C1C1E !important;
-    box-shadow: none !important;
-}
-body.lean .cal2 .d.sl { border: 1.5px solid #8E8E93 !important; } /* Borda cinza para o dia selecionado */
-
-/* --- NÚMEROS (TOPO ESQUERDO) --- */
-body.lean .cal2 .d2 .n {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #FFF !important;
-    align-self: flex-start !important;
-    justify-self: flex-start !important;
-    margin: 0 0 4px 0 !important;
-    width: 26px !important;
-    height: 26px !important;
-    line-height: 26px !important;
-    text-align: center !important;
-    border-radius: 50% !important;
-    display: block !important;
-}
-
-/* Finais de semana vermelhos */
-body.lean .cal2 .d:not(.om):nth-child(7n+1) .n,
-body.lean .cal2 .d:not(.om):nth-child(7n) .n {
-    color: #FF453A !important;
-}
-
-/* HOJE: Círculo Branco */
-body.lean .cal2 .d2.td .n {
-    background: #FFFFFF !important;
-    color: #000000 !important;
-    font-weight: bold !important;
-}
-
-/* --- CABEÇALHO (D, S, T...) --- */
-body.lean .cal2 .w {
-    font-size: 11px !important;
-    color: #8E8E93 !important;
-    font-weight: 500 !important;
-    text-align: center !important;
-    padding: 4px 0 !important;
-    border: none !important;
-}
-body.lean .cal2 > .w:nth-child(1), body.lean .cal2 > .w:nth-child(7) {
-    color: #8E8E93 !important; /* Tira o vermelho do cabeçalho */
-}
-
-/* --- EVENTOS (TEXTO COLORIDO) --- */
-body.lean .cal2 .cbw, body.lean .cal2 .cdw {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
-    width: 100% !important;
-    margin: 0 !important;
-    align-items: stretch !important;
-}
-body.lean .cal2 .cb {
-    display: block !important;
-    font-size: 9.5px !important;
-    line-height: 13px !important;
-    height: auto !important;
-    min-height: 14px !important;
-    padding: 1px 4px !important;
-    border-radius: 4px !important;
-    background: var(--cb-color) !important;
-    color: #111 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    font-weight: 600 !important;
-    text-align: left !important;
-    margin-bottom: 1px !important;
-    text-shadow: none !important;
-}
-body.lean .cal2 .cb.pv {
-    opacity: 0.8 !important;
-    border: 1px dashed rgba(0,0,0,0.3) !important;
-}
-
-/* --- VALOR (CANTO INFERIOR DIREITO) --- */
-body.lean .cal2 .d2 .sb {
-    margin-top: auto !important;
-    align-self: flex-end !important;
-    font-size: 10px !important;
-    color: #8E8E93 !important;
-    font-weight: 600 !important;
-    text-align: right !important;
-    padding: 0 !important;
-    display: block !important;
-}
-body.lean .cal2 .d2 .sb.neg { color: #FF453A !important; }
+body.lean .cal2 .d, body.lean .cal2 .d2 { background: #1C1C1E !important; border-radius: 10px !important; border: 1px solid #2C2C2E !important; padding: 3px 2px 4px 2px !important; min-height: 86px !important; display: flex !important; flex-direction: column !important; align-items: stretch !important; }
+body.lean .cal2 .d.sl, body.lean .cal2 .d.td, body.lean .cal2 .d2.sl, body.lean .cal2 .d2.td, body.lean .cal2 .d.we, body.lean .cal2 .d.ho { background: #1C1C1E !important; box-shadow: none !important; }
+body.lean .cal2 .cbw, body.lean .cal2 .cdw { display: flex !important; flex-direction: column !important; gap: 2px !important; width: 100% !important; margin: 2px 0 0 0 !important; align-items: stretch !important; padding: 0 3px !important; }
+body.lean .cal2 .cb { display: block !important; font-size: 9.5px !important; line-height: 13px !important; height: auto !important; min-height: 14px !important; padding: 1px 4px !important; border-radius: 4px !important; background: var(--cb-color) !important; color: #111 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; font-weight: 600 !important; text-align: left !important; margin-bottom: 1px !important; text-shadow: none !important; }
+body.lean .cal2 .d2 .sb { margin-top: auto !important; align-self: center !important; text-align: center !important; font-size: 11px !important; font-weight: 700 !important; padding: 0 !important; display: block !important; width: 100% !important; }
+body.lean .cal2 .d2 .sb .sbf { display: inline !important; }
+body.lean .cal2 .d2 .sb .sbs { display: none !important; }
 body.lean .cal2 .d2 .sb.pj { font-style: normal !important; }
 body.lean .cal2 .d2 .sb.pj::before { content: '' !important; }
-</style><!-- [FIX-CAL-SAMSUNG] --></body></html>
+</style>
+<script>
+(function(){
+  function fixColors(){
+    if(typeof R !== 'function'){ setTimeout(fixColors, 200); return; }
+    var _origLeanCal = window.leanCal;
+    if(!_origLeanCal || _origLeanCal._patched) return;
+    window.leanCal = function(){
+      var html = _origLeanCal.apply(this, arguments);
+      html = html.replace(/<span class="sb pj([^"]*)">/g, '<span class="sb $1" style="color:var(--gr)">');
+      html = html.replace(/<span class="sb neg pj([^"]*)">/g, '<span class="sb neg $1" style="color:var(--rd)">');
+      return html;
+    };
+    window.leanCal._patched = true;
+    try{R()}catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fixColors);
+  else fixColors();
+})();
+</script><!-- [FIX-AZUL-DEFINITIVO] --></body></html>
