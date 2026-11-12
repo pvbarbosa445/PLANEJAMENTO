@@ -2357,7 +2357,7 @@ function _memoDeleteDo(type,id){memoEnsure();if(type==='plan')S.memo.plans=S.mem
 function memoDeleteFromEditor(){var e=S.memo.editor;if(e)memoDelete(e.type,e.id)}
 function agendaDel(type,id){ask('Excluir '+(type==='event'?'este compromisso':'este horário recorrente')+'?','Excluir',()=>{if(type==='event')S.memo.events=S.memo.events.filter(x=>x.id!==id);else{S.memo.routine=S.memo.routine.filter(x=>x.id!==id);Object.keys(S.memo.done||{}).forEach(d=>{if(S.memo.done[d])delete S.memo.done[d][id]})}if(S.memo.editor&&S.memo.editor.id===id)S.memo.editor=null;try{closeM2()}catch(e){}try{closeM()}catch(e){}save();toast('Excluído.')},true)}
 addEventListener('hashchange',()=>{pg=location.hash.slice(1)||'inicio';closeM();closeM2();R()});R();
-</script><script type="module" src="sync.js"></script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><style id="fix-css">body.acc2{--ac:#A9D4F5!important}.ad.a2{background:var(--ac)!important}#drw .dseg button.on.a2{background:var(--ac)!important}body.acc2 #drw .dinst{background:var(--ac)!important}</style>
+</script><script type="module" src="sync.js"></script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
 <script>
 (function(){
   function run(){
@@ -2445,45 +2445,7 @@ addEventListener('hashchange',()=>{pg=location.hash.slice(1)||'inicio';closeM();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(run,400)});
   else setTimeout(run,400);
 })();
-</script><!-- [FIX-ANOTACOES-OK] --><style id="fix-css-2">
-/* Números do calendário no canto superior esquerdo */
-body.lean .cal2 .d2 .n,
-body.acc3 .agenda-cal .d2 .n {
-  align-self: flex-start !important;
-  justify-self: flex-start !important;
-  margin-left: 8px !important;
-  margin-right: auto !important;
-  text-align: left !important;
-}
-/* Agenda no celular: botões numa linha abaixo, sem quebrar o layout */
-@media(max-width:760px){
-  body.acc3 .agenda-item{
-    display: flex !important;
-    flex-wrap: wrap !important;
-    align-items: center !important;
-    gap: 9px !important;
-  }
-  body.acc3 .agenda-tick { flex: none !important; }
-  body.acc3 .agenda-time { flex: none !important; }
-  body.acc3 .agenda-name { flex: 1 1 100px !important; min-width: 0 !important; }
-  body.acc3 .agenda-actions { 
-    flex: 1 1 100% !important; 
-    display: flex !important; 
-    gap: 6px !important; 
-    justify-content: flex-start !important; 
-    margin-top: 4px !important; 
-  }
-}
-/* Ajuste dos botões no rodapé do pop-up do dia */
-body.acc3 .mf {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-body.acc3 .mf .btn {
-  flex: 1 1 auto;
-}
-</style>
+</script>
 <script>
 (function(){
   window.agendaItemHTML=function(x,ds){
@@ -2499,4 +2461,4 @@ body.acc3 .mf .btn {
   };
   try{ if(typeof R==='function') R(); }catch(e){}
 })();
-</script><!-- [FIX-AGENDA-OK] --><!-- [FIX-CAL-CENTRO-ULTRA] --></body></html>
+</script><!-- [FIX-LAYOUT-PERFEITO] --></body></html>
